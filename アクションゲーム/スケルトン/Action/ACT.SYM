@@ -1,0 +1,35 @@
+#include "typedef.h"
+
+const DWORD	FILESIZE = GetFileSize();
+$float version;
+$DWORD imagefilenamesize;//画像名サイズ[4Byte]
+$BYTE imagefilename[imagefilenamesize];//アクション名[?Byte]
+
+$DWORD actcount;// アクション数[4Byte]
+
+for(int i=0; i < actcount; i++){
+	$DWORD actionnamesize;//アクション名サイズ[4Byte]
+	$BYTE actionname[actionnamesize];//アクション名[?Byte]
+	$BYTE loop;
+	$DWORD count;//切り抜き情報カウント
+	for(int j=0; j<count; ++j){
+		$DWORD rectCX;//切り抜き矩形中心X
+		$DWORD rectCY;//切り抜き矩形中心Y
+		$DWORD width;//切り抜き矩形幅
+		$DWORD height;//切り抜き矩形高さ
+		$DWORD centerx;//中心点X
+		$DWORD centery;//中心点Y
+		$DWORD duration;//フレーム数
+		$DWORD actrccnt;//攻撃矩形などの数
+		for(int k=0; k<actrccnt ; ++k){
+			$DWORD ActRcType;//矩形種別
+			$DWORD ActRcCX;//矩形中心オフセットX
+			$DWORD ActRcCY;//矩形中心オフセットY
+			$DWORD ActRcW;//矩形幅
+			$DWORD ActRcH;//矩形高さ
+		}
+	}
+}
+
+
+

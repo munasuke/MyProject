@@ -1,0 +1,243 @@
+#include "Player.h"
+#include "DxLib.h"
+
+
+
+Player::Player() :
+	_flame(0),
+	_currentCutIndex(0),
+	velocity({ 2, 0 }),
+	pos({ 50, 300 }),
+	turnFlag(false),
+	gravity(1.0f),
+	_jump(false)
+{
+	date.clear();
+	cut.clear();
+	Load();
+	std::string path = "Action/" + header.pathName;
+
+	for (int i = 0; i < 256; i++) {
+		key[i] = 0;
+		old_key[i] = 0;
+	}
+	_update = &Player::NeutralUpdate;
+	player = LoadGraph(path.c_str());
+	mode = "Walk";
+}
+
+
+Player::~Player()
+{
+}
+
+void Player::Update()
+{
+	for (int i = 0; i < 256; i++) {
+		old_key[i] = key[i];
+	}
+	GetHitKeyStateAll(key);
+	
+	//アクション↓
+	pos.y += velocity.y;
+	velocity.y += gravity;
+	(this->*_update)();
+	if (pos.y >= 340) {
+		pos.y = 340;
+	}
+}
+
+void Player::Draw()
+{
+	int centorX = turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
+
+	DrawRectRotaGraph2(pos.x, pos.y, cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(), cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(), centorX, cut[mode][_currentCutIndex].centor.y, 2.0, 0, player, true, turnFlag);
+	if (_flame > cut[mode][_currentCutIndex].frame) {
+		_currentCutIndex++;
+		_flame = 0;
+	}
+	//最終インデックスか確認
+	if (_currentCutIndex > cut[mode].size() - 1) {
+		if (mode != "Punch" && mode != "Kick") {
+			_currentCutIndex = 0;//ループ
+		}
+	}
+	if (_update != &Player::NeutralUpdate) {
+		_flame++;
+	}
+}
+
+void Player::Load()
+{
+	FILE* file;
+	fopen_s(&file, "Action/player.act", "rb");
+	fread(&header.version, sizeof(header.version),1, file );
+
+	fread(&header.filePathNameNum, sizeof(int), 1, file);
+
+	header.pathName.resize(header.filePathNameNum);
+	fread(&header.pathName[0], header.filePathNameNum, 1, file);
+
+	fread(&header.actionDateNum, sizeof(int), 1, file);
+
+	ImageDate dummy = {};
+	for (int i = 0; i < header.actionDateNum; ++i) {
+		fread(&dummy.actionNameNum, sizeof(dummy.actionNameNum), 1, file);
+
+		dummy.actionName.resize(dummy.actionNameNum);
+		fread(&dummy.actionName[0], dummy.actionNameNum, 1, file);
+
+		fread(&dummy.loop, sizeof(dummy.loop), 1, file);
+
+		fread(&dummy.count, sizeof(dummy.count), 1, file);
+
+		date[i] = dummy;
+
+		cut[dummy.actionName].resize(dummy.count);
+		for (int j = 0; j < dummy.count; ++j) {
+			fread(&cut[dummy.actionName][j], sizeof(cut[dummy.actionName][j]), 1, file);
+
+			int num = 0;
+			fread(&num, sizeof(int), 1, file);
+
+			attackRect[dummy.actionName].resize(num);
+			for (int k = 0; k < num; ++k) {
+				fread(&attackRect[dummy.actionName][k], sizeof(attackRect[dummy.actionName][k]), 1, file);
+			}
+		}
+	}
+	fclose(file);
+}
+
+void Player::Jump() {
+	int jump_power = -17;
+	if (!_jump) {
+		_currentCutIndex = 0;
+		_flame = 0;
+		_jump = true;
+		velocity.y = jump_power;
+		_update = &Player::JumpUpdate;
+		ChangeMode("Jump");
+	}
+}
+
+void Player::Crouch()
+{
+	_currentCutIndex = 0;
+	_flame = 0;
+	_update = &Player::CrouchUpdate;
+	ChangeMode("Crouch");
+}
+
+void Player::Punch()
+{
+	_currentCutIndex = 0;
+	_flame = 0;
+	_update = &Player::PunchUpdate;
+	ChangeMode("Punch");
+}
+
+void Player::Kick()
+{
+	_currentCutIndex = 0;
+	_flame = 0;
+	_update = &Player::KickUpdate;
+	ChangeMode("Kick");
+}
+
+void Player::NeutralUpdate()
+{
+	if (key[KEY_INPUT_NUMPAD4] || key[KEY_INPUT_NUMPAD6]) {
+		_update = &Player::WalkUpdate;
+	}
+	else if (key[KEY_INPUT_NUMPAD2]) {
+		Crouch();
+	}
+	else if (key(KEY_INPUT_Z)) {
+		Punch();
+	}
+	else if (key(KEY_INPUT_SPACE)) {
+		Jump();
+	}
+}
+
+void Player::WalkUpdate()
+{
+	if (key[KEY_INPUT_NUMPAD4]) {
+		turnFlag = true;
+		pos.x -= velocity.x;
+		ChangeMode("Walk");
+	}
+	else if (key[KEY_INPUT_NUMPAD6]) {
+		turnFlag = false;
+		pos.x += velocity.x;
+		ChangeMode("Walk");
+	}
+	else {
+		_update = &Player::NeutralUpdate;
+	}
+	if (key(KEY_INPUT_SPACE)) {
+		Jump();
+	}
+	
+}
+
+void Player::JumpUpdate()
+{
+	if (!_jump) {
+		return;
+	}
+	if (pos.y >= 340) {
+		_jump = false;
+		_update = &Player::NeutralUpdate;
+		ChangeMode("Walk");
+	}
+}
+
+void Player::CrouchUpdate()
+{
+	if (key(KEY_INPUT_Z)) {
+		Kick();
+	}
+	if (key[KEY_INPUT_NUMPAD2] == 0) {
+		_update = &Player::NeutralUpdate;
+		ChangeMode("Walk");
+	}
+}
+
+void Player::PunchUpdate()
+{
+	if (_currentCutIndex > cut[mode].size() - 1) {
+		_update = &Player::NeutralUpdate;
+		ChangeMode("Walk");
+	}
+}
+
+void Player::KickUpdate()
+{
+	if (_currentCutIndex > cut[mode].size() - 1) {
+		_currentCutIndex = 0;
+		_flame = 0;
+		_update = &Player::CrouchUpdate;
+		ChangeMode("Crouch");
+	}
+}
+
+void Player::DamageUpdate()
+{
+}
+
+void Player::ChangeMode(std::string md)
+{
+	mode = md;
+}
+
+positin Player::GetPos()
+{
+	return pos;
+}
+
+positin Player::GetVec()
+{
+	return velocity;
+}

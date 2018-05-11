@@ -1,0 +1,7 @@
+﻿  Player.cpp
+c:\users\muna\documents\myproject\アクションゲーム (1)\アクションゲーム\スケルトン\source\player.cpp(43): warning C4244: '+=': 'const float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\muna\documents\myproject\アクションゲーム (1)\アクションゲーム\スケルトン\source\player.cpp(55): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\muna\documents\myproject\アクションゲーム (1)\アクションゲーム\スケルトン\source\player.cpp(60): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\muna\documents\myproject\アクションゲーム (1)\アクションゲーム\スケルトン\source\player.cpp(210): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\muna\documents\myproject\アクションゲーム (1)\アクションゲーム\スケルトン\source\player.cpp(218): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+  スケルトン.vcxproj -> C:\Users\muna\Documents\MyProject\アクションゲーム (1)\アクションゲーム\Debug\スケルトン.exe
