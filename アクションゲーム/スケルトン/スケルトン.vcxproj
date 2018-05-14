@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameTask.cpp" />
     <ClCompile Include="Source\Ground.cpp" />
     <ClCompile Include="Source\Init.cpp" />
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\def.h" />
+    <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GameTask.h" />
     <ClInclude Include="Source\Ground.h" />
     <ClInclude Include="Source\Typedef.h" />

@@ -12,7 +12,7 @@ Player::Player() :
 	gravity(1.0f),
 	_jump(false)
 {
-	date.clear();
+	data.clear();
 	cut.clear();
 	Load();
 	std::string path = "Action/" + header.pathName;
@@ -21,7 +21,7 @@ Player::Player() :
 		key[i] = 0;
 		old_key[i] = 0;
 	}
-	_update = &Player::NeutralUpdate;
+	_updata = &Player::NeutralUpdata;
 	player = LoadGraph(path.c_str());
 	mode = "Walk";
 }
@@ -31,7 +31,7 @@ Player::~Player()
 {
 }
 
-void Player::Update()
+void Player::Updata()
 {
 	for (int i = 0; i < 256; i++) {
 		old_key[i] = key[i];
@@ -40,8 +40,8 @@ void Player::Update()
 	
 	//アクション↓
 	pos.y += velocity.y;
-	velocity.y += gravity;
-	(this->*_update)();
+	velocity.y += (int)gravity;
+	(this->*_updata)();
 	if (pos.y >= 340) {
 		pos.y = 340;
 	}
@@ -57,12 +57,17 @@ void Player::Draw()
 		_flame = 0;
 	}
 	//最終インデックスか確認
+	if (mode == "Jump") {
+		if (_currentCutIndex > cut[mode].size() - 2) {
+			_currentCutIndex = 2;
+		}
+	}
 	if (_currentCutIndex > cut[mode].size() - 1) {
 		if (mode != "Punch" && mode != "Kick") {
 			_currentCutIndex = 0;//ループ
 		}
 	}
-	if (_update != &Player::NeutralUpdate) {
+	if (_updata != &Player::NeutralUpdata) {
 		_flame++;
 	}
 }
@@ -91,7 +96,7 @@ void Player::Load()
 
 		fread(&dummy.count, sizeof(dummy.count), 1, file);
 
-		date[i] = dummy;
+		data[i] = dummy;
 
 		cut[dummy.actionName].resize(dummy.count);
 		for (int j = 0; j < dummy.count; ++j) {
@@ -112,43 +117,36 @@ void Player::Load()
 void Player::Jump() {
 	int jump_power = -17;
 	if (!_jump) {
-		_currentCutIndex = 0;
-		_flame = 0;
 		_jump = true;
 		velocity.y = jump_power;
-		_update = &Player::JumpUpdate;
+		_updata = &Player::JumpUpdata;
 		ChangeMode("Jump");
 	}
 }
 
 void Player::Crouch()
 {
-	_currentCutIndex = 0;
-	_flame = 0;
-	_update = &Player::CrouchUpdate;
+	_updata = &Player::CrouchUpdata;
 	ChangeMode("Crouch");
 }
 
 void Player::Punch()
 {
-	_currentCutIndex = 0;
-	_flame = 0;
-	_update = &Player::PunchUpdate;
+	_updata = &Player::PunchUpdata;
 	ChangeMode("Punch");
 }
 
 void Player::Kick()
 {
-	_currentCutIndex = 0;
-	_flame = 0;
-	_update = &Player::KickUpdate;
+	_updata = &Player::KickUpdata;
 	ChangeMode("Kick");
 }
 
-void Player::NeutralUpdate()
+void Player::NeutralUpdata()
 {
 	if (key[KEY_INPUT_NUMPAD4] || key[KEY_INPUT_NUMPAD6]) {
-		_update = &Player::WalkUpdate;
+		_updata = &Player::WalkUpdata;
+		ChangeMode("Walk");
 	}
 	else if (key[KEY_INPUT_NUMPAD2]) {
 		Crouch();
@@ -156,79 +154,88 @@ void Player::NeutralUpdate()
 	else if (key(KEY_INPUT_Z)) {
 		Punch();
 	}
-	else if (key(KEY_INPUT_SPACE)) {
+	if (key(KEY_INPUT_NUMPAD8)) {
 		Jump();
 	}
 }
 
-void Player::WalkUpdate()
+void Player::WalkUpdata()
 {
 	if (key[KEY_INPUT_NUMPAD4]) {
 		turnFlag = true;
 		pos.x -= velocity.x;
-		ChangeMode("Walk");
 	}
 	else if (key[KEY_INPUT_NUMPAD6]) {
 		turnFlag = false;
 		pos.x += velocity.x;
-		ChangeMode("Walk");
 	}
 	else {
-		_update = &Player::NeutralUpdate;
+		_updata = &Player::NeutralUpdata;
 	}
-	if (key(KEY_INPUT_SPACE)) {
+	if (key(KEY_INPUT_NUMPAD8)) {
 		Jump();
+	}
+	if (key(KEY_INPUT_Z)) {
+		Punch();
 	}
 	
 }
 
-void Player::JumpUpdate()
+void Player::JumpUpdata()
 {
 	if (!_jump) {
 		return;
 	}
+	if (key[KEY_INPUT_NUMPAD2]) {
+		_jump = false;
+		Crouch();
+	}
 	if (pos.y >= 340) {
 		_jump = false;
-		_update = &Player::NeutralUpdate;
+		_updata = &Player::NeutralUpdata;
 		ChangeMode("Walk");
 	}
 }
 
-void Player::CrouchUpdate()
+void Player::CrouchUpdata()
 {
 	if (key(KEY_INPUT_Z)) {
 		Kick();
 	}
+	if (key(KEY_INPUT_NUMPAD8) && pos.y == 340) {
+		Jump();
+	}
 	if (key[KEY_INPUT_NUMPAD2] == 0) {
-		_update = &Player::NeutralUpdate;
+		_updata = &Player::NeutralUpdata;
 		ChangeMode("Walk");
 	}
 }
 
-void Player::PunchUpdate()
+void Player::PunchUpdata()
 {
 	if (_currentCutIndex > cut[mode].size() - 1) {
-		_update = &Player::NeutralUpdate;
+		_updata = &Player::NeutralUpdata;
 		ChangeMode("Walk");
 	}
 }
 
-void Player::KickUpdate()
+void Player::KickUpdata()
 {
 	if (_currentCutIndex > cut[mode].size() - 1) {
-		_currentCutIndex = 0;
-		_flame = 0;
-		_update = &Player::CrouchUpdate;
+		_updata = &Player::CrouchUpdata;
 		ChangeMode("Crouch");
 	}
 }
 
-void Player::DamageUpdate()
+void Player::DamageUpdata()
 {
 }
 
+//状態切り替え
 void Player::ChangeMode(std::string md)
 {
+	_flame = 0;
+	_currentCutIndex = 0;
 	mode = md;
 }
 

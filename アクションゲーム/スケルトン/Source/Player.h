@@ -11,23 +11,25 @@ class Player
 public:
 	Player();
 	~Player();
-	void Update();
+	void Updata();
 	void Draw();
 	positin GetPos();
 	positin GetVec();
 private:
-	void Load();
+	void Load();//ファイル読み込み
+
+	//状態
 	void Jump();
 	void Crouch();
 	void Punch();
 	void Kick();
-	void NeutralUpdate();
-	void WalkUpdate();
-	void JumpUpdate();
-	void CrouchUpdate();
-	void PunchUpdate();
-	void KickUpdate();
-	void DamageUpdate();
+	void NeutralUpdata();
+	void WalkUpdata();
+	void JumpUpdata();
+	void CrouchUpdata();
+	void PunchUpdata();
+	void KickUpdata();
+	void DamageUpdata();
 	void ChangeMode(std::string md);//状態切り替え
 
 	int player;
@@ -39,7 +41,7 @@ private:
 	char key[256];
 	char old_key[256];
 
-	void (Player::*_update)();
+	void (Player::*_updata)();
 
 	bool turnFlag;//画像の反転フラグ
 	int _currentCutIndex;//現在表示中のカットインデックス
@@ -51,7 +53,7 @@ private:
 	// ヘッダー
 	Header header;
 	//アクションデータ
-	std::map<int, ImageDate> date;
+	std::map<int, ImageDate> data;
 	//分割データ
 	std::map<std::string, std::vector<CutDate>> cut;
 	//攻撃矩形
