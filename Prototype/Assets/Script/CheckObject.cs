@@ -6,6 +6,7 @@ public class CheckObject : MonoBehaviour {
     public string panelTag = "Panel";
 	
 	void Update () {
+        //TouchでRayを飛ばす
 		if (Input.GetMouseButtonDown(0)) {
             Ray ray = new Ray();
             RaycastHit hit = new RaycastHit();

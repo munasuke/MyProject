@@ -18,8 +18,7 @@ public class move_panel : MonoBehaviour {
 	
 	public void OnUserAction () {
         for (int i = 0; i < 4; i++) {
-            if (CheckMove(vec[i]) == true)
-            {
+            if (CheckMove(vec[i]) == true) {
                 transform.position += speed[i];
                 break;
             }
