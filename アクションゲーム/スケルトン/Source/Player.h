@@ -6,6 +6,7 @@
 
 #define key(X) (key[X]&old_key[X])^key[X]//トリガー処理
 
+//プレイヤー管理クラス
 class Player
 {
 public:
@@ -23,6 +24,7 @@ private:
 	void Crouch();
 	void Punch();
 	void Kick();
+	void Sliding();
 	void NeutralUpdata();
 	void WalkUpdata();
 	void JumpUpdata();

@@ -1,0 +1,13 @@
+#pragma once
+
+//BGMêßå‰ÉNÉâÉX
+class BGM
+{
+public:
+	BGM();
+	~BGM();
+
+private:
+	int bgm;
+};
+

@@ -56,6 +56,9 @@ void Player::Draw()
 		_currentCutIndex++;
 		_flame = 0;
 	}
+	//矩形の描画
+	DrawBox(pos.x - centorX, pos.y - cut[mode][_currentCutIndex].centor.y, pos.x + centorX, pos.y + cut[mode][_currentCutIndex].centor.y, 0xff00ff00, false);
+
 	//最終インデックスか確認
 	if (mode == "Jump") {
 		if (_currentCutIndex > cut[mode].size() - 2) {
@@ -70,6 +73,9 @@ void Player::Draw()
 	if (_updata != &Player::NeutralUpdata) {
 		_flame++;
 	}
+
+	DrawFormatString(10, 70, 0xff0000, "%d, %d", GetPos());
+	DrawFormatString(10, 90, 0xff0000, "%d, %d", GetVec());
 }
 
 void Player::Load()
@@ -142,6 +148,10 @@ void Player::Kick()
 	ChangeMode("Kick");
 }
 
+void Player::Sliding()
+{
+}
+
 void Player::NeutralUpdata()
 {
 	if (key[KEY_INPUT_NUMPAD4] || key[KEY_INPUT_NUMPAD6]) {
@@ -202,7 +212,7 @@ void Player::CrouchUpdata()
 	if (key(KEY_INPUT_Z)) {
 		Kick();
 	}
-	if (key(KEY_INPUT_NUMPAD8) && pos.y == 340) {
+	if (key(KEY_INPUT_NUMPAD8)) {
 		Jump();
 	}
 	if (key[KEY_INPUT_NUMPAD2] == 0) {

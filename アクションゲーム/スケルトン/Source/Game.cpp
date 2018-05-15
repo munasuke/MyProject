@@ -1,40 +1,29 @@
-#include "def.h"
-#include "Game.h"
 #include "DxLib.h"
+#include "Game.h"
 
-
+//‰Šú‰»
 void Game::Init()
 {
 	SysInit();
-	//backGround‚ÉˆÚ‚·
-	image[0] = LoadGraph("img/splatterhouse.png");
-	image[1] = LoadGraph("img/bar_top.png");
-	image[2] = LoadGraph("img/bar_bottom.png");
+	pl = std::make_shared<Player>();
+	bg = std::make_shared<Background>();
+	hud = std::make_shared<HUD>(*pl);
+	bgm = LoadSoundMem("bgm/bgm1.mp3");
 }
 
+//ƒ‹[ƒv
 void Game::Loop()
 {
-	pl->Updata();
-	//backGround‚ÉˆÚ‚·
-	ClsDrawScreen();
-
-	DrawGraph(0, 0, image[0], true);
-	DrawTurnGraph(576, 0, image[0], true);
-	DrawGraph(0, 0, image[1], true);
-	DrawGraph(0, SCREEN_SIZE_Y - 64, image[2], true);
-	pl->Draw();
-
-	DrawLine(0, 340, SCREEN_SIZE_X, 340, 0x00ff00);
-
-	DrawFormatString(0, 0, 0xff0000, "%d, %d", pl->GetPos());
-	DrawFormatString(0, 30, 0xff0000, "%d, %d", pl->GetVec());
-
-	ScreenFlip();
+	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)
+	{
+		PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
+		pl->Updata();
+		Draw();
+	}
 }
 
 Game::Game()
 {
-	pl = std::make_shared<Player>();
 }
 
 Game::Game(const Game &)
@@ -49,6 +38,18 @@ bool Game::SysInit()
 	SetWindowText("1601296_@‰ªt‰À");
 	if (DxLib_Init() == -1) return false;
 	SetDrawScreen(DX_SCREEN_BACK);
+	return true;
+}
+
+int Game::Draw()
+{
+	ClsDrawScreen();
+
+	bg->Draw(SCREEN_SIZE_X);
+	pl->Draw();
+	hud->Draw(SCREEN_SIZE_Y);
+
+	ScreenFlip();
 	return true;
 }
 

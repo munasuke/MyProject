@@ -19,20 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameTask.cpp" />
     <ClCompile Include="Source\Ground.cpp" />
-    <ClCompile Include="Source\Init.cpp" />
+    <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\def.h" />
+    <ClInclude Include="Source\Background.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GameTask.h" />
     <ClInclude Include="Source\Ground.h" />
+    <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\Typedef.h" />
-    <ClInclude Include="Source\Init.h" />
     <ClInclude Include="Source\Main.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Singleton.h" />

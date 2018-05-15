@@ -84,9 +84,15 @@ struct CutDate {
 	int frame;//継続時間
 };
 
+enum class RectType {
+	anchor,//アンカー
+	attack,//攻撃矩形
+	damage//やられ矩形
+};
+
 //攻撃用
 struct AttackRect {
-	int type;
-	Rect rect;
+	int type;//矩形種別
+	Rect rect;//矩形情報
 };
 

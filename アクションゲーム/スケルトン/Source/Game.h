@@ -1,10 +1,14 @@
 #pragma once
 #include <memory>
 #include "Player.h"
+#include "Background.h"
+#include "HUD.h"
 
 #define SCREEN_SIZE_X	768
 #define SCREEN_SIZE_Y	448
 
+
+//アプリ管理クラス
 class Game
 {
 public:
@@ -19,9 +23,11 @@ private:
 	Game();
 	Game(const Game&);
 	std::shared_ptr<Player> pl;
+	std::shared_ptr<Background> bg;
+	std::shared_ptr<HUD> hud;
+	int bgm;
 
 	bool SysInit();
-
-	int image[10];
+	int Draw();
 };
 
