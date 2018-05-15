@@ -221,6 +221,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Script\CheckObject.cs" />
+    <Compile Include="Assets\Script\CreatePanel.cs" />
     <Compile Include="Assets\Script\DrawText.cs" />
     <Compile Include="Assets\Script\move_panel.cs" />
   </ItemGroup>
