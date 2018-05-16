@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Background.cpp" />
+    <ClCompile Include="Source\CharactorObject.cpp" />
+    <ClCompile Include="Source\DeadMan.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameTask.cpp" />
     <ClCompile Include="Source\Ground.cpp" />
@@ -29,6 +31,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Background.h" />
+    <ClInclude Include="Source\CharactorObject.h" />
+    <ClInclude Include="Source\DeadMan.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GameTask.h" />
     <ClInclude Include="Source\Ground.h" />

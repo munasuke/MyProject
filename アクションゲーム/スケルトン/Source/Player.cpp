@@ -1,20 +1,16 @@
 #include "Player.h"
 #include "DxLib.h"
 
+using namespace DxLib;
 
-
-Player::Player() :
-	_flame(0),
-	_currentCutIndex(0),
-	velocity({ 2, 0 }),
-	pos({ 50, 300 }),
-	turnFlag(false),
-	gravity(1.0f),
-	_jump(false)
+Player::Player()
 {
-	data.clear();
-	cut.clear();
-	Load();
+	velocity = { 2, 0 };
+	pos = { 50, 300 };
+	turnFlag = false;
+	_jump = false;
+
+	Load("Action/player.act");
 	std::string path = "Action/" + header.pathName;
 
 	for (int i = 0; i < 256; i++) {
@@ -22,7 +18,7 @@ Player::Player() :
 		old_key[i] = 0;
 	}
 	_updata = &Player::NeutralUpdata;
-	player = LoadGraph(path.c_str());
+	image = LoadGraph(path.c_str());
 	mode = "Walk";
 }
 
@@ -51,13 +47,23 @@ void Player::Draw()
 {
 	int centorX = turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
 
-	DrawRectRotaGraph2(pos.x, pos.y, cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(), cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(), centorX, cut[mode][_currentCutIndex].centor.y, 2.0, 0, player, true, turnFlag);
+	DrawRectRotaGraph2(pos.x, pos.y, cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(), cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(), centorX, cut[mode][_currentCutIndex].centor.y, 2.0, 0, image, true, turnFlag);
 	if (_flame > cut[mode][_currentCutIndex].frame) {
 		_currentCutIndex++;
 		_flame = 0;
 	}
-	//矩形の描画
-	DrawBox(pos.x - centorX, pos.y - cut[mode][_currentCutIndex].centor.y, pos.x + centorX, pos.y + cut[mode][_currentCutIndex].centor.y, 0xff00ff00, false);
+
+	for (auto& a : attackRect[mode])
+	{
+		int tmpX = turnFlag ? pos.x - a.rect.Left() * 2 : pos.x + a.rect.Left() * 2;
+		int tmpX2 = turnFlag ? pos.x - (a.rect.Left() + a.rect.Width()) * 2 : pos.x + (a.rect.Left() + a.rect.Width()) * 2;
+		DrawBox(tmpX,
+			pos.y + a.rect.Top() * 2,
+			tmpX2,
+			pos.y + (a.rect.Top() + a.rect.Height()) * 2,
+			0xffffff,
+			false);
+	}
 
 	//最終インデックスか確認
 	if (mode == "Jump") {
@@ -66,7 +72,7 @@ void Player::Draw()
 		}
 	}
 	if (_currentCutIndex > cut[mode].size() - 1) {
-		if (mode != "Punch" && mode != "Kick") {
+		if (mode != "Punch" && mode != "Kick" && mode != "Sliding") {
 			_currentCutIndex = 0;//ループ
 		}
 	}
@@ -78,47 +84,6 @@ void Player::Draw()
 	DrawFormatString(10, 90, 0xff0000, "%d, %d", GetVec());
 }
 
-void Player::Load()
-{
-	FILE* file;
-	fopen_s(&file, "Action/player.act", "rb");
-	fread(&header.version, sizeof(header.version),1, file );
-
-	fread(&header.filePathNameNum, sizeof(int), 1, file);
-
-	header.pathName.resize(header.filePathNameNum);
-	fread(&header.pathName[0], header.filePathNameNum, 1, file);
-
-	fread(&header.actionDateNum, sizeof(int), 1, file);
-
-	ImageDate dummy = {};
-	for (int i = 0; i < header.actionDateNum; ++i) {
-		fread(&dummy.actionNameNum, sizeof(dummy.actionNameNum), 1, file);
-
-		dummy.actionName.resize(dummy.actionNameNum);
-		fread(&dummy.actionName[0], dummy.actionNameNum, 1, file);
-
-		fread(&dummy.loop, sizeof(dummy.loop), 1, file);
-
-		fread(&dummy.count, sizeof(dummy.count), 1, file);
-
-		data[i] = dummy;
-
-		cut[dummy.actionName].resize(dummy.count);
-		for (int j = 0; j < dummy.count; ++j) {
-			fread(&cut[dummy.actionName][j], sizeof(cut[dummy.actionName][j]), 1, file);
-
-			int num = 0;
-			fread(&num, sizeof(int), 1, file);
-
-			attackRect[dummy.actionName].resize(num);
-			for (int k = 0; k < num; ++k) {
-				fread(&attackRect[dummy.actionName][k], sizeof(attackRect[dummy.actionName][k]), 1, file);
-			}
-		}
-	}
-	fclose(file);
-}
 
 void Player::Jump() {
 	int jump_power = -17;
@@ -150,6 +115,9 @@ void Player::Kick()
 
 void Player::Sliding()
 {
+	//着地間際に下方向に入力しながら攻撃ボタンを入力
+	_updata = &Player::SlidingUpdata;
+	ChangeMode("Sliding");
 }
 
 void Player::NeutralUpdata()
@@ -219,6 +187,9 @@ void Player::CrouchUpdata()
 		_updata = &Player::NeutralUpdata;
 		ChangeMode("Walk");
 	}
+	if (key(KEY_INPUT_X)) {
+		Sliding();
+	}
 }
 
 void Player::PunchUpdata()
@@ -237,17 +208,19 @@ void Player::KickUpdata()
 	}
 }
 
+void Player::SlidingUpdata()
+{
+	pos.x += turnFlag ? -5.0f : 5.0f;
+	if (_currentCutIndex > cut[mode].size() - 1) {
+		_updata = &Player::CrouchUpdata;
+		ChangeMode("Crouch");
+	}
+}
+
 void Player::DamageUpdata()
 {
 }
 
-//状態切り替え
-void Player::ChangeMode(std::string md)
-{
-	_flame = 0;
-	_currentCutIndex = 0;
-	mode = md;
-}
 
 positin Player::GetPos()
 {

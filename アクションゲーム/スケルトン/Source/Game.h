@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "Player.h"
+#include "DeadMan.h"
 #include "Background.h"
 #include "HUD.h"
 
@@ -23,6 +24,7 @@ private:
 	Game();
 	Game(const Game&);
 	std::shared_ptr<Player> pl;
+	std::shared_ptr<DeadMan>deadman;
 	std::shared_ptr<Background> bg;
 	std::shared_ptr<HUD> hud;
 	int bgm;

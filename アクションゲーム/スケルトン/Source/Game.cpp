@@ -6,6 +6,7 @@ void Game::Init()
 {
 	SysInit();
 	pl = std::make_shared<Player>();
+	deadman = std::make_shared<DeadMan>();
 	bg = std::make_shared<Background>();
 	hud = std::make_shared<HUD>(*pl);
 	bgm = LoadSoundMem("bgm/bgm1.mp3");
@@ -47,6 +48,7 @@ int Game::Draw()
 
 	bg->Draw(SCREEN_SIZE_X);
 	pl->Draw();
+	deadman->Draw();
 	hud->Draw(SCREEN_SIZE_Y);
 
 	ScreenFlip();

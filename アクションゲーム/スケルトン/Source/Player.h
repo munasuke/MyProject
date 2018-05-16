@@ -1,5 +1,6 @@
 #pragma once
 #include "Typedef.h"
+#include "CharactorObject.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -7,7 +8,7 @@
 #define key(X) (key[X]&old_key[X])^key[X]//トリガー処理
 
 //プレイヤー管理クラス
-class Player
+class Player : CharactorObject
 {
 public:
 	Player();
@@ -17,7 +18,6 @@ public:
 	positin GetPos();
 	positin GetVec();
 private:
-	void Load();//ファイル読み込み
 
 	//状態
 	void Jump();
@@ -31,34 +31,15 @@ private:
 	void CrouchUpdata();
 	void PunchUpdata();
 	void KickUpdata();
+	void SlidingUpdata();
 	void DamageUpdata();
-	void ChangeMode(std::string md);//状態切り替え
 
-	int player;
-	positin pos;
-	positin velocity;
-	const float gravity;
-	bool _jump;//ジャンプフラグ
 
 	char key[256];
 	char old_key[256];
 
 	void (Player::*_updata)();
 
-	bool turnFlag;//画像の反転フラグ
-	int _currentCutIndex;//現在表示中のカットインデックス
-	unsigned int _flame;//経過フレーム
 
-	//状態
-	std::string mode;
-
-	// ヘッダー
-	Header header;
-	//アクションデータ
-	std::map<int, ImageDate> data;
-	//分割データ
-	std::map<std::string, std::vector<CutDate>> cut;
-	//攻撃矩形
-	std::map < std::string, std::vector<AttackRect>> attackRect;
 };
 
