@@ -47,23 +47,18 @@ void Player::Draw()
 {
 	int centorX = turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
 
-	DrawRectRotaGraph2(pos.x, pos.y, cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(), cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(), centorX, cut[mode][_currentCutIndex].centor.y, 2.0, 0, image, true, turnFlag);
+	DrawRectRotaGraph2(pos.x, pos.y,
+		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
+		cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(),
+		centorX, cut[mode][_currentCutIndex].centor.y,
+		2.0, 0.0, image, true, turnFlag);
+
 	if (_flame > cut[mode][_currentCutIndex].frame) {
 		_currentCutIndex++;
 		_flame = 0;
 	}
 
-	for (auto& a : attackRect[mode])
-	{
-		int tmpX = turnFlag ? pos.x - a.rect.Left() * 2 : pos.x + a.rect.Left() * 2;
-		int tmpX2 = turnFlag ? pos.x - (a.rect.Left() + a.rect.Width()) * 2 : pos.x + (a.rect.Left() + a.rect.Width()) * 2;
-		DrawBox(tmpX,
-			pos.y + a.rect.Top() * 2,
-			tmpX2,
-			pos.y + (a.rect.Top() + a.rect.Height()) * 2,
-			0xffffff,
-			false);
-	}
+	DrawRect();
 
 	//最終インデックスか確認
 	if (mode == "Jump") {

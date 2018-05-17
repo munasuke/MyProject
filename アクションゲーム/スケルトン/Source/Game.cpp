@@ -19,6 +19,7 @@ void Game::Loop()
 	{
 		PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
 		pl->Updata();
+		deadman->Updata();
 		Draw();
 	}
 }

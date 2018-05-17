@@ -1,3 +1,4 @@
+#include "DxLib.h"
 #include "CharactorObject.h"
 
 
@@ -62,4 +63,24 @@ void CharactorObject::Load(std::string filepath)
 		}
 	}
 	fclose(file);
+}
+
+#ifdef _DEBUG
+void CharactorObject::DrawRect()
+{
+	for (auto& a : attackRect[mode])
+	{
+		int tmpX = turnFlag ? pos.x - a.rect.Left() * 2 : pos.x + a.rect.Left() * 2;
+		int tmpX2 = turnFlag ? pos.x - (a.rect.Left() + a.rect.Width()) * 2 : pos.x + (a.rect.Left() + a.rect.Width()) * 2;
+		int color = a.type == RectType::attack ? 0xffff0000 : 0xff00ff00;
+		DrawBox(tmpX, pos.y + a.rect.Top() * 2,
+			tmpX2, pos.y + (a.rect.Top() + a.rect.Height()) * 2,
+			color,
+			false);
+	}
+}
+#endif
+bool CharactorObject::IsCollision(AttackRect rec1, AttackRect rec2)
+{
+	return false;
 }

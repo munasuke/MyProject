@@ -92,7 +92,7 @@ enum class RectType {
 
 //攻撃用
 struct AttackRect {
-	int type;//矩形種別
+	RectType type;//矩形種別
 	Rect rect;//矩形情報
 };
 

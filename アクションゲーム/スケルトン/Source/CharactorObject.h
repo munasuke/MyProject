@@ -13,6 +13,8 @@ public:
 protected:
 	void ChangeMode(std::string md);//状態切り替え
 	void Load(std::string filepath);//ファイル読み込み
+	void DrawRect();//攻撃矩形、やられ矩形の描画
+	bool IsCollision(AttackRect rec1, AttackRect rec2);
 
 	int _currentCutIndex;//現在表示中のカットインデックス
 	unsigned int _flame;//経過フレーム
