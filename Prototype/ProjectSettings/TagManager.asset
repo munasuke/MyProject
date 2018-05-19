@@ -7,6 +7,10 @@ TagManager:
   - Goal
   - Start
   - Panel
+  - fuse
+  - fuse_after
+  - fuse_centor
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -16,8 +20,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Panels
+  - Fuses
   - 
   - 
   - 
