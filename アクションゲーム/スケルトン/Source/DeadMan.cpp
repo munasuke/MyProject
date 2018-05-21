@@ -27,6 +27,7 @@ DeadMan::~DeadMan()
 void DeadMan::Updata()
 {
 	//(this->*_updata)();
+	IsHitPlayer();
 }
 
 void DeadMan::Draw()
@@ -51,8 +52,6 @@ void DeadMan::Draw()
 	}
 	_flame++;
 
-	DrawFormatString(10, 110, 0xff00ff00, "%d", turnFlag);
-	DrawFormatString(10, 130, 0xff00ff00, "%s", mode);
 }
 
 void DeadMan::NeutralUpdata()
@@ -83,4 +82,26 @@ void DeadMan::WalkUpdata()
 
 void DeadMan::DieUpdata()
 {
+}
+
+void DeadMan::Damage()
+{
+}
+
+void DeadMan::IsHitPlayer()
+{
+	for (auto& prec : pl->GetActRect()) {
+		for (auto& erec : attackRect[mode][_currentCutIndex]) {
+			if (prec.type == RectType::attack && erec.type == RectType::damage) {//plUŒ‚A“G‚â‚ç‚ê
+				if (IsCollision(prec, erec, pl->GetPos(), pos)) {
+					DrawFormatString(10, 110, 0xffff0000, "Hit!");
+				}
+			}
+			if (prec.type == RectType::damage && erec.type == RectType::attack) {//pl‚â‚ç‚êA“GUŒ‚
+				if (IsCollision(erec, prec, pos, pl->GetPos())) {
+					DrawFormatString(10, 130, 0xffff0000, "‚â‚ç‚ê");
+				}
+			}
+		}
+	}
 }

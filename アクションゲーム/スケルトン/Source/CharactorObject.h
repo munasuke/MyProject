@@ -14,7 +14,8 @@ protected:
 	void ChangeMode(std::string md);//状態切り替え
 	void Load(std::string filepath);//ファイル読み込み
 	void DrawRect();//攻撃矩形、やられ矩形の描画
-	bool IsCollision(AttackRect rec1, AttackRect rec2);
+	bool IsCollision(AttackRect& rec1, AttackRect& rec2, positin pos1, positin pos2);
+	bool IsCollision2(AttackRect& rec1, AttackRect& rec2, positin pos1, positin pos2);
 
 	int _currentCutIndex;//現在表示中のカットインデックス
 	unsigned int _flame;//経過フレーム
@@ -34,6 +35,6 @@ protected:
 	//分割データ
 	std::map<std::string, std::vector<CutDate>> cut;
 	//攻撃矩形
-	std::map < std::string, std::vector<AttackRect>> attackRect;
+	std::map < std::string, std::map<int, std::vector<AttackRect>>> attackRect;
 };
 

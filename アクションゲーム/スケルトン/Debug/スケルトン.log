@@ -1,10 +1,10 @@
 ﻿  Background.cpp
   CharactorObject.cpp
+  Collision.cpp
   DeadMan.cpp
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(42): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(49): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(43): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(50): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
   Game.cpp
-  GameTask.cpp
   Ground.cpp
   HUD.cpp
   Main.cpp
@@ -17,5 +17,4 @@ c:\users\1601296\documents\github\myproject\アクションゲーム\スケル�
 c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(208): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
 c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(209): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
   コードを生成中...
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\gametask.cpp(30): warning C4715: 'GameTask::SysInit': 値を返さないコントロール パスがあります。
   スケルトン.vcxproj -> C:\Users\1601296\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe

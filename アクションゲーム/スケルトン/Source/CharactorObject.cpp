@@ -56,9 +56,9 @@ void CharactorObject::Load(std::string filepath)
 			int num = 0;
 			fread(&num, sizeof(int), 1, file);
 
-			attackRect[dummy.actionName].resize(num);
+			attackRect[dummy.actionName][j].resize(num);
 			for (int k = 0; k < num; ++k) {
-				fread(&attackRect[dummy.actionName][k], sizeof(attackRect[dummy.actionName][k]), 1, file);
+				fread(&attackRect[dummy.actionName][j][k], sizeof(attackRect[dummy.actionName][j][k]), 1, file);
 			}
 		}
 	}
@@ -68,19 +68,54 @@ void CharactorObject::Load(std::string filepath)
 #ifdef _DEBUG
 void CharactorObject::DrawRect()
 {
-	for (auto& a : attackRect[mode])
+	for (auto& a : attackRect[mode][_currentCutIndex])
 	{
-		int tmpX = turnFlag ? pos.x - a.rect.Left() * 2 : pos.x + a.rect.Left() * 2;
-		int tmpX2 = turnFlag ? pos.x - (a.rect.Left() + a.rect.Width()) * 2 : pos.x + (a.rect.Left() + a.rect.Width()) * 2;
+		int tmpX[2];
+		tmpX[0] = turnFlag ? pos.x - a.rect.Left() * 2 : pos.x + a.rect.Left() * 2;
+		tmpX[1] = turnFlag ? pos.x - (a.rect.Left() + a.rect.Width()) * 2 : pos.x + (a.rect.Left() + a.rect.Width()) * 2;
 		int color = a.type == RectType::attack ? 0xffff0000 : 0xff00ff00;
-		DrawBox(tmpX, pos.y + a.rect.Top() * 2,
-			tmpX2, pos.y + (a.rect.Top() + a.rect.Height()) * 2,
+		DrawBox(tmpX[0], pos.y + a.rect.Top() * 2,
+			tmpX[1], pos.y + (a.rect.Top() + a.rect.Height()) * 2,
 			color,
 			false);
 	}
 }
 #endif
-bool CharactorObject::IsCollision(AttackRect rec1, AttackRect rec2)
+
+bool CharactorObject::IsCollision(AttackRect& rec1, AttackRect& rec2, positin pos1, positin pos2)
 {
+	if (turnFlag) {
+		if (abs((pos1.x + rec1.rect.pos.x) - (pos2.x + rec2.rect.pos.x)) < (rec1.rect.Width() + rec2.rect.Width())
+		 && abs((pos1.y + rec1.rect.pos.y) - (pos2.y + rec2.rect.pos.y)) < (rec1.rect.Height() + rec2.rect.Height())) {
+			return true;
+		}
+	}
+	else {
+		if (abs((pos1.x - rec1.rect.pos.x) - (pos2.x - rec2.rect.pos.x)) < (rec1.rect.Width() + rec2.rect.Width())
+		 && abs((pos1.y + rec1.rect.pos.y) - (pos2.y + rec2.rect.pos.y)) < (rec1.rect.Height() + rec2.rect.Height())) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CharactorObject::IsCollision2(AttackRect & rec1, AttackRect & rec2, positin pos1, positin pos2)
+{
+	int r1[2] = {
+		turnFlag ? pos1.x - rec1.rect.Left() * 2 : pos1.x + rec1.rect.Left() * 2,
+		turnFlag ? pos1.x - (rec1.rect.Left() + rec1.rect.Width()) * 2 : pos1.x + (rec1.rect.Left() + rec1.rect.Width()) * 2
+	};
+	int r2[2] = {
+		turnFlag ? pos2.x - rec2.rect.Left() * 2 : pos2.x + rec2.rect.Left() * 2,
+		turnFlag ? pos2.x - (rec2.rect.Left() + rec2.rect.Width()) * 2 : pos2.x + (rec2.rect.Left() + rec2.rect.Width()) * 2
+	};
+
+	if (r1[0] < r2[1]
+		&& r1[1] > r2[0]
+		&& pos1.y + rec1.rect.Top() * 2 < pos2.y + (rec2.rect.Top() + rec2.rect.Height()) * 2
+		&& pos1.y + (rec1.rect.Top() + rec1.rect.Height()) * 2 > pos2.y + rec2.rect.Top() * 2) {
+		return true;
+	}
 	return false;
 }

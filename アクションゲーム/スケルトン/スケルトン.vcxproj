@@ -24,7 +24,6 @@
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\DeadMan.cpp" />
     <ClCompile Include="Source\Game.cpp" />
-    <ClCompile Include="Source\GameTask.cpp" />
     <ClCompile Include="Source\Ground.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -36,7 +35,6 @@
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\DeadMan.h" />
     <ClInclude Include="Source\Game.h" />
-    <ClInclude Include="Source\GameTask.h" />
     <ClInclude Include="Source\Ground.h" />
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\Typedef.h" />

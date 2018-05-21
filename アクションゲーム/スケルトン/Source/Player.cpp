@@ -214,6 +214,7 @@ void Player::SlidingUpdata()
 
 void Player::DamageUpdata()
 {
+	
 }
 
 
@@ -225,4 +226,9 @@ positin Player::GetPos()
 positin Player::GetVec()
 {
 	return velocity;
+}
+
+std::vector<AttackRect> Player::GetActRect()
+{
+	return attackRect[mode][_currentCutIndex];
 }

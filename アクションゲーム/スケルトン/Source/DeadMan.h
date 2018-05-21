@@ -3,7 +3,7 @@
 
 class Player;
 //“G
-class DeadMan : CharactorObject
+class DeadMan : public CharactorObject
 {
 public:
 	DeadMan();
@@ -14,6 +14,8 @@ private:
 	void NeutralUpdata();
 	void WalkUpdata();
 	void DieUpdata();
+	void Damage();
+	void IsHitPlayer();//player‚Æ‚Ì“–‚½‚è”»’è
 
 	void(DeadMan::* _updata)();
 	Player* pl;

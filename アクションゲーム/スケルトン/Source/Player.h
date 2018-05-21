@@ -8,7 +8,7 @@
 #define key(X) (key[X]&old_key[X])^key[X]//トリガー処理
 
 //プレイヤー管理クラス
-class Player : CharactorObject
+class Player : public CharactorObject
 {
 public:
 	Player();
@@ -17,6 +17,8 @@ public:
 	void Draw();
 	positin GetPos();
 	positin GetVec();
+	std::vector<AttackRect> GetActRect();
+	void DamageUpdata();
 private:
 
 	//状態
@@ -32,7 +34,6 @@ private:
 	void PunchUpdata();
 	void KickUpdata();
 	void SlidingUpdata();
-	void DamageUpdata();
 
 
 	char key[256];
