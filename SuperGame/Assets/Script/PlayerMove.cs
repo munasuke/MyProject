@@ -3,46 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour {
-    public float speed = 1.0f;
-    Vector3[] dir = {
-        (new Vector3(-1.0f, 0.0f, 0.0f)),//Left
-        (new Vector3(1.0f,  0.0f, 0.0f)),//Right
-        (new Vector3(0.0f,  1.0f, 0.0f)),//Up
-        (new Vector3(0.0f, -1.0f, 0.0f))//Down
-    };
-    KeyCode[] _key = {
-        KeyCode.Keypad4,
-        KeyCode.Keypad6,
-        KeyCode.Keypad8,
-        KeyCode.Keypad2
-    };
+    public float speed = 2.0f;
+    Vector3 target;
+
+    private void Start() {
+        target = transform.position;
+    }
 
     void Update() {
-        if (Input.GetKeyDown(_key[0])) {
-            if (CheckBlock(dir[0]) == true) {
-                Debug.Log("0");
+        if (target == transform.position) {
+            SetTargetPos();
+        }
+        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        //if (Input.GetKeyDown(KeyCode.Keypad8)) {
+        //}
+        //if (Input.GetKeyDown(KeyCode.Keypad2)) {
+        //}
+    }
+
+    void SetTargetPos() {
+        Vector3[] dir = {
+            Vector3.left,//Left
+            Vector3.right,//Right
+            Vector3.up,//Up
+            Vector3.down//Down
+        };
+
+        if (Input.GetKeyDown(KeyCode.Keypad4)) {
+            if (CheckBlock(dir[0])) {
+                target = transform.position + dir[0];
+                return;
             }
         }
-        if (Input.GetKeyDown(_key[1])) {
-            if (CheckBlock(dir[1]) == true) {
-                Debug.Log("1");
-            }
-        }
-        if (Input.GetKeyDown(_key[2])) {
-            if (CheckBlock(dir[2]) == true) {
-                Debug.Log("2");
-            }
-        }
-        if (Input.GetKeyDown(_key[3])) {
-            if (CheckBlock(dir[3]) == true) {
-                Debug.Log("3");
+        if (Input.GetKeyDown(KeyCode.Keypad6)) {
+            if (CheckBlock(dir[1])) {
+                target = transform.position + dir[1];
+                return;
             }
         }
     }
 
-    //進みたい方向にBlockがあるかチェック
+    //進みたい方向に障害物があるかチェック
     bool CheckBlock(Vector3 vec) {
-        if (Physics.Raycast(transform.position, vec, 1.0f)) {
+        int layerMask = 1 << 8;
+        if (Physics.Raycast(transform.position, vec, 1.0f, layerMask)) {
             return false;
         }
         return true;
