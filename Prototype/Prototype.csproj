@@ -220,7 +220,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Script\CheckObject.cs" />
     <Compile Include="Assets\Script\DrawText.cs" />
     <Compile Include="Assets\Script\fuse\fuse_x_left.cs" />
     <Compile Include="Assets\Script\fuse\fuse_x_right.cs" />
