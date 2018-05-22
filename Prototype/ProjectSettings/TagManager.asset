@@ -11,9 +11,6 @@ TagManager:
   - fuse_after
   - fuse_centor
   - Wall
-  - Panel_fixed
-  - Panel_union
-  - Panel_rota
   layers:
   - Default
   - TransparentFX
