@@ -20,6 +20,8 @@ Player::Player()
 	_updata = &Player::NeutralUpdata;
 	image = LoadGraph(path.c_str());
 	mode = "Walk";
+	_damageSE = LoadSoundMem("se/p_damage.wav");
+	_damageTime = 0;
 }
 
 
@@ -61,7 +63,7 @@ void Player::Draw()
 	DrawRect();
 
 	//最終インデックスか確認
-	if (mode == "Jump") {
+	if (mode == "Jump"|| mode == "Damage") {
 		if (_currentCutIndex > cut[mode].size() - 2) {
 			_currentCutIndex = 2;
 		}
@@ -74,9 +76,6 @@ void Player::Draw()
 	if (_updata != &Player::NeutralUpdata) {
 		_flame++;
 	}
-
-	DrawFormatString(10, 70, 0xff0000, "%d, %d", GetPos());
-	DrawFormatString(10, 90, 0xff0000, "%d, %d", GetVec());
 }
 
 
@@ -214,7 +213,13 @@ void Player::SlidingUpdata()
 
 void Player::DamageUpdata()
 {
-	
+	--_damageTime;
+	pos.x += turnFlag ? 1.0f : -1.0f;
+	if (_damageTime < 0) {
+		_damageTime = 0;
+		_updata = &Player::NeutralUpdata;
+		ChangeMode("Walk");
+	}
 }
 
 
@@ -231,4 +236,17 @@ positin Player::GetVec()
 std::vector<AttackRect> Player::GetActRect()
 {
 	return attackRect[mode][_currentCutIndex];
+}
+
+void Player::Damage()
+{
+	_damageTime = 30;
+	_updata = &Player::DamageUpdata;
+	ChangeMode("Damage");
+	PlaySoundMem(_damageSE, DX_PLAYTYPE_BACK);
+}
+
+std::string Player::GetActMode()
+{
+	return mode;
 }

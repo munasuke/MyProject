@@ -2,6 +2,7 @@
 #include <memory>
 #include "Player.h"
 #include "DeadMan.h"
+#include "Bat.h"
 #include "Background.h"
 #include "HUD.h"
 
@@ -25,6 +26,7 @@ private:
 	Game(const Game&);
 	std::shared_ptr<Player> pl;
 	std::shared_ptr<DeadMan>deadman;
+	std::shared_ptr<Bat> bat;
 	std::shared_ptr<Background> bg;
 	std::shared_ptr<HUD> hud;
 	int bgm;

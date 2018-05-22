@@ -6,7 +6,8 @@ void Game::Init()
 {
 	SysInit();
 	pl = std::make_shared<Player>();
-	deadman = std::make_shared<DeadMan>();
+	deadman = std::make_shared<DeadMan>(pl);
+	bat = std::make_shared<Bat>(pl);
 	bg = std::make_shared<Background>();
 	hud = std::make_shared<HUD>(*pl);
 	bgm = LoadSoundMem("bgm/bgm1.mp3");
@@ -22,9 +23,11 @@ void Game::Loop()
 
 		pl->Updata();
 		deadman->Updata();
+		bat->Updata();
 		Draw();
 
 		ScreenFlip();
+
 	}
 }
 
@@ -49,9 +52,10 @@ bool Game::SysInit()
 
 int Game::Draw()
 {
-	//bg->Draw(SCREEN_SIZE_X);
+	bg->Draw(SCREEN_SIZE_X);
 	pl->Draw();
 	deadman->Draw();
+	bat->Draw();
 	hud->Draw(SCREEN_SIZE_Y);
 
 	return true;

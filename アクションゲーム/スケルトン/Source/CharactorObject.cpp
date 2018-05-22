@@ -99,23 +99,3 @@ bool CharactorObject::IsCollision(AttackRect& rec1, AttackRect& rec2, positin po
 
 	return false;
 }
-
-bool CharactorObject::IsCollision2(AttackRect & rec1, AttackRect & rec2, positin pos1, positin pos2)
-{
-	int r1[2] = {
-		turnFlag ? pos1.x - rec1.rect.Left() * 2 : pos1.x + rec1.rect.Left() * 2,
-		turnFlag ? pos1.x - (rec1.rect.Left() + rec1.rect.Width()) * 2 : pos1.x + (rec1.rect.Left() + rec1.rect.Width()) * 2
-	};
-	int r2[2] = {
-		turnFlag ? pos2.x - rec2.rect.Left() * 2 : pos2.x + rec2.rect.Left() * 2,
-		turnFlag ? pos2.x - (rec2.rect.Left() + rec2.rect.Width()) * 2 : pos2.x + (rec2.rect.Left() + rec2.rect.Width()) * 2
-	};
-
-	if (r1[0] < r2[1]
-		&& r1[1] > r2[0]
-		&& pos1.y + rec1.rect.Top() * 2 < pos2.y + (rec2.rect.Top() + rec2.rect.Height()) * 2
-		&& pos1.y + (rec1.rect.Top() + rec1.rect.Height()) * 2 > pos2.y + rec2.rect.Top() * 2) {
-		return true;
-	}
-	return false;
-}

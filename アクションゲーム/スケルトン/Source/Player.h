@@ -18,7 +18,8 @@ public:
 	positin GetPos();
 	positin GetVec();
 	std::vector<AttackRect> GetActRect();
-	void DamageUpdata();
+	void Damage();
+	std::string GetActMode();
 private:
 
 	//状態
@@ -34,13 +35,13 @@ private:
 	void PunchUpdata();
 	void KickUpdata();
 	void SlidingUpdata();
+	void DamageUpdata();
 
 
 	char key[256];
 	char old_key[256];
 
 	void (Player::*_updata)();
-
-
+	int _damageTime;//ダメージ時の待機時間
 };
 

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Background.cpp" />
+    <ClCompile Include="Source\Bat.cpp" />
     <ClCompile Include="Source\CharactorObject.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\DeadMan.cpp" />
@@ -31,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Background.h" />
+    <ClInclude Include="Source\Bat.h" />
     <ClInclude Include="Source\CharactorObject.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\DeadMan.h" />

@@ -1,38 +1,40 @@
 #include "DxLib.h"
 #include "DeadMan.h"
-#include "Player.h"
 
 
 
 
-DeadMan::DeadMan() : speed(1)
+DeadMan::DeadMan(std::weak_ptr<Player>pl) : pl(pl), speed(1), die(false)
 {
 	pos = { 300, 340 };
-	velocity = { 2, 0 };
+	velocity = { 1, 0 };
 	turnFlag = true;
 	Load("Action/deadman.act");
 	std::string path = "Action/" + header.pathName;
 	image = LoadGraph(path.c_str());
 	mode = "Walk";
 	_updata = &DeadMan::NeutralUpdata;
-	pl = new Player();
+	_wait = 0;
+	_damageSE = LoadSoundMem("se/e_gusha.mp3");
+	life = 3;
 }
 
 
 DeadMan::~DeadMan()
 {
-	delete pl;
+	
 }
 
 void DeadMan::Updata()
 {
-	//(this->*_updata)();
+	(this->*_updata)();
 	IsHitPlayer();
 }
 
 void DeadMan::Draw()
 {
-	int centorX = turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
+	int centorX = 
+		turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
 
 	DrawRectRotaGraph2(pos.x, pos.y,
 		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
@@ -41,67 +43,124 @@ void DeadMan::Draw()
 		2.0, 0.0, image, true, turnFlag);
 
 	if (_flame > cut[mode][_currentCutIndex].frame) {
-		_currentCutIndex++;
+		if (mode != "Die")
+		{
+			_currentCutIndex++;
+		}
+		else
+		{
+			if (cut[mode].size() - 1 > _currentCutIndex)
+			{
+				_currentCutIndex++;
+			}
+		}
+		
 		_flame = 0;
 	}
 
 	DrawRect();
 
-	if (_currentCutIndex > cut[mode].size() - 1) {
-		_currentCutIndex = 0;
+	if (mode == "Damage") {
+		if (_currentCutIndex > cut[mode].size() - 2) {
+			_currentCutIndex = 2;
+		}
 	}
-	_flame++;
 
+	if (_currentCutIndex > cut[mode].size() - 1) {
+		if (mode != "Die") {
+			_currentCutIndex = 0;
+		}
+	}
+
+	if (_updata != &DeadMan::NeutralUpdata) {
+		_flame++;
+	}
+}
+
+bool DeadMan::GetDie()
+{
+	return die;
 }
 
 void DeadMan::NeutralUpdata()
 {
-	if (pl->GetPos().x > pos.x) {
+	if (pos.x > pl.lock()->GetPos().x) {
+		turnFlag = true;
 		_updata = &DeadMan::WalkUpdata;
-		ChangeMode("Walk");
+		_wait = 60;
 	}
 	else {
+		turnFlag = false;
 		_updata = &DeadMan::WalkUpdata;
-		ChangeMode("Walk");
+		_wait = 60;
 	}
 }
 
 void DeadMan::WalkUpdata()
 {
-	if (pl->GetPos().x >= pos.x) {
-		turnFlag = false;
-		pos.x += speed;
-		_updata = &DeadMan::NeutralUpdata;
-	}
-	else {
-		turnFlag = true;
-		pos.x -= speed;
+	--_wait;
+	pos.x += turnFlag ? -speed : speed;
+	if (_wait < 0) {
 		_updata = &DeadMan::NeutralUpdata;
 	}
 }
 
 void DeadMan::DieUpdata()
 {
+	die = true;
+}
+
+void DeadMan::DamageUpdata()
+{
+	--_wait;
+	if (_wait < 0) {
+		_wait = 0;
+		_updata = &DeadMan::NeutralUpdata;
+		ChangeMode("Walk");
+	}
 }
 
 void DeadMan::Damage()
 {
+	if (pl.lock()->GetActMode() == "Punch") {
+		life--;
+		if (life != 0) {
+			ChangeMode("Damage");
+			_wait = 15;
+			_updata = &DeadMan::DamageUpdata;
+		}
+		else {
+			ChangeMode("Die");
+			_wait = 30;
+			_updata = &DeadMan::DieUpdata;
+		}
+	}
+	else if (pl.lock()->GetActMode() == "Kick" || pl.lock()->GetActMode() == "Sliding") {
+		ChangeMode("Die");
+		_wait = 30;
+		_updata = &DeadMan::DieUpdata;
+	}
+	pos.x += turnFlag ? 10 : -10;
+	PlaySoundMem(_damageSE, DX_PLAYTYPE_BACK);
 }
 
 void DeadMan::IsHitPlayer()
 {
-	for (auto& prec : pl->GetActRect()) {
+	if (mode == "Damge" || mode == "Die") {
+		return;
+	}
+	for (auto& prec : pl.lock()->GetActRect()) {
 		for (auto& erec : attackRect[mode][_currentCutIndex]) {
-			if (prec.type == RectType::attack && erec.type == RectType::damage) {//plUŒ‚A“G‚â‚ç‚ê
-				if (IsCollision(prec, erec, pl->GetPos(), pos)) {
-					DrawFormatString(10, 110, 0xffff0000, "Hit!");
+			if (IsCollision(prec, erec, pl.lock()->GetPos(), pos)) {
+				if (prec.type == RectType::attack && erec.type == RectType::damage) {
+					Damage();
+					printf("‚ ‚½‚è\n");
 				}
-			}
-			if (prec.type == RectType::damage && erec.type == RectType::attack) {//pl‚â‚ç‚êA“GUŒ‚
-				if (IsCollision(erec, prec, pos, pl->GetPos())) {
-					DrawFormatString(10, 130, 0xffff0000, "‚â‚ç‚ê");
+				else if (prec.type == RectType::damage && erec.type == RectType::attack) {
+					pl.lock()->Damage();
+					printf("ƒ_ƒ[ƒW\n");
 				}
-			}
+			}	
 		}
 	}
 }
