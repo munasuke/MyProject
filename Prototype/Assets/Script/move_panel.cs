@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class move_panel : MonoBehaviour {
 
-    public void OnUserAction (string tag) {
+    public float speed = 2.0f;
+    Vector3 target;
+
+    public void OnUserAction (string tag, Vector3 tmpVec) {
         Vector3[] vec = {
             Vector3.back,//Down
             Vector3.forward,//Up
@@ -13,18 +16,21 @@ public class move_panel : MonoBehaviour {
         };
         Vector3 rota = new Vector3(0.0f, 90.0f, 0.0f);
 
-        for (int i = 0; i < 4; i++) {
-            if (CheckMove(vec[i], tag) == true) {
+        //for (int i = 0; i < 4; i++) {
+        if (Input.GetMouseButtonDown(0)) {
+            if (CheckMove(vec[0], tag) == true) {
                 if (tag == "Panel" || tag == "Panel_union") {
-                    transform.position += vec[i]*10;
+                    target = tmpVec + vec[0] * 10;
+                    transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
                 }
                 if (tag == "Panel_rota") {
                     transform.Rotate(rota);
                 }
                 Debug.Log(tag);
-                break;
+                //break;
             }
         }
+        //}
     }
 
     //周囲を検索
@@ -35,7 +41,7 @@ public class move_panel : MonoBehaviour {
             return true;
         }
         if (tag != "Panel_union") {
-            if (Physics.Raycast(transform.position, dir, 10.0f, layerMask) == true) {
+            if (Physics.Raycast(transform.position, dir, 5.0f, layerMask) == true) {
                 return false;
             }
         }

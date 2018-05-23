@@ -20,7 +20,7 @@ public class CheckObject : MonoBehaviour {
             if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity)) {
                 for (int i = 0; i < panelTag.Length; i++) {
                     if (hit.collider.gameObject.CompareTag(panelTag[i])) {
-                        hit.collider.gameObject.GetComponent<move_panel>().OnUserAction(panelTag[i]);
+                        hit.collider.gameObject.GetComponent<move_panel>().OnUserAction(panelTag[i], hit.collider.gameObject.transform.position);
                     }
                 }
             }
