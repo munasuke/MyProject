@@ -14,14 +14,15 @@ private:
 	void NeutralUpdata();
 	void FlyUpdata();
 	void DieUpdata();
+	void Fly();
 	void Damage();
-	void IsHitPlayer();//player‚Æ‚Ì“–‚½‚è”»’è
+	void IsHitPlayer();
 
 	void(Bat::* _updata)();
-	int speed;
 	int _wait;//‘Ò‹@ŽžŠÔ
 	bool die;
 	int _flySE;//‰H‰¹
+	positin range;
 
 	std::weak_ptr<Player>pl;
 };

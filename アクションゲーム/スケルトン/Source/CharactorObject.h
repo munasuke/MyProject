@@ -26,6 +26,7 @@ protected:
 	int image;//画像ハンドル
 	int _damageSE;//ダメージSE
 	unsigned int life;
+	int speed;
 
 	//状態
 	std::string mode;

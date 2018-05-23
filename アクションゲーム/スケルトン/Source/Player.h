@@ -43,5 +43,7 @@ private:
 
 	void (Player::*_updata)();
 	int _damageTime;//ダメージ時の待機時間
+	bool _walk;//直前に歩いていたか管理
+	int ground;
 };
 

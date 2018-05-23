@@ -4,11 +4,12 @@
 
 
 
-DeadMan::DeadMan(std::weak_ptr<Player>pl) : pl(pl), speed(1), die(false)
+DeadMan::DeadMan(std::weak_ptr<Player>pl) : pl(pl), die(false)
 {
 	pos = { 300, 340 };
 	velocity = { 1, 0 };
 	turnFlag = true;
+	speed = 1;
 	Load("Action/deadman.act");
 	std::string path = "Action/" + header.pathName;
 	image = LoadGraph(path.c_str());
@@ -146,7 +147,7 @@ void DeadMan::Damage()
 
 void DeadMan::IsHitPlayer()
 {
-	if (mode == "Damge" || mode == "Die") {
+	if (mode == "Damge" || mode == "Die" || pl.lock()->GetActMode() == "Damage") {
 		return;
 	}
 	for (auto& prec : pl.lock()->GetActRect()) {

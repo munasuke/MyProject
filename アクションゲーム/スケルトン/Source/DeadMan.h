@@ -22,7 +22,6 @@ private:
 	void IsHitPlayer();//player‚Æ‚Ì“–‚½‚è”»’è
 
 	void(DeadMan::* _updata)();
-	int speed;
 	int _wait;//‘Ò‹@ŽžŠÔ
 	bool die;
 

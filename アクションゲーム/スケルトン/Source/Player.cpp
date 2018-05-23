@@ -3,12 +3,13 @@
 
 using namespace DxLib;
 
-Player::Player()
+Player::Player() : _walk(false), ground(340)
 {
-	velocity = { 2, 0 };
+	velocity = { 0, 0 };
 	pos = { 50, 300 };
 	turnFlag = false;
 	_jump = false;
+	speed = 2;
 
 	Load("Action/player.act");
 	std::string path = "Action/" + header.pathName;
@@ -37,11 +38,11 @@ void Player::Updata()
 	GetHitKeyStateAll(key);
 	
 	//ƒAƒNƒVƒ‡ƒ“«
-	pos.y += velocity.y;
+	pos += velocity;
 	velocity.y += (int)gravity;
 	(this->*_updata)();
-	if (pos.y >= 340) {
-		pos.y = 340;
+	if (pos.y >= ground) {
+		pos.y = ground;
 	}
 }
 
@@ -80,9 +81,12 @@ void Player::Draw()
 
 
 void Player::Jump() {
-	int jump_power = -17;
+	int jump_power = -15;
 	if (!_jump) {
 		_jump = true;
+		if (_walk) {
+			velocity.x = turnFlag ? -speed : speed;
+		}
 		velocity.y = jump_power;
 		_updata = &Player::JumpUpdata;
 		ChangeMode("Jump");
@@ -116,6 +120,9 @@ void Player::Sliding()
 
 void Player::NeutralUpdata()
 {
+	if (pos.y >= ground) {
+		velocity.x = 0;
+	}
 	if (key[KEY_INPUT_NUMPAD4] || key[KEY_INPUT_NUMPAD6]) {
 		_updata = &Player::WalkUpdata;
 		ChangeMode("Walk");
@@ -135,16 +142,17 @@ void Player::WalkUpdata()
 {
 	if (key[KEY_INPUT_NUMPAD4]) {
 		turnFlag = true;
-		pos.x -= velocity.x;
+		pos.x -= speed;
 	}
 	else if (key[KEY_INPUT_NUMPAD6]) {
 		turnFlag = false;
-		pos.x += velocity.x;
+		pos.x += speed;
 	}
 	else {
 		_updata = &Player::NeutralUpdata;
 	}
 	if (key(KEY_INPUT_NUMPAD8)) {
+		_walk = true;
 		Jump();
 	}
 	if (key(KEY_INPUT_Z)) {
@@ -155,6 +163,7 @@ void Player::WalkUpdata()
 
 void Player::JumpUpdata()
 {
+	_walk = false;
 	if (!_jump) {
 		return;
 	}
@@ -162,7 +171,8 @@ void Player::JumpUpdata()
 		_jump = false;
 		Crouch();
 	}
-	if (pos.y >= 340) {
+	if (pos.y >= ground) {
+		velocity.x = 0;
 		_jump = false;
 		_updata = &Player::NeutralUpdata;
 		ChangeMode("Walk");
@@ -171,6 +181,9 @@ void Player::JumpUpdata()
 
 void Player::CrouchUpdata()
 {
+	if (pos.y >= ground) {
+		velocity.x = 0;
+	}
 	if (key(KEY_INPUT_Z)) {
 		Kick();
 	}
@@ -196,6 +209,9 @@ void Player::PunchUpdata()
 
 void Player::KickUpdata()
 {
+	if (pos.y >= ground) {
+		velocity.x = 0;
+	}
 	if (_currentCutIndex > cut[mode].size() - 1) {
 		_updata = &Player::CrouchUpdata;
 		ChangeMode("Crouch");
@@ -204,6 +220,9 @@ void Player::KickUpdata()
 
 void Player::SlidingUpdata()
 {
+	if (pos.y >= ground) {
+		velocity.x = 0;
+	}
 	pos.x += turnFlag ? -5.0f : 5.0f;
 	if (_currentCutIndex > cut[mode].size() - 1) {
 		_updata = &Player::CrouchUpdata;
@@ -240,6 +259,7 @@ std::vector<AttackRect> Player::GetActRect()
 
 void Player::Damage()
 {
+	_jump = false;
 	_damageTime = 30;
 	_updata = &Player::DamageUpdata;
 	ChangeMode("Damage");
