@@ -15,7 +15,6 @@ public class move_panel : MonoBehaviour {
             Vector3.left//Right
         };
         Vector3 rota = new Vector3(0.0f, 90.0f, 0.0f);
-
         //for (int i = 0; i < 4; i++) {
         if (Input.GetMouseButtonDown(0)) {
             if (CheckMove(vec[0], tag) == true) {
@@ -24,7 +23,10 @@ public class move_panel : MonoBehaviour {
                     transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
                 }
                 if (tag == "Panel_rota") {
-                    transform.Rotate(rota);
+                    if (transform.rotation == new Quaternion(0, 90, 0, 0)) {
+                        int a = 0;
+                    }
+                        transform.Rotate(rota);
                 }
                 Debug.Log(tag);
                 //break;
