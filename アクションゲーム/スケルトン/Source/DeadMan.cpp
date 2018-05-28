@@ -17,7 +17,7 @@ DeadMan::DeadMan(std::weak_ptr<Player>pl) : pl(pl), die(false)
 	_updata = &DeadMan::NeutralUpdata;
 	_wait = 0;
 	_damageSE = LoadSoundMem("se/e_gusha.mp3");
-	life = 3;
+	life = 1;
 }
 
 

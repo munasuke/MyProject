@@ -3,7 +3,7 @@
 #include "Player.h"
 #include <memory>
 
-class Player;
+//class Player;
 //“G
 class DeadMan : public CharactorObject
 {

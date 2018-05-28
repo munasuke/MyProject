@@ -1,28 +1,2 @@
-﻿  Background.cpp
-  Bat.cpp
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(42): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(49): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(59): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-  CharactorObject.cpp
-  Collision.cpp
-  DeadMan.cpp
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(46): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(53): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(65): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(70): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-  EnemyManager.cpp
-  Game.cpp
-  Ground.cpp
-  HUD.cpp
-  Main.cpp
-  Player.cpp
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(59): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(68): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(72): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(204): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(215): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(226): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(227): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(236): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-  コードを生成中...
+﻿  EnemyManager.cpp
   スケルトン.vcxproj -> C:\Users\1601296\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe

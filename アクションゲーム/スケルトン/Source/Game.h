@@ -1,14 +1,12 @@
 #pragma once
 #include <memory>
 #include "Player.h"
-#include "DeadMan.h"
-#include "Bat.h"
-#include "Background.h"
-#include "HUD.h"
 
 #define SCREEN_SIZE_X	768
 #define SCREEN_SIZE_Y	448
 
+class Background;
+class HUD;
 
 //アプリ管理クラス
 class Game
@@ -25,12 +23,9 @@ private:
 	Game();
 	Game(const Game&);
 	std::shared_ptr<Player> pl;
-	std::shared_ptr<DeadMan>deadman;
-	std::shared_ptr<Bat> bat;
-	std::shared_ptr<Background> bg;
-	std::shared_ptr<HUD> hud;
+	Background* bg;//背景
+	HUD* hud;//UI
 	int bgm;
-
 	bool SysInit();
 	int Draw();
 };
