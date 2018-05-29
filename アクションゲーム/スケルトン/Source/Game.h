@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "Player.h"
+#include "Scene.h"
 
 #define SCREEN_SIZE_X	768
 #define SCREEN_SIZE_Y	448
@@ -19,13 +20,16 @@ public:
 	}
 	void Init();//‰Šú‰»
 	void Loop();//ƒ‹[ƒv
+	void ChangeScene(Scene* _scene);
 private:
 	Game();
 	Game(const Game&);
+	std::shared_ptr<Scene> scene;
 	std::shared_ptr<Player> pl;
 	Background* bg;//”wŒi
 	HUD* hud;//UI
 	int bgm;
+
 	bool SysInit();
 	int Draw();
 };

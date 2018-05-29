@@ -1,9 +1,13 @@
 #pragma once
+
+#include "CharactorObject.h"
 #include "DeadMan.h"
 #include "Bat.h"
 #include "Player.h"
 #include <memory>
 #include <list>
+#include <map>
+#include <string>
 
 //“G‚Ì¶¬‚Æ”jŠü‚ğ‘€‚éƒNƒ‰ƒX
 class EnemyManager
@@ -13,9 +17,9 @@ public:
 	static EnemyManager* GetInstance() {
 		return instance;
 	}
-	static void Create(std::weak_ptr<Player>pl) {
+	static void Create() {
 		if (instance == nullptr) {
-			instance = new EnemyManager(pl);
+			instance = new EnemyManager();
 		}
 	}
 	static void Destroy() {
@@ -27,10 +31,12 @@ public:
 
 	void Updata();
 	void Draw();
+	void Summons(std::string name, std::weak_ptr<Player>pl, positin pos);
 private:
-	EnemyManager(std::weak_ptr<Player>pl);
+	EnemyManager();
 	static EnemyManager* instance;
-	std::shared_ptr<DeadMan> dm;
-	std::shared_ptr<Bat> bat;
+
+	std::list<std::shared_ptr<CharactorObject>> enemy;
+	std::map<std::string, std::shared_ptr<CharactorObject>> _enemy;
 };
 

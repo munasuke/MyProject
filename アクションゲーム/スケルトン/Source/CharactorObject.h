@@ -10,6 +10,8 @@ class CharactorObject
 public:
 	CharactorObject();
 	~CharactorObject();
+	virtual void Updata() = 0;
+	virtual void Draw() = 0;
 protected:
 	void ChangeMode(std::string md);//ó‘ÔØ‚è‘Ö‚¦
 	void Load(std::string filepath);//ƒtƒ@ƒCƒ‹“Ç‚İ‚İ

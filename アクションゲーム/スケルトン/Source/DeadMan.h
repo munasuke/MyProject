@@ -8,7 +8,7 @@
 class DeadMan : public CharactorObject
 {
 public:
-	DeadMan(std::weak_ptr<Player>pl);
+	DeadMan(std::weak_ptr<Player>pl, positin _pos);
 	~DeadMan();
 	void Updata();
 	void Draw();

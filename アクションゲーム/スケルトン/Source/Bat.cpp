@@ -2,9 +2,9 @@
 #include "DxLib.h"
 
 
-Bat::Bat(std::weak_ptr<Player>pl) : pl(pl), die(false), _flySE(LoadSoundMem("se/habataki.mp3")), range({200, 0})
+Bat::Bat(std::weak_ptr<Player>pl, positin _pos) : pl(pl), die(false), _flySE(LoadSoundMem("se/habataki.mp3")), range({200, 0})
 {
-	pos = { 700, 130 };
+	pos = _pos;
 	velocity = { 1, 0 };
 	turnFlag = true;
 	speed = 5;

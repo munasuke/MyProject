@@ -4,9 +4,9 @@
 
 
 
-DeadMan::DeadMan(std::weak_ptr<Player>pl) : pl(pl), die(false)
+DeadMan::DeadMan(std::weak_ptr<Player>pl, positin _pos) : pl(pl), die(false)
 {
-	pos = { 300, 340 };
+	pos = _pos;
 	velocity = { 1, 0 };
 	turnFlag = true;
 	speed = 1;

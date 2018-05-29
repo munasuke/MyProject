@@ -1,28 +1,41 @@
 #include "EnemyManager.h"
+#include "Typedef.h"
 
 EnemyManager *EnemyManager::instance = nullptr;//‰Šú‰»
 
 //“GupdataŒÄ‚Ô
 void EnemyManager::Updata()
 {
-	dm->Updata();
-	bat->Updata();
+	for(auto itr = enemy.begin(); itr != enemy.end(); itr++){
+		(*itr)->Updata();
+	}
 }
 
 //“GdrawŒÄ‚Ô
 void EnemyManager::Draw()
 {
-	//for(auto itr = enemy.begin(); itr != enemy.end(); itr++){
-	//	itr->Draw();
-	//}
-	dm->Draw();
-	bat->Draw();
+	for(auto itr = enemy.begin(); itr != enemy.end(); itr++){
+		(*itr)->Draw();
+	}
 }
 
-EnemyManager::EnemyManager(std::weak_ptr<Player>pl)
+void EnemyManager::Summons(std::string name, std::weak_ptr<Player> pl, positin pos)
 {
-	dm = std::make_shared<DeadMan>(pl);
-	bat = std::make_shared<Bat>(pl);
+	if (name == "DeadMan") {
+		//DeadMan
+		_enemy["DeadMan"] = std::make_shared<DeadMan>(pl, pos);
+		enemy.push_back(_enemy["DeadMan"]);
+	}
+	else if (name == "Bat") {
+		//Bat
+		_enemy["Bat"] = std::make_shared<Bat>(pl, pos);
+		enemy.push_back(_enemy["Bat"]);
+	}
+}
+
+EnemyManager::EnemyManager()
+{
+	enemy.clear();
 }
 
 

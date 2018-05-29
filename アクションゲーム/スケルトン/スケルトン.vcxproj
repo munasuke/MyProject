@@ -23,30 +23,39 @@
     <ClCompile Include="Source\Bat.cpp" />
     <ClCompile Include="Source\CharactorObject.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
+    <ClCompile Include="Source\CountinueScene.cpp" />
     <ClCompile Include="Source\DeadMan.cpp" />
     <ClCompile Include="Source\EnemyManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
-    <ClCompile Include="Source\GameTask.cpp" />
+    <ClCompile Include="Source\GameoverScene.cpp" />
+    <ClCompile Include="Source\GameplayingScene.cpp" />
     <ClCompile Include="Source\Ground.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
+    <ClCompile Include="Source\KeyInput.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Background.h" />
     <ClInclude Include="Source\Bat.h" />
     <ClInclude Include="Source\CharactorObject.h" />
     <ClInclude Include="Source\Collision.h" />
+    <ClInclude Include="Source\CountinueScene.h" />
     <ClInclude Include="Source\DeadMan.h" />
     <ClInclude Include="Source\EnemyManager.h" />
     <ClInclude Include="Source\Game.h" />
-    <ClInclude Include="Source\GameTask.h" />
+    <ClInclude Include="Source\GameoverScene.h" />
+    <ClInclude Include="Source\GameplayingScene.h" />
     <ClInclude Include="Source\Ground.h" />
     <ClInclude Include="Source\HUD.h" />
+    <ClInclude Include="Source\KeyInput.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\TitleScene.h" />
     <ClInclude Include="Source\Typedef.h" />
     <ClInclude Include="Source\Main.h" />
     <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\Singleton.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

@@ -6,7 +6,7 @@ class Bat :
 	public CharactorObject
 {
 public:
-	Bat(std::weak_ptr<Player>pl);
+	Bat(std::weak_ptr<Player>pl, positin _pos);
 	~Bat();
 	void Updata();
 	void Draw();

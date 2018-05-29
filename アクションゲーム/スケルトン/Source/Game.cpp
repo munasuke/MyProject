@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "Game.h"
+#include "TitleScene.h"
 #include "EnemyManager.h"
 #include "Background.h"
 #include "HUD.h"
@@ -9,7 +10,12 @@ void Game::Init()
 {
 	SysInit();
 	pl = std::make_shared<Player>();
-	EnemyManager::Create(pl);
+	ChangeScene(new TitleScene());
+	EnemyManager::Create();
+	EnemyManager::GetInstance()->Summons("DeadMan", pl, { 400, 340 });//“G¶¬
+	EnemyManager::GetInstance()->Summons("DeadMan", pl, { 200, 340 });
+	EnemyManager::GetInstance()->Summons("Bat", pl, { 700, 130 });
+	EnemyManager::GetInstance()->Summons("Bat", pl, { 500, 130 });
 	bg = new Background();
 	hud = new HUD(*pl);
 	bgm = LoadSoundMem("bgm/bgm1.mp3");
@@ -21,7 +27,7 @@ void Game::Loop()
 	while (!ProcessMessage() && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
 		ClsDrawScreen();
-
+		scene->Updata();
 		pl->Updata();
 		EnemyManager::GetInstance()->Updata();
 		Draw();
@@ -32,6 +38,11 @@ void Game::Loop()
 	}
 }
 
+void Game::ChangeScene(Scene * _scene)
+{
+	scene.reset(_scene);
+}
+
 Game::Game()
 {
 }
@@ -39,7 +50,6 @@ Game::Game()
 Game::Game(const Game &)
 {
 }
-
 
 bool Game::SysInit()
 {
@@ -63,7 +73,6 @@ int Game::Draw()
 
 	return true;
 }
-
 
 Game::~Game()
 {
