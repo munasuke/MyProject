@@ -1,24 +1,13 @@
 #include "DxLib.h"
 #include "Game.h"
 #include "TitleScene.h"
-#include "EnemyManager.h"
-#include "Background.h"
-#include "HUD.h"
 
 //‰Šú‰»
 void Game::Init()
 {
 	SysInit();
-	pl = std::make_shared<Player>();
-	ChangeScene(new TitleScene());
-	EnemyManager::Create();
-	EnemyManager::GetInstance()->Summons("DeadMan", pl, { 400, 340 });//“G¶¬
-	EnemyManager::GetInstance()->Summons("DeadMan", pl, { 200, 340 });
-	EnemyManager::GetInstance()->Summons("Bat", pl, { 700, 130 });
-	EnemyManager::GetInstance()->Summons("Bat", pl, { 500, 130 });
-	bg = new Background();
-	hud = new HUD(*pl);
-	bgm = LoadSoundMem("bgm/bgm1.mp3");
+	k = std::make_shared<KeyInput>();
+	ChangeScene(new TitleScene(k));
 }
 
 //ƒ‹[ƒv
@@ -27,12 +16,10 @@ void Game::Loop()
 	while (!ProcessMessage() && !CheckHitKey(KEY_INPUT_ESCAPE))
 	{
 		ClsDrawScreen();
-		scene->Updata();
-		pl->Updata();
-		EnemyManager::GetInstance()->Updata();
+
+		Updata();
 		Draw();
 
-		PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
 		ScreenFlip();
 
 	}
@@ -64,19 +51,18 @@ bool Game::SysInit()
 	return true;
 }
 
+void Game::Updata()
+{
+		k->Updata();
+		scene->Updata();
+}
+
 int Game::Draw()
 {
-	bg->Draw(SCREEN_SIZE_X);
-	pl->Draw();
-	EnemyManager::GetInstance()->Draw();
-	hud->Draw(SCREEN_SIZE_Y);
-
+	scene->Draw();
 	return true;
 }
 
 Game::~Game()
 {
-	EnemyManager::Destroy();
-	delete bg;
-	delete hud;
 }

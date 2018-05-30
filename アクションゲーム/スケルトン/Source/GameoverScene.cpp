@@ -5,28 +5,31 @@
 
 
 
-GameoverScene::GameoverScene()
+GameoverScene::GameoverScene(std::weak_ptr<KeyInput> _key) : overImage(LoadGraph("img/gameover.png"))
 {
-	for (int i = 0; i < 256; i++) {
-		key[i] = 0;
-		oldkey[i] = 0;
-	}
+	key = _key;
+	alpha = 0;
 	printf("Gameover Scene\n");
 }
 
 
 GameoverScene::~GameoverScene()
 {
-	printf("Gameover Scene is Deleted\n");
+	printf("Gameover Scene is Deleted\n\n");
 }
 
 void GameoverScene::Updata()
 {
-	for (int i = 0; i < 256; i++) {
-		oldkey[i] = key[i];
+	if (key.lock()->IsTrigger(PAD_INPUT_8)){
+		Game::Instance().ChangeScene(new TitleScene(key));
 	}
-	GetHitKeyStateAll(key);
-	if ((key[KEY_INPUT_SPACE]&oldkey[KEY_INPUT_SPACE])^key[KEY_INPUT_SPACE]){
-		Game::Instance().ChangeScene(new TitleScene());
+}
+
+void GameoverScene::Draw()
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	DrawGraph(0, 0, overImage, true);
+	if (alpha < 256){
+		alpha++;
 	}
 }

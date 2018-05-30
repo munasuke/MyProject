@@ -1,11 +1,13 @@
 #pragma once
 #include "Scene.h"
+
 class CountinueScene :
 	public Scene
 {
 public:
-	CountinueScene();
+	CountinueScene(std::weak_ptr<KeyInput> _key);
 	~CountinueScene();
 	void Updata();
+	void Draw();
 };
 

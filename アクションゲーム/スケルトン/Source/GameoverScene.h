@@ -1,11 +1,15 @@
 #pragma once
 #include "Scene.h"
+
 class GameoverScene :
 	public Scene
 {
 public:
-	GameoverScene();
+	GameoverScene(std::weak_ptr<KeyInput> _key);
 	~GameoverScene();
 	void Updata();
+	void Draw();
+private:
+	int overImage;
 };
 

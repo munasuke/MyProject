@@ -1,15 +1,22 @@
 #pragma once
 #include "Scene.h"
-#include "Game.h"
-#include "CountinueScene.h"
-#include "DxLib.h"
+#include "Player.h"
+#include <memory>
+
+class Background;
+class HUD;
 
 class GameplayingScene :
 	public Scene
 {
 public:
-	GameplayingScene();
+	GameplayingScene(std::weak_ptr<KeyInput> _key);
 	~GameplayingScene();
 	void Updata();
+	void Draw();
+private:
+	std::shared_ptr<Player> pl;
+	Background* bg;//îwåi
+	HUD* hud;//UI
 };
 

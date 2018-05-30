@@ -3,7 +3,7 @@
 
 using namespace DxLib;
 
-Player::Player() : _walk(false), ground(340)
+Player::Player(std::weak_ptr<KeyInput> _key) : _walk(false), ground(340), key(_key)
 {
 	velocity = { 0, 0 };
 	pos = { 50, 300 };
@@ -14,10 +14,6 @@ Player::Player() : _walk(false), ground(340)
 	Load("Action/player.act");
 	std::string path = "Action/" + header.pathName;
 
-	for (int i = 0; i < 256; i++) {
-		key[i] = 0;
-		old_key[i] = 0;
-	}
 	_updata = &Player::NeutralUpdata;
 	image = LoadGraph(path.c_str());
 	mode = "Walk";
@@ -31,12 +27,7 @@ Player::~Player()
 }
 
 void Player::Updata()
-{
-	for (int i = 0; i < 256; i++) {
-		old_key[i] = key[i];
-	}
-	GetHitKeyStateAll(key);
-	
+{	
 	//ƒAƒNƒVƒ‡ƒ“«
 	pos += velocity;
 	velocity.y += (int)gravity;
@@ -123,39 +114,39 @@ void Player::NeutralUpdata()
 	if (pos.y >= ground) {
 		velocity.x = 0;
 	}
-	if (key[KEY_INPUT_NUMPAD4] || key[KEY_INPUT_NUMPAD6]) {
+	if (key.lock()->IsPressing(PAD_INPUT_LEFT) || key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
 		_updata = &Player::WalkUpdata;
-		ChangeMode("Walk");
+		mode = "Walk";
 	}
-	else if (key[KEY_INPUT_NUMPAD2]) {
+	else if (key.lock()->IsPressing(PAD_INPUT_DOWN)) {
 		Crouch();
 	}
-	else if (key(KEY_INPUT_Z)) {
+	else if (key.lock()->IsTrigger(PAD_INPUT_1)) {
 		Punch();
 	}
-	if (key(KEY_INPUT_NUMPAD8)) {
+	if (key.lock()->IsTrigger(PAD_INPUT_UP)) {
 		Jump();
 	}
 }
 
 void Player::WalkUpdata()
 {
-	if (key[KEY_INPUT_NUMPAD4]) {
+	if (key.lock()->IsPressing(PAD_INPUT_LEFT)) {
 		turnFlag = true;
 		pos.x -= speed;
 	}
-	else if (key[KEY_INPUT_NUMPAD6]) {
+	else if (key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
 		turnFlag = false;
 		pos.x += speed;
 	}
 	else {
 		_updata = &Player::NeutralUpdata;
 	}
-	if (key(KEY_INPUT_NUMPAD8)) {
+	if (key.lock()->IsTrigger(PAD_INPUT_UP)) {
 		_walk = true;
 		Jump();
 	}
-	if (key(KEY_INPUT_Z)) {
+	if (key.lock()->IsTrigger(PAD_INPUT_1)) {
 		Punch();
 	}
 	
@@ -167,7 +158,7 @@ void Player::JumpUpdata()
 	if (!_jump) {
 		return;
 	}
-	if (key[KEY_INPUT_NUMPAD2]) {
+	if (key.lock()->IsPressing(PAD_INPUT_DOWN)) {
 		_jump = false;
 		Crouch();
 	}
@@ -184,17 +175,17 @@ void Player::CrouchUpdata()
 	if (pos.y >= ground) {
 		velocity.x = 0;
 	}
-	if (key(KEY_INPUT_Z)) {
+	if (key.lock()->IsTrigger(PAD_INPUT_1)) {
 		Kick();
 	}
-	if (key(KEY_INPUT_NUMPAD8)) {
+	if (key.lock()->IsTrigger(PAD_INPUT_UP)) {
 		Jump();
 	}
-	if (key[KEY_INPUT_NUMPAD2] == 0) {
+	if (key.lock()->IsPressing(PAD_INPUT_DOWN) == 0) {
 		_updata = &Player::NeutralUpdata;
 		ChangeMode("Walk");
 	}
-	if (key(KEY_INPUT_X)) {
+	if (key.lock()->IsTrigger(PAD_INPUT_2)) {
 		Sliding();
 	}
 }

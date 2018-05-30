@@ -4,28 +4,25 @@
 #include "DxLib.h"
 
 
-CountinueScene::CountinueScene()
+CountinueScene::CountinueScene(std::weak_ptr<KeyInput> _key)
 {
-	for (int i = 0; i < 256; i++) {
-		key[i] = 0;
-		oldkey[i] = 0;
-	}
+	key = _key;
 	printf("Countinue Scene\n");
 }
 
 
 CountinueScene::~CountinueScene()
 {
-	printf("Countinue Scene is Deleted\n");
+	printf("Countinue Scene is Deleted\n\n");
 }
 
 void CountinueScene::Updata()
 {
-	for (int i = 0; i < 256; i++) {
-		oldkey[i] = key[i];
+	if (key.lock()->IsTrigger(PAD_INPUT_8)){
+		Game::Instance().ChangeScene(new GameoverScene(key));
 	}
-	GetHitKeyStateAll(key);
-	if ((key[KEY_INPUT_SPACE]&oldkey[KEY_INPUT_SPACE])^key[KEY_INPUT_SPACE]){
-		Game::Instance().ChangeScene(new GameoverScene());
-	}
+}
+
+void CountinueScene::Draw()
+{
 }
