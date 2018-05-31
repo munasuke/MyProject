@@ -9,10 +9,11 @@ TitleScene::TitleScene(std::weak_ptr<KeyInput> _key) :
 	pressImage(LoadGraph("img/pressstart.png")), 
 	aflg(true),
 	pressalpha(0),
-	flg(false)
+	startSE(LoadSoundMem("se/start.mp3"))
 {
 	key = _key;
 	alpha = 0;
+	alphaFlg = false;
 	printf("Title Scene\n");
 }
 
@@ -25,53 +26,56 @@ TitleScene::~TitleScene()
 void TitleScene::Updata()
 {
 	if (key.lock()->IsTrigger(PAD_INPUT_8)) {
-		flg = true;
+		alphaFlg = true;
+		PlaySoundMem(startSE, DX_PLAYTYPE_BACK);
 	}
-	if (flg == true){
-		if (alpha > 0){
-			--alpha;
-		}
-	}
-		//if (alpha == 0) {
-		//	Game::Instance().ChangeScene(new GameplayingScene(key));
-		//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-		//}
+	FadeOut();
 }
 
 void TitleScene::Draw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	DrawGraph(0, 0, titleImage, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, pressalpha);
 	DrawGraph(SCREEN_SIZE_X/2 - 356/2, SCREEN_SIZE_Y - 100, pressImage, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	if (aflg == true)
-	{
-		if (pressalpha < 256)
-		{
+	if (aflg == true && alphaFlg == false){
+		if (pressalpha < 256){
 			pressalpha += 4;
 		}
-		else
-		{
+		else{
 			aflg = false;
 		}
 	}
-	else
-	{
-		if(pressalpha > 0)
-		{
+	else{
+		if(pressalpha > 0){
 			pressalpha -= 4;
 		}
-		else
-		{
+		else{
 			aflg = true;
 		}
 	}
 	if (alpha < 255){
-		alpha++;
+		if (alphaFlg != true){
+			alpha++;
+		}
 	}
-	
+}
 
-	DrawFormatString(10, 300, 0xff00ffff, "%d", alpha);
+void TitleScene::FadeIn()
+{
+}
+
+void TitleScene::FadeOut()
+{
+	if (alphaFlg == false) {
+		return;
+	}
+	if (alpha >= 0){
+		pressalpha--;
+		alpha--;
+		if (alpha == 0) {
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			Game::Instance().ChangeScene(new GameplayingScene(key));
+		}
+	}
 }

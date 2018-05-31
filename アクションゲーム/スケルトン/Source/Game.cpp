@@ -42,6 +42,7 @@ bool Game::SysInit()
 {
 	SetGraphMode(SCREEN_SIZE_X, SCREEN_SIZE_Y, 16);
 	ChangeWindowMode(true);
+	SetWindowIconID(333);
 	SetWindowText("1601296_è@â™ètâ¿");
 	if (DxLib_Init() == -1) {
 		return false; 

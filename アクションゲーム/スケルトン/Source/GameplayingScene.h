@@ -14,6 +14,8 @@ public:
 	~GameplayingScene();
 	void Updata();
 	void Draw();
+	void FadeIn();
+	void FadeOut();
 private:
 	std::shared_ptr<Player> pl;
 	Background* bg;//îwåi

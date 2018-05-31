@@ -4,7 +4,8 @@
 #include "DxLib.h"
 
 
-CountinueScene::CountinueScene(std::weak_ptr<KeyInput> _key)
+CountinueScene::CountinueScene(std::weak_ptr<KeyInput> _key) : 
+	cntImage(LoadGraph("img/count.png"))
 {
 	key = _key;
 	printf("Countinue Scene\n");
@@ -24,5 +25,14 @@ void CountinueScene::Updata()
 }
 
 void CountinueScene::Draw()
+{
+	DrawRectGraph(0, 0, 0, 0, 117, 159, cntImage, true, false);
+}
+
+void CountinueScene::FadeIn()
+{
+}
+
+void CountinueScene::FadeOut()
 {
 }

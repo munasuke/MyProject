@@ -57,6 +57,9 @@
     <ClInclude Include="Source\Main.h" />
     <ClInclude Include="Source\Player.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6AD16EA2-4886-4BE2-9622-5D45374A6B63}</ProjectGuid>

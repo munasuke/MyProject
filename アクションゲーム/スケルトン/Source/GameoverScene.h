@@ -9,6 +9,8 @@ public:
 	~GameoverScene();
 	void Updata();
 	void Draw();
+	void FadeIn();
+	void FadeOut();
 private:
 	int overImage;
 };

@@ -27,9 +27,18 @@ void GameoverScene::Updata()
 
 void GameoverScene::Draw()
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
+	FadeIn();
 	DrawGraph(0, 0, overImage, true);
+}
+
+void GameoverScene::FadeIn()
+{
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	if (alpha < 256){
 		alpha++;
 	}
+}
+
+void GameoverScene::FadeOut()
+{
 }

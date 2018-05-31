@@ -9,5 +9,9 @@ public:
 	~CountinueScene();
 	void Updata();
 	void Draw();
+	void FadeIn();
+	void FadeOut();
+private:
+	int cntImage;
 };
 
