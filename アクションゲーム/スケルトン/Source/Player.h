@@ -6,12 +6,13 @@
 #include <map>
 #include <string>
 #include <memory>
+class Camera;
 
 //プレイヤー管理クラス
 class Player : public CharactorObject
 {
 public:
-	Player(std::weak_ptr<KeyInput> _key);
+	Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera);
 	~Player();
 	void Updata();
 	void Draw();
@@ -42,5 +43,6 @@ private:
 	bool _walk;//直前に歩いていたか管理
 	int ground;//地面
 	std::weak_ptr<KeyInput> key;
+	std::weak_ptr<Camera> camera;
 };
 

@@ -1,9 +1,10 @@
 #include "Player.h"
+#include "Camera.h"
 #include "DxLib.h"
 
 using namespace DxLib;
 
-Player::Player(std::weak_ptr<KeyInput> _key) : _walk(false), ground(340), key(_key)
+Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : _walk(false), ground(340), key(_key)
 {
 	velocity = { 0, 0 };
 	pos = { 50, 300 };
@@ -19,6 +20,8 @@ Player::Player(std::weak_ptr<KeyInput> _key) : _walk(false), ground(340), key(_k
 	mode = "Walk";
 	_damageSE = LoadSoundMem("se/p_damage.wav");
 	_damageTime = 0;
+
+	camera = _camera;
 }
 
 
@@ -40,7 +43,7 @@ void Player::Updata()
 void Player::Draw()
 {
 	int centorX = turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
-
+	auto i = camera.lock()->Correction(pos);
 	DrawRectRotaGraph2(pos.x, pos.y,
 		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
 		cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(),

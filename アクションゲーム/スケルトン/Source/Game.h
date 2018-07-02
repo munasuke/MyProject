@@ -2,6 +2,7 @@
 #include <memory>
 #include "KeyInput.h"
 #include "Scene.h"
+#include "Typedef.h"
 
 #define SCREEN_SIZE_X	768
 #define SCREEN_SIZE_Y	448
@@ -19,6 +20,8 @@ public:
 	void Init();//èâä˙âª
 	void Loop();//ÉãÅ[Év
 	void ChangeScene(Scene* _scene);
+
+	Rect GetScreenSize();
 private:
 	Game();
 	Game(const Game&);
@@ -28,5 +31,7 @@ private:
 	bool SysInit();
 	void Updata();
 	int Draw();
+
+	Rect screenSize;
 };
 

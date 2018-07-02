@@ -1,5 +1,6 @@
 #include "EnemyManager.h"
 #include "Typedef.h"
+#include "Camera.h"
 
 EnemyManager *EnemyManager::instance = nullptr;//‰Šú‰»
 

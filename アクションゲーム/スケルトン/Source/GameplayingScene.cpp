@@ -1,5 +1,7 @@
 #include "GameplayingScene.h"
 #include "Game.h"
+#include "Stage.h"
+#include "Camera.h"
 #include "EnemyManager.h"
 #include "Background.h"
 #include "HUD.h"
@@ -13,7 +15,10 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
 	alpha = 0;
 	alphaFlg = false;
 
-	pl = std::make_shared<Player>(key);
+	st = std::make_shared<Stage>();
+	camera = std::make_shared<Camera>(st);
+	pl = std::make_shared<Player>(key, camera);
+	camera->SetFocus(pl);
 	EnemyManager::Create();
 	EnemyManager::GetInstance()->Summons("DeadMan", pl, { 400, 340 });//“G¶¬
 	EnemyManager::GetInstance()->Summons("DeadMan", pl, { 200, 340 });
@@ -39,6 +44,7 @@ GameplayingScene::~GameplayingScene()
 
 void GameplayingScene::Updata()
 {
+	camera->Update();
 	pl->Updata();
 	EnemyManager::GetInstance()->Updata();
 	if (key.lock()->IsTrigger(PAD_INPUT_8)){
@@ -76,7 +82,7 @@ void GameplayingScene::FadeOut()
 		return;
 	}
 	if (alpha >= 0){
-		alpha -= 3;
+		alpha -= 5;
 		if (alpha == 0) {
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			Game::Instance().ChangeScene(new CountinueScene(key));

@@ -5,6 +5,8 @@
 
 class Background;
 class HUD;
+class Camera;
+class Stage;
 
 class GameplayingScene :
 	public Scene
@@ -17,8 +19,10 @@ public:
 	void FadeIn();
 	void FadeOut();
 private:
+	std::shared_ptr<Stage> st;
 	std::shared_ptr<Player> pl;
 	Background* bg;//îwåi
 	HUD* hud;//UI
+	std::shared_ptr<Camera> camera;
 };
 

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\Bat.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\CharactorObject.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\CountinueScene.cpp" />
@@ -35,11 +36,13 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Background.h" />
     <ClInclude Include="Source\Bat.h" />
+    <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\CharactorObject.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\CountinueScene.h" />
@@ -52,6 +55,7 @@
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\KeyInput.h" />
     <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\TitleScene.h" />
     <ClInclude Include="Source\Typedef.h" />
     <ClInclude Include="Source\Main.h" />

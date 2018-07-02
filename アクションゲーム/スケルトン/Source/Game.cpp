@@ -8,6 +8,8 @@ void Game::Init()
 	SysInit();
 	k = std::make_shared<KeyInput>();
 	ChangeScene(new TitleScene(k));
+	screenSize.w = SCREEN_SIZE_X;
+	screenSize.h = SCREEN_SIZE_Y;
 }
 
 //ÉãÅ[Év
@@ -28,6 +30,10 @@ void Game::Loop()
 void Game::ChangeScene(Scene * _scene)
 {
 	scene.reset(_scene);
+}
+
+Rect Game::GetScreenSize() {
+	return screenSize;
 }
 
 Game::Game()
