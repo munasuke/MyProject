@@ -19,8 +19,11 @@ void Background::Updata()
 
 void Background::Draw(const int sizex)
 {
-	DrawGraph(-pos.x, 0, bgH, true);
-	DrawTurnGraph(-pos.x+576, 0, bgH, true);
+	//îwåiÉXÉNÉçÅ[Éã
+	for (int i = 0; i < 5; i+=2) {
+		DrawGraph(-pos.x + 576 * i, 0, bgH, true);
+		DrawTurnGraph(-pos.x + 576 * (i + 1), 0, bgH, true);
+	}
 
 #ifdef _DEBUG
 	DrawLine(0, 340, sizex, 340, 0x00ff00);

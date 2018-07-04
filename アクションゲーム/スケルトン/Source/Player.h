@@ -22,6 +22,7 @@ public:
 	std::vector<AttackRect> GetActRect();
 	void Damage();
 	std::string GetActMode();
+	int GetLife();
 private:
 	//状態
 	void Jump();
@@ -44,7 +45,7 @@ private:
 	bool _walk;//直前に歩いていたか管理
 	int ground;//地面
 	std::weak_ptr<KeyInput> key;
-
-	positin localPos;
+	int _life;//ライフ
+	positin localPos;//ローカル座標
 };
 

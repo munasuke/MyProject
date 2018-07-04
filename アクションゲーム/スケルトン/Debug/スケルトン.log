@@ -1,13 +1,8 @@
-﻿  Bat.cpp
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(50): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(57): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(67): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-  DeadMan.cpp
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(54): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(61): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(73): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(78): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-  EnemyManager.cpp
-  GameplayingScene.cpp
+﻿  Stage.cpp
   コードを生成中...
-  スケルトン.vcxproj -> C:\Users\1601296\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe
+  コンパイル中...
+  GameplayingScene.cpp
+  Camera.cpp
+  コードを生成中...
+  スケルトン.vcxproj -> C:\Users\haruka\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe
+  スケルトン.vcxproj -> C:\Users\haruka\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.pdb (Partial PDB)

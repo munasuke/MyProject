@@ -4,7 +4,7 @@
 
 using namespace DxLib;
 
-Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : _walk(false), ground(340), key(_key)
+Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : _walk(false), ground(340), key(_key), _life(5)
 {
 	velocity = { 0, 0 };
 	pos = { 50, 300 };
@@ -265,6 +265,7 @@ std::vector<AttackRect> Player::GetActRect()
 
 void Player::Damage()
 {
+	_life--;
 	_jump = false;
 	_damageTime = 30;
 	_updata = &Player::DamageUpdata;
@@ -275,4 +276,9 @@ void Player::Damage()
 std::string Player::GetActMode()
 {
 	return mode;
+}
+
+int Player::GetLife()
+{
+	return _life;
 }

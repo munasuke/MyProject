@@ -33,6 +33,7 @@
     <ClCompile Include="Source\Ground.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\KeyInput.cpp" />
+    <ClCompile Include="Source\Load.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Source\Ground.h" />
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\KeyInput.h" />
+    <ClInclude Include="Source\Load.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\TitleScene.h" />
@@ -68,7 +70,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6AD16EA2-4886-4BE2-9622-5D45374A6B63}</ProjectGuid>
     <RootNamespace>スケルトン</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
