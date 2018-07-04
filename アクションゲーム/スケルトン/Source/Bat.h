@@ -6,7 +6,7 @@ class Bat :
 	public CharactorObject
 {
 public:
-	Bat(std::weak_ptr<Player>pl, positin _pos);
+	Bat(std::weak_ptr<Player>pl, std::weak_ptr<Camera> cam, positin _pos);
 	~Bat();
 	void Updata();
 	void Draw();
@@ -23,6 +23,7 @@ private:
 	bool die;
 	int _flySE;//‰H‰¹
 	positin range;
+	positin localPos;
 
 	std::weak_ptr<Player>pl;
 };

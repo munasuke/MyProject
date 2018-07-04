@@ -43,8 +43,16 @@ void Player::Updata()
 void Player::Draw()
 {
 	int centorX = turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
+
+	auto right = camera.lock()->GetViewport().Right();
+	auto left = camera.lock()->GetViewport().Left();
+	pos.x = min(max(pos.x, left), right);
+
 	auto i = camera.lock()->Correction(pos);
-	DrawRectRotaGraph2(pos.x, pos.y,
+
+	localPos = i;
+
+	DrawRectRotaGraph2(i.x, pos.y,
 		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
 		cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(),
 		centorX, cut[mode][_currentCutIndex].centor.y,
@@ -55,7 +63,7 @@ void Player::Draw()
 		_flame = 0;
 	}
 
-	DrawRect();
+	DrawRect(i);
 
 	//最終インデックスか確認
 	if (mode == "Jump"|| mode == "Damage") {
@@ -239,6 +247,10 @@ void Player::DamageUpdata()
 positin Player::GetPos()
 {
 	return pos;
+}
+
+positin Player::GetLocalPos() {
+	return localPos;
 }
 
 positin Player::GetVec()

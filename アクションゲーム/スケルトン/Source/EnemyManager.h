@@ -9,6 +9,8 @@
 #include <map>
 #include <string>
 
+class Camera;
+
 //“G‚Ì¶¬‚Æ”jŠü‚ğ‘€‚éƒNƒ‰ƒX
 class EnemyManager
 {
@@ -31,7 +33,7 @@ public:
 
 	void Updata();
 	void Draw();
-	void Summons(std::string name, std::weak_ptr<Player>pl, positin pos);
+	void Summons(std::string name, std::weak_ptr<Player>pl, std::weak_ptr<Camera> cam, positin pos);
 private:
 	EnemyManager();
 	static EnemyManager* instance;

@@ -1,10 +1,11 @@
 #include "DxLib.h"
 #include "DeadMan.h"
+#include "Camera.h"
 
 
 
 
-DeadMan::DeadMan(std::weak_ptr<Player>pl, positin _pos) : pl(pl), die(false)
+DeadMan::DeadMan(std::weak_ptr<Player>pl, std::weak_ptr<Camera> cam, positin _pos) : pl(pl), die(false)
 {
 	pos = _pos;
 	velocity = { 1, 0 };
@@ -18,6 +19,7 @@ DeadMan::DeadMan(std::weak_ptr<Player>pl, positin _pos) : pl(pl), die(false)
 	_wait = 0;
 	_damageSE = LoadSoundMem("se/e_gusha.mp3");
 	life = 1;
+	camera = cam;
 }
 
 
@@ -37,7 +39,13 @@ void DeadMan::Draw()
 	int centorX = 
 		turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
 
-	DrawRectRotaGraph2(pos.x, pos.y,
+	auto right = camera.lock()->GetViewport().Right();
+	auto left = camera.lock()->GetViewport().Left();
+	pos.x = min(max(pos.x, left), right);
+
+	localPos = camera.lock()->Correction(pos);
+
+	DrawRectRotaGraph2(localPos.x, localPos.y,
 		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
 		cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(),
 		centorX, cut[mode][_currentCutIndex].centor.y,
@@ -59,7 +67,7 @@ void DeadMan::Draw()
 		_flame = 0;
 	}
 
-	DrawRect();
+	DrawRect(localPos);
 
 	if (mode == "Damage") {
 		if (_currentCutIndex > cut[mode].size() - 2) {
@@ -85,7 +93,7 @@ bool DeadMan::GetDie()
 
 void DeadMan::NeutralUpdata()
 {
-	if (pos.x > pl.lock()->GetPos().x) {
+	if (localPos.x > pl.lock()->GetLocalPos().x) {
 		turnFlag = true;
 		_updata = &DeadMan::WalkUpdata;
 		_wait = 60;
@@ -152,7 +160,7 @@ void DeadMan::IsHitPlayer()
 	}
 	for (auto& prec : pl.lock()->GetActRect()) {
 		for (auto& erec : attackRect[mode][_currentCutIndex]) {
-			if (IsCollision(prec, erec, pl.lock()->GetPos(), pos)) {
+			if (IsCollision(prec, erec, pl.lock()->GetLocalPos(), localPos)) {
 				if (prec.type == RectType::attack && erec.type == RectType::damage) {
 					Damage();
 					printf("‚ ‚½‚è\n");

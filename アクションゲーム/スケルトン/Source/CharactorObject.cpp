@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "CharactorObject.h"
+#include "Camera.h"
 
 
 CharactorObject::CharactorObject() :
@@ -66,16 +67,16 @@ void CharactorObject::Load(std::string filepath)
 }
 
 #ifdef _DEBUG
-void CharactorObject::DrawRect()
+void CharactorObject::DrawRect(positin _pos)
 {
 	for (auto& a : attackRect[mode][_currentCutIndex])
 	{
 		int tmpX[2];
-		tmpX[0] = turnFlag ? pos.x - a.rect.Left() * 2 : pos.x + a.rect.Left() * 2;
-		tmpX[1] = turnFlag ? pos.x - (a.rect.Left() + a.rect.Width()) * 2 : pos.x + (a.rect.Left() + a.rect.Width()) * 2;
+		tmpX[0] = turnFlag ? _pos.x - a.rect.Left() * 2 : _pos.x + a.rect.Left() * 2;
+		tmpX[1] = turnFlag ? _pos.x - (a.rect.Left() + a.rect.Width()) * 2 : _pos.x + (a.rect.Left() + a.rect.Width()) * 2;
 		int color = a.type == RectType::attack ? 0xffff0000 : 0xff00ff00;
-		DrawBox(tmpX[0], pos.y + a.rect.Top() * 2,
-			tmpX[1], pos.y + (a.rect.Top() + a.rect.Height()) * 2,
+		DrawBox(tmpX[0], _pos.y + a.rect.Top() * 2,
+			tmpX[1], _pos.y + (a.rect.Top() + a.rect.Height()) * 2,
 			color,
 			false);
 	}

@@ -22,6 +22,13 @@ void Camera::Update() {
 	else if ( _pos.x + _size.w / 2 > _range.Right()){
 		_pos.x = _range.Right() - _size.w / 2;
 	}
+
+	if(_pos.x < 0)
+	{
+		_pos.x = 0;
+	}
+
+	printf("%d\n", _pos.x);
 }
 
 //フォーカス対象を設定

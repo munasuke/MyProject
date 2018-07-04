@@ -1,9 +1,11 @@
 #include "Bat.h"
+#include "Camera.h"
 #include "DxLib.h"
 
 
-Bat::Bat(std::weak_ptr<Player>pl, positin _pos) : pl(pl), die(false), _flySE(LoadSoundMem("se/habataki.mp3")), range({200, 0})
+Bat::Bat(std::weak_ptr<Player>pl, std::weak_ptr<Camera> cam, positin _pos) : pl(pl), die(false), _flySE(LoadSoundMem("se/habataki.mp3")), range({ 200, 0 })
 {
+	camera = cam;
 	pos = _pos;
 	velocity = { 1, 0 };
 	turnFlag = true;
@@ -33,7 +35,13 @@ void Bat::Draw()
 	int centorX =
 		turnFlag ? cut[mode][_currentCutIndex].rect.Width() - cut[mode][_currentCutIndex].centor.x : cut[mode][_currentCutIndex].centor.x;
 
-	DrawRectRotaGraph2(pos.x, pos.y,
+	auto right = camera.lock()->GetViewport().Right();
+	auto left = camera.lock()->GetViewport().Left();
+	pos.x = min(max(pos.x, left), right);
+
+	localPos = camera.lock()->Correction(pos);
+
+	DrawRectRotaGraph2(localPos.x, localPos.y,
 		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
 		cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(),
 		centorX, cut[mode][_currentCutIndex].centor.y,
@@ -54,7 +62,7 @@ void Bat::Draw()
 		_flame = 0;
 	}
 
-	DrawRect();
+	DrawRect(localPos);
 
 	if (_currentCutIndex > cut[mode].size() - 1) {
 		_currentCutIndex = 0;
@@ -64,17 +72,17 @@ void Bat::Draw()
 		_flame++;
 	}
 #ifdef _DEBUG
-	DrawBox(pos.x - range.x, pos.y - 50, pos.x, pos.y, 0xff0000ff, false);
-	DrawBox(pos.x, pos.y - 50, pos.x + range.x, pos.y, 0xff0000ff, false);
+	DrawBox(localPos.x - range.x, localPos.y - 50, localPos.x, localPos.y, 0xff0000ff, false);
+	DrawBox(localPos.x, localPos.y - 50, localPos.x + range.x, localPos.y, 0xff0000ff, false);
 #endif
 }
 
 void Bat::NeutralUpdata()
 {
-	if ((pl.lock()->GetPos().x <= pos.x && pl.lock()->GetPos().x >= pos.x - range.x)
-	 || (pl.lock()->GetPos().x >= pos.x && pl.lock()->GetPos().x <= pos.x + range.x)) {
-		velocity.x = (pos.x >= pl.lock()->GetPos().x ? -speed : speed);
-		range.y = pl.lock()->GetPos().y - 70;
+	if ((pl.lock()->GetLocalPos().x <= localPos.x && pl.lock()->GetLocalPos().x >= localPos.x - range.x)
+	 || (pl.lock()->GetLocalPos().x >= localPos.x && pl.lock()->GetLocalPos().x <= localPos.x + range.x)) {
+		velocity.x = (localPos.x >= pl.lock()->GetLocalPos().x ? -speed : speed);
+		range.y = pl.lock()->GetLocalPos().y - 70;
 		Fly();
 	}
 }
@@ -118,7 +126,7 @@ void Bat::IsHitPlayer()
 	}
 	for (auto& prec : pl.lock()->GetActRect()) {
 		for (auto& erec : attackRect[mode][_currentCutIndex]) {
-			if (IsCollision(prec, erec, pl.lock()->GetPos(), pos)) {
+			if (IsCollision(prec, erec, pl.lock()->GetLocalPos(), localPos)) {
 				if (prec.type == RectType::attack && erec.type == RectType::damage) {
 					Damage();
 					printf("‚ ‚½‚è\n");

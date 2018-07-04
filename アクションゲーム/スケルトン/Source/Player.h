@@ -17,6 +17,7 @@ public:
 	void Updata();
 	void Draw();
 	positin GetPos();
+	positin GetLocalPos();
 	positin GetVec();
 	std::vector<AttackRect> GetActRect();
 	void Damage();
@@ -43,6 +44,7 @@ private:
 	bool _walk;//íºëOÇ…ï‡Ç¢ÇƒÇ¢ÇΩÇ©ä«óù
 	int ground;//ínñ 
 	std::weak_ptr<KeyInput> key;
-	std::weak_ptr<Camera> camera;
+
+	positin localPos;
 };
 

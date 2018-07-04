@@ -20,16 +20,16 @@ void EnemyManager::Draw()
 	}
 }
 
-void EnemyManager::Summons(std::string name, std::weak_ptr<Player> pl, positin pos)
+void EnemyManager::Summons(std::string name, std::weak_ptr<Player> pl, std::weak_ptr<Camera> cam, positin pos)
 {
 	if (name == "DeadMan") {
 		//DeadMan
-		_enemy["DeadMan"] = std::make_shared<DeadMan>(pl, pos);
+		_enemy["DeadMan"] = std::make_shared<DeadMan>(pl, cam, pos);
 		enemy.push_back(_enemy["DeadMan"]);
 	}
 	else if (name == "Bat") {
 		//Bat
-		_enemy["Bat"] = std::make_shared<Bat>(pl, pos);
+		_enemy["Bat"] = std::make_shared<Bat>(pl, cam, pos);
 		enemy.push_back(_enemy["Bat"]);
 	}
 }

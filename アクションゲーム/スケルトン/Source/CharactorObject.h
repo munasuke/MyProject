@@ -3,6 +3,9 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <memory>
+
+class Camera;
 
 //キャラクターコントロール
 class CharactorObject
@@ -15,7 +18,7 @@ public:
 protected:
 	void ChangeMode(std::string md);//状態切り替え
 	void Load(std::string filepath);//ファイル読み込み
-	void DrawRect();//攻撃矩形、やられ矩形の描画
+	void DrawRect(positin _pos);//攻撃矩形、やられ矩形の描画
 	bool IsCollision(AttackRect& rec1, AttackRect& rec2, positin pos1, positin pos2);
 
 	int _currentCutIndex;//現在表示中のカットインデックス
@@ -40,5 +43,7 @@ protected:
 	std::map<std::string, std::vector<CutDate>> cut;
 	//攻撃矩形
 	std::map < std::string, std::map<int, std::vector<AttackRect>>> attackRect;
+
+	std::weak_ptr<Camera> camera;
 };
 
