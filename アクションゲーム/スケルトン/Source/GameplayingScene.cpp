@@ -64,7 +64,9 @@ void GameplayingScene::Updata()
 		}
 	}
 
-	
+	if (pl->GetDieFlag()){
+		alphaFlg = true;
+	}
 	
 	EnemyManager::GetInstance()->Updata();
 	if (key.lock()->IsTrigger(PAD_INPUT_8)){

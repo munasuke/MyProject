@@ -1,2 +1,11 @@
-﻿  GameplayingScene.cpp
-LINK : fatal error LNK1201: プログラム データベース 'C:\Users\1601296\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.pdb' に書き込み中にエラーが発生しました。ディスク容量の不足、無効なパス、または特権の不足が原因でないことを確認してください。
+﻿  Player.cpp
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(65): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(74): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(78): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(210): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(221): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(232): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(233): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(242): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\1601296\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(251): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+  スケルトン.vcxproj -> C:\Users\1601296\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe

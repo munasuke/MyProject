@@ -4,7 +4,7 @@
 
 using namespace DxLib;
 
-Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : _walk(false), ground(340), key(_key), _life(5)
+Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : _walk(false), ground(340), key(_key), _life(5), _ultimateTime(-1), dieFlag(false)
 {
 	velocity = { 0, 0 };
 	pos = { 50, 300 };
@@ -38,6 +38,10 @@ void Player::Updata()
 	if (pos.y >= ground) {
 		pos.y = ground;
 	}
+	if (key.lock()->IsTrigger(PAD_INPUT_UP)){
+		life = 0;
+	}
+	_ultimateTime--;
 }
 
 void Player::Draw()
@@ -243,6 +247,12 @@ void Player::DamageUpdata()
 	}
 }
 
+void Player::DieUpdata() {
+	if (_currentCutIndex > cut[mode].size() - 1) {
+		dieFlag = true;
+	}
+}
+
 
 positin Player::GetPos()
 {
@@ -265,12 +275,24 @@ std::vector<AttackRect> Player::GetActRect()
 
 void Player::Damage()
 {
-	//_life--;
-	_jump = false;
-	_damageTime = 30;
-	_updata = &Player::DamageUpdata;
-	ChangeMode("Damage");
-	PlaySoundMem(_damageSE, DX_PLAYTYPE_BACK);
+	if (_ultimateTime >= 0){
+		return;
+	}
+
+	_ultimateTime = 120;//–³“G2•b
+
+	--life;
+	if (life > 0) {
+		_jump = false;
+		_damageTime = 30;
+		_updata = &Player::DamageUpdata;
+		ChangeMode("Damage");
+		PlaySoundMem(_damageSE, DX_PLAYTYPE_BACK);
+	}
+	else {//Ž€
+		ChangeMode("Die");
+		_updata = &Player::DieUpdata;
+	}
 }
 
 std::string Player::GetActMode()
@@ -281,4 +303,8 @@ std::string Player::GetActMode()
 int Player::GetLife()
 {
 	return _life;
+}
+
+bool Player::GetDieFlag() {
+	return dieFlag;
 }

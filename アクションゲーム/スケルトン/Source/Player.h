@@ -23,6 +23,7 @@ public:
 	void Damage();
 	std::string GetActMode();
 	int GetLife();
+	bool GetDieFlag();
 private:
 	//状態
 	void Jump();
@@ -39,6 +40,7 @@ private:
 	void KickUpdata();
 	void SlidingUpdata();
 	void DamageUpdata();
+	void DieUpdata();
 
 	void (Player::*_updata)();
 	int _damageTime;//ダメージ時の待機時間
@@ -46,6 +48,9 @@ private:
 	int ground;//地面
 	std::weak_ptr<KeyInput> key;
 	int _life;//ライフ
+	int _ultimateTime;//無敵時間
 	positin localPos;//ローカル座標
+
+	bool dieFlag;
 };
 
