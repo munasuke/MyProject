@@ -1,2 +1,2 @@
-﻿  HUD.cpp
-  スケルトン.vcxproj -> C:\Users\1601296\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe
+﻿  GameplayingScene.cpp
+LINK : fatal error LNK1201: プログラム データベース 'C:\Users\1601296\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.pdb' に書き込み中にエラーが発生しました。ディスク容量の不足、無効なパス、または特権の不足が原因でないことを確認してください。

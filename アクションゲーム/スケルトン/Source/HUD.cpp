@@ -11,7 +11,7 @@ HUD::HUD(std::weak_ptr<Player> pl) :
 	barTopH(LoadGraph("img/bar_top.png")),
 	barBottomH(LoadGraph("img/bar_bottom.png")),
 	heartH(LoadGraph("img/real_heart_s.png")),
-	_heartSize(5.0)
+	_heartSize(0.5)
 {
 }
 

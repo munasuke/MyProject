@@ -23,7 +23,7 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
 	bg = new Background(camera);
 	hud = new HUD(pl);
 	bgm = LoadSoundMem("bgm/bgm1.mp3");
-
+	x = 2;
 
 	printf("Gameplaying Scene\n");
 }
@@ -43,10 +43,25 @@ void GameplayingScene::Updata()
 	camera->Update();
 	bg->Updata();
 	pl->Updata();
-
+	positin tmp;
+	y = 0;
 	//“Gƒf[ƒ^‚Ì”‚¾‚¯•`‰æ‚·‚é
-	for (auto em : st->GetEnemyData(1, 400)) {
-
+	for (auto& em : st->GetEnemyData((int)camera->GetPosition().x, (int)(camera->GetPosition().x + SCREEN_SIZE_X / 2 + CHIP_SIZE * 3))) {
+		if (em == 1) {
+			tmp = { x * CHIP_SIZE, y * CHIP_SIZE - 110 };
+			EnemyManager::GetInstance()->Summons("DeadMan", pl, camera, tmp);
+		}
+		else if (em == 2) {
+			tmp = { x * CHIP_SIZE, y * CHIP_SIZE };
+			EnemyManager::GetInstance()->Summons("Bat", pl, camera, tmp);
+		}
+		else if (em == 3) {
+		}
+		++y;
+		if (y >= st->GetStageRange().Height() / CHIP_SIZE) {
+			++x;
+			y = 0;
+		}
 	}
 
 	
@@ -56,7 +71,7 @@ void GameplayingScene::Updata()
 		alphaFlg = true;
 	}
 	FadeOut();
-	PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
+	DxLib::PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
 }
 
 void GameplayingScene::Draw()
