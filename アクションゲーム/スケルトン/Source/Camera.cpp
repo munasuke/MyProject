@@ -27,8 +27,6 @@ void Camera::Update() {
 	{
 		_pos.x = 0;
 	}
-
-	printf("%d\n", _pos.x);
 }
 
 //フォーカス対象を設定

@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <string>
 class Camera;
 
 //プレイヤー管理クラス
@@ -50,6 +51,10 @@ private:
 	int _life;//ライフ
 	int _ultimateTime;//無敵時間
 	positin localPos;//ローカル座標
+	int _alpha;//アルファ値
+	bool _aFlag;
+	int _deathTime;
+	std::map<std::string, int> se;//各種SE
 
 	bool dieFlag;
 };

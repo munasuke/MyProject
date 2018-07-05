@@ -4,7 +4,16 @@
 
 using namespace DxLib;
 
-Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : _walk(false), ground(340), key(_key), _life(5), _ultimateTime(-1), dieFlag(false)
+Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : 
+	_walk(false), 
+	ground(340), 
+	key(_key), 
+	_life(2), 
+	_ultimateTime(-1), 
+	dieFlag(false),
+	_alpha(255),
+	_aFlag(false),
+	_deathTime(90)
 {
 	velocity = { 0, 0 };
 	pos = { 50, 300 };
@@ -15,10 +24,14 @@ Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) : _w
 	Load("Action/player.act");
 	std::string path = "Action/" + header.pathName;
 
+	se["Attack"] = LoadSoundMem("se/punch-swing.mp3");
+	se["Sliding"] = LoadSoundMem("se/sliding.mp3");
+	se["Damage"] = LoadSoundMem("se/p_damage.wav");
+	se["Death"] = LoadSoundMem("se/death_voice.mp3");
+
 	_updata = &Player::NeutralUpdata;
 	image = LoadGraph(path.c_str());
 	mode = "Walk";
-	_damageSE = LoadSoundMem("se/p_damage.wav");
 	_damageTime = 0;
 
 	camera = _camera;
@@ -53,8 +66,20 @@ void Player::Draw()
 	pos.x = min(max(pos.x, left), right);
 
 	auto i = camera.lock()->Correction(pos);
-
 	localPos = i;
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, _alpha);
+	//–³“G’†‚Í“_–Å‚·‚é
+	if (_life > 0) {
+		if (_ultimateTime >= 0) {
+			_alpha = _aFlag ? 255 : 0;
+			_aFlag = !_aFlag;
+		}
+		else {
+			_aFlag = false;
+			_alpha = 255;
+		}
+	}
 
 	DrawRectRotaGraph2(i.x, pos.y,
 		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
@@ -76,7 +101,7 @@ void Player::Draw()
 		}
 	}
 	if (_currentCutIndex > cut[mode].size() - 1) {
-		if (mode != "Punch" && mode != "Kick" && mode != "Sliding") {
+		if (mode != "Punch" && mode != "Kick" && mode != "Sliding" && mode != "Die") {
 			_currentCutIndex = 0;//ƒ‹[ƒv
 		}
 	}
@@ -107,18 +132,21 @@ void Player::Crouch()
 
 void Player::Punch()
 {
+	PlaySoundMem(se["Attack"], DX_PLAYTYPE_BACK);
 	_updata = &Player::PunchUpdata;
 	ChangeMode("Punch");
 }
 
 void Player::Kick()
 {
+	PlaySoundMem(se["Attack"], DX_PLAYTYPE_BACK);
 	_updata = &Player::KickUpdata;
 	ChangeMode("Kick");
 }
 
 void Player::Sliding()
 {
+	PlaySoundMem(se["Sliding"], DX_PLAYTYPE_BACK);
 	//’…’nŠÔÛ‚É‰º•ûŒü‚É“ü—Í‚µ‚È‚ª‚çUŒ‚ƒ{ƒ^ƒ“‚ð“ü—Í
 	_updata = &Player::SlidingUpdata;
 	ChangeMode("Sliding");
@@ -248,7 +276,14 @@ void Player::DamageUpdata()
 }
 
 void Player::DieUpdata() {
-	if (_currentCutIndex > cut[mode].size() - 1) {
+	printf("Die\n");
+	if (_currentCutIndex > cut[mode].size() - 2) {
+		_currentCutIndex = cut[mode].size() - 1;
+	}
+	if (_deathTime >= 0) {
+		--_deathTime;
+	}
+	else {
 		dieFlag = true;
 	}
 }
@@ -281,17 +316,19 @@ void Player::Damage()
 
 	_ultimateTime = 120;//–³“G2•b
 
-	--life;
-	if (life > 0) {
+	--_life;
+	printf("%d\n", _life);
+	if (_life > 0) {
 		_jump = false;
 		_damageTime = 30;
 		_updata = &Player::DamageUpdata;
 		ChangeMode("Damage");
-		PlaySoundMem(_damageSE, DX_PLAYTYPE_BACK);
+		PlaySoundMem(se["Damage"], DX_PLAYTYPE_BACK);
 	}
 	else {//Ž€
-		ChangeMode("Die");
+		PlaySoundMem(se["Death"], DX_PLAYTYPE_BACK);
 		_updata = &Player::DieUpdata;
+		ChangeMode("Die");
 	}
 }
 

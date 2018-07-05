@@ -82,6 +82,7 @@ void GameplayingScene::Draw()
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	bg->Draw(SCREEN_SIZE_X);
 	pl->Draw();
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	EnemyManager::GetInstance()->Draw();
 	hud->Draw(SCREEN_SIZE_Y);
 }
@@ -93,7 +94,7 @@ void GameplayingScene::FadeIn()
 	}
 	if (alpha < 255){
 		if (alphaFlg != true){
-			alpha += 5;
+			alpha += 10;
 		}
 	}
 }
@@ -104,7 +105,7 @@ void GameplayingScene::FadeOut()
 		return;
 	}
 	if (alpha >= 0){
-		alpha -= 5;
+		alpha -= 10;
 		if (alpha == 0) {
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			Game::Instance().ChangeScene(new CountinueScene(key));

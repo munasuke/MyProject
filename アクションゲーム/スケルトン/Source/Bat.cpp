@@ -129,11 +129,9 @@ void Bat::IsHitPlayer()
 			if (IsCollision(prec, erec, pl.lock()->GetLocalPos(), localPos)) {
 				if (prec.type == RectType::attack && erec.type == RectType::damage) {
 					Damage();
-					printf("‚ ‚½‚è\n");
 				}
 				else if (prec.type == RectType::damage && erec.type == RectType::attack) {
 					pl.lock()->Damage();
-					printf("ƒ_ƒ[ƒW\n");
 				}
 			}
 		}
