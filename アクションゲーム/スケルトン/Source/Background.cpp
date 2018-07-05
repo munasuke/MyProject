@@ -20,7 +20,7 @@ void Background::Updata()
 void Background::Draw(const int sizex)
 {
 	//”wŒiƒXƒNƒ[ƒ‹
-	for (int i = 0; i < 5; i+=2) {
+	for (int i = 0; i < 7; i+=2) {
 		DrawGraph(-pos.x + 576 * i, 0, bgH, true);
 		DrawTurnGraph(-pos.x + 576 * (i + 1), 0, bgH, true);
 	}

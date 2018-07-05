@@ -20,12 +20,8 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
 	pl = std::make_shared<Player>(key, camera);
 	camera->SetFocus(pl);
 	EnemyManager::Create();
-	EnemyManager::GetInstance()->Summons("DeadMan", pl, camera, { 400, 340 });//“G¶¬
-	EnemyManager::GetInstance()->Summons("DeadMan", pl, camera, { 200, 340 });
-	EnemyManager::GetInstance()->Summons("Bat", pl, camera, { 700, 130 });
-	EnemyManager::GetInstance()->Summons("Bat", pl, camera, { 500, 130 });
 	bg = new Background(camera);
-	hud = new HUD(*pl);
+	hud = new HUD(pl);
 	bgm = LoadSoundMem("bgm/bgm1.mp3");
 
 
@@ -47,6 +43,14 @@ void GameplayingScene::Updata()
 	camera->Update();
 	bg->Updata();
 	pl->Updata();
+
+	//“Gƒf[ƒ^‚Ì”‚¾‚¯•`‰æ‚·‚é
+	for (auto em : st->GetEnemyData(1, 400)) {
+
+	}
+
+	
+	
 	EnemyManager::GetInstance()->Updata();
 	if (key.lock()->IsTrigger(PAD_INPUT_8)){
 		alphaFlg = true;

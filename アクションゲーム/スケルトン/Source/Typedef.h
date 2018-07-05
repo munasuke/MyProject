@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <Windows.h>
 template <typename T>
 struct Vector2D{
 	Vector2D()
@@ -100,14 +99,14 @@ struct AttackRect {
 //ステージデータ
 struct StageHeader {
 	char id[4];//ID
-	UINT size;//データサイズ
+	unsigned int size;//データサイズ
 
-	UINT mapWidth;//マップの横幅
-	UINT mapHeight;//マップの縦幅
+	unsigned int mapWidth;//マップの横幅
+	unsigned int mapHeight;//マップの縦幅
 
-	UCHAR chipWidth;//チップの横幅
-	UCHAR chipHeight;//チップの縦幅
+	unsigned char chipWidth;//チップの横幅
+	unsigned char chipHeight;//チップの縦幅
 
-	UCHAR layerCnt;//レイヤーサイズ
-	UCHAR bitCnt;//レイヤーのビット数
+	unsigned char layerCnt;//レイヤーサイズ
+	unsigned char bitCnt;//レイヤーのビット数
 };

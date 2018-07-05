@@ -2,7 +2,6 @@
 #include "CharactorObject.h"
 #include "Camera.h"
 
-
 CharactorObject::CharactorObject() :
 	_flame(0),
 	_currentCutIndex(0),

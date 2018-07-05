@@ -1,15 +1,14 @@
 #include "Stage.h"
 #include "Load.h"
+#include <algorithm>
 
 
 Stage::Stage()
 {
-	const char* path = "stage/stage1.fmf";
-	Load(path);
+	const char* path = "Stage/stage1.fmf";
 	readX = 2;
 	readY = 2;
-	//memset(&_stageRange, 0, sizeof(_stageRange));
-	//_stageRange = { 0,0,4000, 480 };
+	Load(path);
 }
 
 
@@ -33,17 +32,15 @@ void Stage::Load(std::string fileName)
 	eventData = Load::GetInstance()->GetEventData(fileName);
 }
 
-//ステージの範囲を返す
 const Rect & Stage::GetStageRange() const {
 	return _stageRange;
 }
 
-std::vector<UCHAR> Stage::GetEnemyData(int minx, int max)
-{
-	int left = max(minx / CHIP_SIZE, readX);
-	int right = max / CHIP_SIZE;
+std::vector<unsigned char> Stage::GetEnemyData(int minx, int _max) {
+	int left = std::max(minx / CHIP_SIZE, readX);
+	int right = _max / CHIP_SIZE;
 	if (right <= readX) {
-		return std::vector<UCHAR>();
+		return std::vector<unsigned char>();
 	}
 
 	auto index = left * stData.mapHeight;
@@ -58,18 +55,16 @@ std::vector<UCHAR> Stage::GetEnemyData(int minx, int max)
 		readX = right;
 	}
 	else {
-		return std::vector<UCHAR>();
+		return std::vector<unsigned char>();
 	}
-
-	return std::vector<UCHAR>(begin, end);
+	return std::vector<unsigned char>(begin, end);
 }
 
-std::vector<UCHAR> Stage::GetEventData(int minx, int max)
-{
-	int left = max(minx / CHIP_SIZE, readY);
-	int right = max / CHIP_SIZE;
+std::vector<unsigned char> Stage::GetEventData(int minx, int _max) {
+	int left = std::max(minx / CHIP_SIZE, readY);
+	int right = _max / CHIP_SIZE;
 	if (right <= readY) {
-		return std::vector<UCHAR>();
+		return std::vector<unsigned char>();
 	}
 
 	auto index = left * stData.mapHeight;
@@ -84,8 +79,7 @@ std::vector<UCHAR> Stage::GetEventData(int minx, int max)
 		readY = right;
 	}
 	else {
-		return std::vector<UCHAR>();
+		return std::vector<unsigned char>();
 	}
-
-	return std::vector<UCHAR>(begin, end);
+	return std::vector<unsigned char>(begin, end);
 }

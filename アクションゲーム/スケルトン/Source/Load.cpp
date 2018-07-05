@@ -4,7 +4,6 @@
 
 Load* Load::s_Instance = nullptr;
 
-// コンストラクタ
 Load::Load()
 {
 	st.clear();
@@ -12,16 +11,10 @@ Load::Load()
 	eventData.clear();
 }
 
-
-
-
-
 // デストラクタ
 Load::~Load()
 {
 }
-
-
 
 // インスタンス化
 void Load::Create(void)
@@ -33,10 +26,6 @@ void Load::Create(void)
 	}
 }
 
-
-
-// 破棄
-
 void Load::Destroy(void)
 {
 	if (s_Instance != nullptr)
@@ -46,11 +35,12 @@ void Load::Destroy(void)
 	s_Instance = nullptr;
 }
 
-
 // 読み込み
 bool Load::LoadMap(std::string fileName)
 {
 	FILE* file;
+
+	int n = st.size();
 
 	for (auto itr = st.begin(); itr != st.end(); ++itr)
 	{
@@ -61,7 +51,6 @@ bool Load::LoadMap(std::string fileName)
 		}
 	}
 
-	//ファイル開らく
 	if ((fopen_s(&file, fileName.c_str(), "rb")) != 0)
 	{
 		return false;
@@ -69,33 +58,33 @@ bool Load::LoadMap(std::string fileName)
 
 	fread(&st[fileName], sizeof(st[fileName]), 1, file);
 
-	std::vector<UCHAR>dummy;
+	std::vector<unsigned char>dummy;
 
 	dummy.resize(st[fileName].mapHeight * st[fileName].mapWidth);
 
 	enemyData[fileName].resize(st[fileName].mapHeight * st[fileName].mapWidth);
 
-	for (UINT i = 0; i < enemyData[fileName].size(); ++i)
+	for (unsigned int i = 0; i < enemyData[fileName].size(); ++i)
 	{
-		fread(&dummy[i], sizeof(UCHAR), 1, file);
+		fread(&dummy[i], sizeof(unsigned char), 1, file);
 	}
 
-	std::vector<UCHAR>edummy;
+	std::vector<unsigned char>edummy;
 
 	edummy.resize(st[fileName].mapHeight * st[fileName].mapWidth);
 
 	eventData[fileName].resize(st[fileName].mapHeight * st[fileName].mapWidth);
 
-	for (UINT i = 0; i < eventData[fileName].size(); ++i)
+	for (unsigned int i = 0; i < eventData[fileName].size(); ++i)
 	{
-		fread(&edummy[i], sizeof(UCHAR), 1, file);
+		fread(&edummy[i], sizeof(unsigned char), 1, file);
 	}
 
 	fclose(file);
 
-	for (UINT i = 0; i < st[fileName].mapHeight; ++i)
+	for (unsigned int i = 0; i < st[fileName].mapHeight; ++i)
 	{
-		for (UINT j = 0; j < st[fileName].mapWidth; ++j)
+		for (unsigned int j = 0; j < st[fileName].mapWidth; ++j)
 		{
 			enemyData[fileName][j * st[fileName].mapHeight + i] = dummy[i * st[fileName].mapWidth + j];
 			eventData[fileName][j * st[fileName].mapHeight + i] = edummy[i * st[fileName].mapWidth + j];
@@ -111,13 +100,13 @@ StageHeader Load::GetStageHeader(std::string fileName)
 }
 
 // ステージの敵データの取得
-std::vector<UCHAR> Load::GetEnemyData(std::string fileName)
+std::vector<unsigned char> Load::GetEnemyData(std::string fileName)
 {
 	return enemyData[fileName];
 }
 
 // ステージのイベントデータの取得
-std::vector<UCHAR> Load::GetEventData(std::string fileName)
+std::vector<unsigned char> Load::GetEventData(std::string fileName)
 {
 	return eventData[fileName];
 }

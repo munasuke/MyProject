@@ -1,9 +1,9 @@
 #pragma once
-#include "Typedef.h"
 #include <string>
 #include <map>
 #include <vector>
 #include <memory>
+#include "Typedef.h"
 
 class Camera;
 

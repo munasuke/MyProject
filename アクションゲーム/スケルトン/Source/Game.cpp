@@ -1,11 +1,13 @@
 #include "DxLib.h"
 #include "Game.h"
 #include "TitleScene.h"
+#include "Load.h"
 
 //‰Šú‰»
 void Game::Init()
 {
 	SysInit();
+	Load::Create();
 	k = std::make_shared<KeyInput>();
 	ChangeScene(new TitleScene(k));
 	screenSize.w = SCREEN_SIZE_X;

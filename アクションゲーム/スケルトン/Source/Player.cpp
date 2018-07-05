@@ -265,7 +265,7 @@ std::vector<AttackRect> Player::GetActRect()
 
 void Player::Damage()
 {
-	_life--;
+	//_life--;
 	_jump = false;
 	_damageTime = 30;
 	_updata = &Player::DamageUpdata;

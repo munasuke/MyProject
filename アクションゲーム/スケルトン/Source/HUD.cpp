@@ -10,7 +10,8 @@ HUD::HUD(std::weak_ptr<Player> pl) :
 	_score(0),
 	barTopH(LoadGraph("img/bar_top.png")),
 	barBottomH(LoadGraph("img/bar_bottom.png")),
-	heartH(LoadGraph("img/real_heart.png"))
+	heartH(LoadGraph("img/real_heart_s.png")),
+	_heartSize(5.0)
 {
 }
 
@@ -30,7 +31,6 @@ void HUD::Draw(int sizey)
 
 	int life = _pl.lock()->GetLife();
 	for (int i = 0; i < life; ++i) {
-		DrawGraph(100 + i * 40, 100, heartH, true);//ƒ‰ƒCƒt•`‰æ
+		DrawRotaGraph2(220 + i * 30, 400, 0, 0, _heartSize, 0.0, heartH, true);//ƒ‰ƒCƒt•`‰æ
 	}
-
 }

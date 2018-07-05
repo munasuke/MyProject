@@ -15,16 +15,16 @@ public:
 
 	const Rect& GetStageRange() const;
 
-	std::vector<UCHAR>GetEnemyData(int minx, int max);
-	std::vector<UCHAR>GetEventData(int minx, int max);
+	std::vector<unsigned char>GetEnemyData(int minx, int max);
+	std::vector<unsigned char>GetEventData(int minx, int max);
 
 private:
 	Rect _stageRange;
 
 	StageHeader stData;
 
-	std::vector<UCHAR> enemyData;
-	std::vector<UCHAR> eventData;
+	std::vector<unsigned char> enemyData;
+	std::vector<unsigned char> eventData;
 
 	int readX, readY;
 };

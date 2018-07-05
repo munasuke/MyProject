@@ -18,5 +18,6 @@ private:
 	int heartH;//ライフ画像ハンドル
 	std::weak_ptr<Player> _pl;
 	int _score;//スコア
+	double _heartSize;//ライフのサイズ
 };
 

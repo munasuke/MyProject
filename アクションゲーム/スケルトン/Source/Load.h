@@ -1,10 +1,7 @@
 #pragma once
-
-#include "typedef.h"
+#include "Typedef.h"
 #include <vector>
 #include <map>
-#include <string>
-#include <Windows.h>
 
 
 class Load
@@ -30,10 +27,10 @@ public:
 	StageHeader GetStageHeader(std::string fileName);
 
 	// ステージの敵データの取得
-	std::vector<UCHAR>GetEnemyData(std::string fileName);
+	std::vector<unsigned char>GetEnemyData(std::string fileName);
 
 	// ステージのイベントデータの取得
-	std::vector<UCHAR>GetEventData(std::string fileName);
+	std::vector<unsigned char>GetEventData(std::string fileName);
 
 private:
 	// コンストラクタ
@@ -46,8 +43,8 @@ private:
 	std::map<std::string, StageHeader>st;
 
 	// ステージの敵データ
-	std::map<std::string, std::vector<UCHAR>>enemyData;
+	std::map<std::string, std::vector<unsigned char>>enemyData;
 
 	// ステージのイベントデータ
-	std::map<std::string, std::vector<UCHAR>>eventData;
+	std::map<std::string, std::vector<unsigned char>>eventData;
 };
