@@ -15,7 +15,7 @@ TitleScene::TitleScene(std::weak_ptr<KeyInput> _key) :
 	key = _key;
 	alpha = 0;
 	alphaFlg = false;
-	//printf("Title Scene\n");
+	printf("Title Scene\n");
 	pos.x = 1280 / 2;
 	pos.y = 720 / 2;
 	SetUseZBuffer3D(true);
@@ -26,14 +26,13 @@ TitleScene::TitleScene(std::weak_ptr<KeyInput> _key) :
 
 TitleScene::~TitleScene()
 {
-	//printf("Title Scene is Deleted\n\n");
+	printf("Title Scene is Deleted\n\n");
 }
 
 void TitleScene::Updata()
 {
 	if (key.lock()->IsTrigger(PAD_INPUT_8)) {
 		alphaFlg = true;
-		PlaySoundMem(startSE, DX_PLAYTYPE_BACK);
 	}
 	if (key.lock()->IsPressing(PAD_INPUT_UP)){
 		pos.y += 2;

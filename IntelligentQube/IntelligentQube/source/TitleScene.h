@@ -17,7 +17,6 @@ private:
 	int pressImage;
 	bool aflg;
 	int pressalpha;
-	int startSE;
 	positin pos;
 };
 

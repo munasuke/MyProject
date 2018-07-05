@@ -35,6 +35,46 @@ struct Vector2D{
 
 typedef Vector2D<int>positin;
 
+template <typename T>
+struct Vector3D{
+	Vector3D()
+	{}
+	Vector3D(T inx, T iny, T inz) : x(inx), y(iny), z(inz)
+	{}
+
+	T x;
+	T y;
+	T z;
+
+	Vector3D operator+(T i)
+	{
+		Vector3D tmp;
+		tmp.x = x + i;
+		tmp.y = y + i;
+		tmp.z = z + i;
+		return tmp;
+	}
+	Vector3D operator+(Vector3D& vec) {
+		Vector3D tmp;
+		tmp.x = x + vec.x;
+		tmp.y = y + vec.y;
+		tmp.z = z + vec.z;
+		return tmp;
+	}
+	void operator+=(T i) {
+		x += i;
+		y += i;
+		z += i;
+	}
+	void operator+=(Vector3D& vec) {
+		x += vec.x;
+		y += vec.y;
+		z += vec.y;
+	}
+};
+
+typedef Vector3D<int>positin3D;
+
 struct Rect {
 	positin pos;
 	int w, h;
