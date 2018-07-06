@@ -8,12 +8,12 @@ Player::Player(std::weak_ptr<KeyInput> _key, std::weak_ptr<Camera> _camera) :
 	_walk(false), 
 	ground(340), 
 	key(_key), 
-	_life(2), 
+	_life(5), 
 	_ultimateTime(-1), 
 	dieFlag(false),
 	_alpha(255),
 	_aFlag(false),
-	_deathTime(90)
+	_deathTime(110)
 {
 	velocity = { 0, 0 };
 	pos = { 50, 300 };
@@ -44,6 +44,9 @@ Player::~Player()
 
 void Player::Updata()
 {	
+	if (mode == "Climb") {
+		_updata = &Player::LadderUpdata;
+	}
 	//ÉAÉNÉVÉáÉìÅ´
 	pos += velocity;
 	velocity.y += (int)gravity;
@@ -288,6 +291,11 @@ void Player::DieUpdata() {
 	}
 }
 
+void Player::LadderUpdata()
+{
+	pos.y--;
+}
+
 
 positin Player::GetPos()
 {
@@ -335,6 +343,12 @@ void Player::Damage()
 std::string Player::GetActMode()
 {
 	return mode;
+}
+
+void Player::SetActMode(std::string name)
+{
+	mode = name;
+	ChangeMode(name);
 }
 
 int Player::GetLife()

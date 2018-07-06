@@ -56,6 +56,8 @@ void GameplayingScene::Updata()
 			EnemyManager::GetInstance()->Summons("Bat", pl, camera, tmp);
 		}
 		else if (em == 3) {
+			tmp = { x * CHIP_SIZE, y * CHIP_SIZE - 100};
+			EnemyManager::GetInstance()->Summons("Pike", pl, camera, tmp);
 		}
 		++y;
 		if (y >= st->GetStageRange().Height() / CHIP_SIZE) {

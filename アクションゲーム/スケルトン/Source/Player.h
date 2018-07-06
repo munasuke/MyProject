@@ -23,6 +23,7 @@ public:
 	std::vector<AttackRect> GetActRect();
 	void Damage();
 	std::string GetActMode();
+	void SetActMode(std::string name);
 	int GetLife();
 	bool GetDieFlag();
 private:
@@ -42,6 +43,7 @@ private:
 	void SlidingUpdata();
 	void DamageUpdata();
 	void DieUpdata();
+	void LadderUpdata();
 
 	void (Player::*_updata)();
 	int _damageTime;//ダメージ時の待機時間

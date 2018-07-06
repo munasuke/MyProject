@@ -54,15 +54,16 @@ void TitleScene::Draw()
 			aflg = true;
 		}
 	}
-	if (alpha < 255){
-		if (alphaFlg != true){
-			alpha++;
-		}
-	}
+	FadeIn();
 }
 
 void TitleScene::FadeIn()
 {
+	if (alpha < 255) {
+		if (alphaFlg != true) {
+			alpha++;
+		}
+	}
 }
 
 void TitleScene::FadeOut()

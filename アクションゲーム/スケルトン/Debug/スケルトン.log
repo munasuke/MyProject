@@ -1,26 +1,37 @@
-﻿  Bat.cpp
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(50): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(57): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(67): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-  Camera.cpp
-  DeadMan.cpp
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(54): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(61): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(73): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(78): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-  EnemyManager.cpp
-  GameplayingScene.cpp
-  HUD.cpp
-  Player.cpp
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(90): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(99): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(103): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(238): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(249): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(260): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(261): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(270): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
-c:\users\muna\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(280): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
-  TitleScene.cpp
+﻿  Player.cpp
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(90): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(99): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(103): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(238): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(249): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(260): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(261): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(270): warning C4244: '+=': 'float' から 'int' への変換です。データが失われる可能性があります。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\player.cpp(280): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+  Ladder.cpp
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\ladder.cpp(49): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\ladder.cpp(56): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+  Block.cpp
   コードを生成中...
-  スケルトン.vcxproj -> C:\Users\muna\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe
+  コンパイル中...
+  TitleScene.cpp
+  Pike.cpp
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\pike.cpp(46): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\pike.cpp(53): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+  HUD.cpp
+  GameplayingScene.cpp
+  EnemyManager.cpp
+  DeadMan.cpp
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(54): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(61): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(73): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\deadman.cpp(78): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+  CountinueScene.cpp
+  Camera.cpp
+  Bat.cpp
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(50): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(57): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+c:\users\haruka\documents\github\myproject\アクションゲーム\スケルトン\source\bat.cpp(67): warning C4018: '>': signed と unsigned の数値を比較しようとしました。
+  コードを生成中...
+  スケルトン.vcxproj -> C:\Users\haruka\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.exe
+  スケルトン.vcxproj -> C:\Users\haruka\Documents\GitHub\MyProject\アクションゲーム\Debug\スケルトン.pdb (Partial PDB)

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Background.cpp" />
     <ClCompile Include="Source\Bat.cpp" />
+    <ClCompile Include="Source\Block.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\CharactorObject.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
@@ -33,8 +34,10 @@
     <ClCompile Include="Source\Ground.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\KeyInput.cpp" />
+    <ClCompile Include="Source\Ladder.cpp" />
     <ClCompile Include="Source\Load.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Pike.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
@@ -43,6 +46,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Background.h" />
     <ClInclude Include="Source\Bat.h" />
+    <ClInclude Include="Source\Block.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\CharactorObject.h" />
     <ClInclude Include="Source\Collision.h" />
@@ -55,7 +59,9 @@
     <ClInclude Include="Source\Ground.h" />
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\KeyInput.h" />
+    <ClInclude Include="Source\Ladder.h" />
     <ClInclude Include="Source\Load.h" />
+    <ClInclude Include="Source\Pike.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\TitleScene.h" />
@@ -70,7 +76,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6AD16EA2-4886-4BE2-9622-5D45374A6B63}</ProjectGuid>
     <RootNamespace>スケルトン</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

@@ -32,6 +32,10 @@ void EnemyManager::Summons(std::string name, std::weak_ptr<Player> pl, std::weak
 		_enemy["Bat"] = std::make_shared<Bat>(pl, cam, pos);
 		enemy.push_back(_enemy["Bat"]);
 	}
+	else if (name == "Pike") {
+		_enemy["Pike"] = std::make_shared<Pike>(pl, cam, pos);
+		enemy.push_back(_enemy["Pike"]);
+	}
 }
 
 EnemyManager::EnemyManager()

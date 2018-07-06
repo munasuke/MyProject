@@ -3,6 +3,7 @@
 #include "CharactorObject.h"
 #include "DeadMan.h"
 #include "Bat.h"
+#include "Pike.h"
 #include "Player.h"
 #include <memory>
 #include <list>
