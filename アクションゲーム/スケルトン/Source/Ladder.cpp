@@ -24,7 +24,7 @@ void Ladder::Updata()
 {
 	if (pl.lock()->GetLocalPos().x >= localPos.x) {
 		if (pl.lock()->GetActMode() != "Climb") {
-			pl.lock()->SetActMode("Climb");
+			//pl.lock()->SetActMode("Climb");
 		}
 	}
 }
@@ -43,8 +43,8 @@ void Ladder::Draw()
 	DrawRectRotaGraph2(localPos.x, localPos.y,
 		cut[mode][_currentCutIndex].rect.Left(), cut[mode][_currentCutIndex].rect.Top(),
 		cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(),
-		centorX, cut[mode][_currentCutIndex].centor.y,
-		2.0, 0.0, image, true, turnFlag);
+		cut[mode][_currentCutIndex].centor.x, cut[mode][_currentCutIndex].centor.y,
+		2.0, 0.0, image, true, false);
 
 	if (_flame > cut[mode][_currentCutIndex].frame) {
 		_currentCutIndex++;

@@ -44,20 +44,19 @@ Player::~Player()
 
 void Player::Updata()
 {	
+	(this->*_updata)();
 	if (mode == "Climb") {
 		_updata = &Player::LadderUpdata;
 	}
-	//アクション↓
-	pos += velocity;
-	velocity.y += (int)gravity;
-	(this->*_updata)();
-	if (pos.y >= ground) {
-		pos.y = ground;
+	else {
+		//アクション↓
+		pos += velocity;
+		velocity.y += (int)gravity;
+		if (pos.y >= ground) {
+			pos.y = ground;
+		}
+		_ultimateTime--;
 	}
-	if (key.lock()->IsTrigger(PAD_INPUT_UP)){
-		life = 0;
-	}
-	_ultimateTime--;
 }
 
 void Player::Draw()
@@ -293,7 +292,7 @@ void Player::DieUpdata() {
 
 void Player::LadderUpdata()
 {
-	pos.y--;
+	pos.y -= speed;
 }
 
 
@@ -324,7 +323,7 @@ void Player::Damage()
 
 	_ultimateTime = 120;//無敵2秒
 
-	--_life;
+	//--_life;
 	printf("%d\n", _life);
 	if (_life > 0) {
 		_jump = false;

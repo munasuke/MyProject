@@ -25,6 +25,6 @@ private:
 	HUD* hud;//UI
 	std::shared_ptr<Camera> camera;
 
-	int x, y;
+	int x, y, eventx;
 };
 

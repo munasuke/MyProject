@@ -28,6 +28,7 @@
     <ClCompile Include="Source\CountinueScene.cpp" />
     <ClCompile Include="Source\DeadMan.cpp" />
     <ClCompile Include="Source\EnemyManager.cpp" />
+    <ClCompile Include="Source\EventManager.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameoverScene.cpp" />
     <ClCompile Include="Source\GameplayingScene.cpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="Source\CountinueScene.h" />
     <ClInclude Include="Source\DeadMan.h" />
     <ClInclude Include="Source\EnemyManager.h" />
+    <ClInclude Include="Source\EventManager.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GameoverScene.h" />
     <ClInclude Include="Source\GameplayingScene.h" />
@@ -174,10 +176,13 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\DxLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\DxLib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -3,6 +3,7 @@
 #include "Stage.h"
 #include "Camera.h"
 #include "EnemyManager.h"
+#include "EventManager.h"
 #include "Background.h"
 #include "HUD.h"
 #include "CountinueScene.h"
@@ -20,10 +21,12 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
 	pl = std::make_shared<Player>(key, camera);
 	camera->SetFocus(pl);
 	EnemyManager::Create();
+	EventManager::Create();
 	bg = new Background(camera);
 	hud = new HUD(pl);
 	bgm = LoadSoundMem("bgm/bgm1.mp3");
 	x = 2;
+	eventx = 2;
 
 	printf("Gameplaying Scene\n");
 }
@@ -32,6 +35,7 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
 GameplayingScene::~GameplayingScene()
 {
 	EnemyManager::Destroy();
+	EventManager::Destroy();
 	delete bg;
 	delete hud;
 
@@ -66,11 +70,25 @@ void GameplayingScene::Updata()
 		}
 	}
 
+	//イベントデータの数だけ描画
+	for (auto& ev : st->GetEventData((int)camera->GetPosition().x, (int)(camera->GetPosition().x + SCREEN_SIZE_X / 2 + CHIP_SIZE * 3))) {
+		if (ev == 1) {
+			tmp = { eventx * CHIP_SIZE, y * CHIP_SIZE - 460 };
+			EventManager::GetInstance()->CallEventObject("Ladder", pl, camera, tmp);
+		}
+		++y;
+		if (y >= st->GetStageRange().Height() / CHIP_SIZE) {
+			++eventx;
+			y = 0;
+		}
+	}
+
 	if (pl->GetDieFlag()){
 		alphaFlg = true;
 	}
 	
 	EnemyManager::GetInstance()->Updata();
+	EventManager::GetInstance()->Updata();
 	if (key.lock()->IsTrigger(PAD_INPUT_8)){
 		alphaFlg = true;
 	}
@@ -86,6 +104,7 @@ void GameplayingScene::Draw()
 	pl->Draw();
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	EnemyManager::GetInstance()->Draw();
+	EventManager::GetInstance()->Draw();
 	hud->Draw(SCREEN_SIZE_Y);
 }
 
