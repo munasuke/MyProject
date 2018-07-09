@@ -1,6 +1,7 @@
 #include "Pike.h"
 #include "Player.h"
 #include "Camera.h"
+#include "Load.h"
 #include "DxLib.h"
 
 
@@ -11,7 +12,7 @@ Pike::Pike(std::weak_ptr<Player> _pl, std::weak_ptr<Camera> _cam, positin _pos) 
 	pos = _pos;
 	Load("Action/pike.act");
 	std::string path = "Action/" + header.pathName;
-	image = LoadGraph(path.c_str());
+	image = Load::GetInstance()->LoadImg(path.c_str());
 	mode = "Attack";
 	turnFlag = false;
 }

@@ -13,12 +13,15 @@ CountinueScene::CountinueScene(std::weak_ptr<KeyInput> _key) :
 {
 	key = _key;
 	alpha = 0;
+	bgm = LoadSoundMem("bgm/bgm1.mp3");
+	PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
 	printf("Countinue Scene\n");
 }
 
 
 CountinueScene::~CountinueScene()
 {
+	StopSoundMem(bgm);
 	printf("Countinue Scene is Deleted\n\n");
 }
 

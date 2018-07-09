@@ -32,6 +32,8 @@ public:
 	// ステージのイベントデータの取得
 	std::vector<unsigned char>GetEventData(std::string fileName);
 
+	int LoadImg(std::string name);
+
 private:
 	// コンストラクタ
 	Load();
@@ -47,4 +49,6 @@ private:
 
 	// ステージのイベントデータ
 	std::map<std::string, std::vector<unsigned char>>eventData;
+
+	std::map<std::string, int> image;
 };

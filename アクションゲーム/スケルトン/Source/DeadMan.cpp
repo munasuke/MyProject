@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "DeadMan.h"
 #include "Camera.h"
+#include "Load.h"
 
 
 
@@ -13,7 +14,7 @@ DeadMan::DeadMan(std::weak_ptr<Player>pl, std::weak_ptr<Camera> cam, positin _po
 	speed = 1;
 	Load("Action/deadman.act");
 	std::string path = "Action/" + header.pathName;
-	image = LoadGraph(path.c_str());
+	image = Load::GetInstance()->LoadImg(path.c_str());
 	mode = "Walk";
 	_updata = &DeadMan::NeutralUpdata;
 	_wait = 0;

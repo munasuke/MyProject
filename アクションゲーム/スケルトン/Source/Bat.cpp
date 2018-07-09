@@ -1,5 +1,6 @@
 #include "Bat.h"
 #include "Camera.h"
+#include "Load.h"
 #include "DxLib.h"
 
 
@@ -12,7 +13,7 @@ Bat::Bat(std::weak_ptr<Player>pl, std::weak_ptr<Camera> cam, positin _pos) : pl(
 	speed = 5;
 	Load("Action/bat.act");
 	std::string path = "Action/" + header.pathName;
-	image = LoadGraph(path.c_str());
+	image = Load::GetInstance()->LoadImg(path.c_str());
 	mode = "Wait";
 	_updata = &Bat::NeutralUpdata;
 	_wait = 0;
@@ -62,7 +63,7 @@ void Bat::Draw()
 		_flame = 0;
 	}
 
-	DrawRect(localPos);
+	
 
 	if (_currentCutIndex > cut[mode].size() - 1) {
 		_currentCutIndex = 0;
@@ -74,6 +75,7 @@ void Bat::Draw()
 #ifdef _DEBUG
 	DrawBox(localPos.x - range.x, localPos.y - 50, localPos.x, localPos.y, 0xff0000ff, false);
 	DrawBox(localPos.x, localPos.y - 50, localPos.x + range.x, localPos.y, 0xff0000ff, false);
+	DrawRect(localPos);
 #endif
 }
 

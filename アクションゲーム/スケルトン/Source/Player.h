@@ -59,5 +59,7 @@ private:
 	std::map<std::string, int> se;//ŠeíSE
 
 	bool dieFlag;
+
+	std::string old_mode;
 };
 

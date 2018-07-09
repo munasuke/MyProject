@@ -1,4 +1,5 @@
 #include "Load.h"
+#include "DxLib.h"
 #include <cassert>
 #include <tchar.h>
 
@@ -9,6 +10,7 @@ Load::Load()
 	st.clear();
 	enemyData.clear();
 	eventData.clear();
+	image.clear();
 }
 
 // デストラクタ
@@ -109,4 +111,16 @@ std::vector<unsigned char> Load::GetEnemyData(std::string fileName)
 std::vector<unsigned char> Load::GetEventData(std::string fileName)
 {
 	return eventData[fileName];
+}
+
+int Load::LoadImg(std::string name) {
+
+	if (image.find(name) != image.end()){
+		return image[name];
+	}
+	else{
+		return image[name] = LoadGraph(name.c_str());
+	}
+
+	return -1;
 }

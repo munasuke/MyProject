@@ -56,6 +56,7 @@ void Player::Updata()
 			pos.y = ground;
 		}
 		_ultimateTime--;
+		old_mode = mode;
 	}
 }
 
@@ -88,7 +89,7 @@ void Player::Draw()
 		cut[mode][_currentCutIndex].rect.Width(), cut[mode][_currentCutIndex].rect.Height(),
 		centorX, cut[mode][_currentCutIndex].centor.y,
 		2.0, 0.0, image, true, turnFlag);
-
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	if (_flame > cut[mode][_currentCutIndex].frame) {
 		_currentCutIndex++;
 		_flame = 0;
@@ -116,7 +117,9 @@ void Player::Draw()
 void Player::Jump() {
 	int jump_power = -15;
 	if (!_jump) {
-		_jump = true;
+		if (pos.y >= ground){
+			_jump = true;
+		}
 		if (_walk) {
 			velocity.x = turnFlag ? -speed : speed;
 		}
@@ -172,6 +175,15 @@ void Player::NeutralUpdata()
 	if (key.lock()->IsTrigger(PAD_INPUT_UP)) {
 		Jump();
 	}
+
+	if (key.lock()->IsTrigger(PAD_INPUT_1)) {
+		if (old_mode == "Jump"){
+			Sliding();
+		}
+	}
+	if (key.lock()->IsTrigger(PAD_INPUT_UP) && key.lock()->IsTrigger(PAD_INPUT_DOWN) && key.lock()->IsPressing(PAD_INPUT_1)){
+		Sliding();
+	}
 }
 
 void Player::WalkUpdata()
@@ -204,7 +216,6 @@ void Player::JumpUpdata()
 		return;
 	}
 	if (key.lock()->IsPressing(PAD_INPUT_DOWN)) {
-		_jump = false;
 		Crouch();
 	}
 	if (pos.y >= ground) {
@@ -218,20 +229,20 @@ void Player::JumpUpdata()
 void Player::CrouchUpdata()
 {
 	if (pos.y >= ground) {
+		_jump = false;
 		velocity.x = 0;
 	}
 	if (key.lock()->IsTrigger(PAD_INPUT_1)) {
 		Kick();
 	}
 	if (key.lock()->IsTrigger(PAD_INPUT_UP)) {
-		Jump();
+		if (pos.y >= ground){
+			Jump();
+		}
 	}
 	if (key.lock()->IsPressing(PAD_INPUT_DOWN) == 0) {
 		_updata = &Player::NeutralUpdata;
 		ChangeMode("Walk");
-	}
-	if (key.lock()->IsTrigger(PAD_INPUT_2)) {
-		Sliding();
 	}
 }
 
@@ -317,13 +328,13 @@ std::vector<AttackRect> Player::GetActRect()
 
 void Player::Damage()
 {
-	if (_ultimateTime >= 0){
+	if (_ultimateTime >= 0 || mode == "Climb"){
 		return;
 	}
 
 	_ultimateTime = 120;//–³“G2•b
 
-	//--_life;
+	--_life;
 	printf("%d\n", _life);
 	if (_life > 0) {
 		_jump = false;

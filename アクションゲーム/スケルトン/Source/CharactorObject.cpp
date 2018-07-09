@@ -65,9 +65,9 @@ void CharactorObject::Load(std::string filepath)
 	fclose(file);
 }
 
-#ifdef _DEBUG
 void CharactorObject::DrawRect(positin _pos)
 {
+#ifdef _DEBUG
 	for (auto& a : attackRect[mode][_currentCutIndex])
 	{
 		int tmpX[2];
@@ -79,8 +79,8 @@ void CharactorObject::DrawRect(positin _pos)
 			color,
 			false);
 	}
-}
 #endif
+}
 
 bool CharactorObject::IsCollision(AttackRect& rec1, AttackRect& rec2, positin pos1, positin pos2)
 {
