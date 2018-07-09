@@ -121,19 +121,25 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="source\Cube.h" />
     <ClInclude Include="source\Game.h" />
     <ClInclude Include="source\GameplayingScene.h" />
     <ClInclude Include="source\KeyInput.h" />
     <ClInclude Include="source\Main.h" />
+    <ClInclude Include="source\NowLoading.h" />
+    <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\Scene\Scene.h" />
     <ClInclude Include="source\TitleScene.h" />
     <ClInclude Include="source\Typedef.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\Cube.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameplayingScene.cpp" />
     <ClCompile Include="source\KeyInput.cpp" />
     <ClCompile Include="source\Main.cpp" />
+    <ClCompile Include="source\NowLoading.cpp" />
+    <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Scene\Scene.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
   </ItemGroup>

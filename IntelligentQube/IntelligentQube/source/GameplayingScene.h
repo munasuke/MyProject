@@ -3,7 +3,9 @@
 #include "DxLib.h"
 #include <memory>
 
-#define RAD(X) X * DX_PI_F / 180.0f
+class NowLoading;
+class Player;
+class Cube;
 
 class GameplayingScene :
 	public Scene
@@ -16,8 +18,8 @@ public:
 	void FadeIn();
 	void FadeOut();
 private:
-	int _playerH;
-	VECTOR _pos;
-	VECTOR _rot;
+	std::shared_ptr<NowLoading> ld;
+	std::shared_ptr<Player> pl;
+	std::shared_ptr<Cube> cube;
 };
 

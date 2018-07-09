@@ -73,7 +73,8 @@ struct Vector3D{
 	}
 };
 
-typedef Vector3D<int>positin3D;
+
+typedef Vector3D<float>positin3D;
 
 struct Rect {
 	positin pos;

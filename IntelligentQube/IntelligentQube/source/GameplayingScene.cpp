@@ -1,20 +1,28 @@
 #include "GameplayingScene.h"
 #include "Game.h"
+#include "NowLoading.h"
+#include "Player.h"
+#include "Cube.h"
 
 
-GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key) : 
-	_playerH(MV1LoadModel("models/Alicia/Alicia_solid.pmx")),
-	_pos(VGet(0.0f, 0.0f, 0.0f)),
-	_rot(VGet(0.0f, 0.0f, 0.0f))
+GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
 {
 	key = _key;
 	alpha = 0;
 	alphaFlg = false;
 
+	ld = std::make_shared<NowLoading>();
+	pl = std::make_shared<Player>(key);
+	cube = std::make_shared<Cube>();
+
 	//カメラの設定
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 15.0f, -25.0f), VGet(0.0f, 10.0f, 0.0f));//視点、注視点を設定
 	SetupCamera_Perspective(RAD(60.0f));//遠近法カメラの設定
 	SetCameraNearFar(0.5f, 300.0f);//クリップの設定
+
+	//ライトの設定
+	SetLightEnable(false);
+	SetUseLighting(false);
 
 	printf("Gameplaying Scene\n");
 }
@@ -31,23 +39,8 @@ void GameplayingScene::Updata()
 	if (key.lock()->IsTrigger(PAD_INPUT_8)){
 		alphaFlg = true;
 	}
+	pl->Updata();
 
-	if (key.lock()->IsPressing(PAD_INPUT_UP)){
-		_pos.z++;
-		_rot.y = RAD(180);
-	}
-	else if (key.lock()->IsPressing(PAD_INPUT_DOWN)){
-		_pos.z--;
-		_rot.y = RAD(0);
-	}
-	else if (key.lock()->IsPressing(PAD_INPUT_RIGHT)){
-		_pos.x++;
-		_rot.y = RAD(270);
-	}
-	else if (key.lock()->IsPressing(PAD_INPUT_LEFT)){
-		_pos.x--;
-		_rot.y = RAD(90);
-	}
 	FadeOut();
 }
 
@@ -55,12 +48,12 @@ void GameplayingScene::Draw()
 {
 	FadeIn();
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
-	if (_playerH == -1){
-		printf("ロードされてないよ\n");
+
+	pl->Draw();
+	cube->Draw();
+	if (CheckHandleASyncLoad(pl->GetPlayerHandle())){
+		ld->Draw(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2);
 	}
-	MV1SetPosition(_playerH, _pos);
-	MV1SetRotationXYZ(_playerH, _rot);
-	MV1DrawModel(_playerH);
 }
 
 void GameplayingScene::FadeIn()
