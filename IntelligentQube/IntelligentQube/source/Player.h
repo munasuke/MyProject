@@ -2,6 +2,8 @@
 #include "Typedef.h"
 #include "DxLib.h"
 #include <memory>
+#include <map>
+#include <string>
 
 #define RAD(X) X * DX_PI_F / 180.0f
 
@@ -19,20 +21,28 @@ public:
 private:
 	void Move();
 	void Animation();
+	void SetAnimation(int _index);
+
+	void NeutralUpdata();
+	void WalkUpdata();
+	void(Player::*updata)();//ステータスのメンバ関数ポインタ
 
 	std::weak_ptr<KeyInput> key;
 
-	int playerH;//モデルハンドル
+	//ハンドル
+	int playerH;
 
-	int animIndex;//アニメーション番号
+	//アニメーション
+	int animIndex;//番号
 	float animTime;//カウント用
-	float animTimeTotal;//アニメーションの総再生時間
+	float animTimeTotal;//総再生時間
+	std::map<std::string, int> anim;//状態に合ったアニメーションを取得
 
 	bool onceflag;
 
+	//ステータス
 	positin3D pos;//座標
 	positin3D rot;//角度
-
 	float speed;//移動速度
 };
 
