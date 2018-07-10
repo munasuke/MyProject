@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "KeyInput.h"
+#include "DxLib.h"
 
 
 Player::Player(std::weak_ptr<KeyInput> _key) :
@@ -31,7 +32,7 @@ void Player::Updata() {
 		};
 		animIndex = MV1AttachAnim(playerH, anim["Wait"], -1);
 		animTime = 0.0f;
-		animTimeTotal = MV1GetAttachAnimTotalTime(playerH, animTime);
+		animTimeTotal = MV1GetAttachAnimTotalTime(playerH, static_cast<int>(animTime));
 	}
 	(this->*updata)();
 	Animation();

@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "NowLoading.h"
 #include "Player.h"
-#include "Cube.h"
+#include "Game/Cube.h"
 
 
 GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
@@ -17,12 +17,17 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key)
 
 	//カメラの設定
 	SetCameraPositionAndTarget_UpVecY(VGet(0.0f, 15.0f, -25.0f), VGet(0.0f, 10.0f, 0.0f));//視点、注視点を設定
-	SetupCamera_Perspective(RAD(60.0f));//遠近法カメラの設定
+	SetupCamera_Perspective(RAD(90.0f));//遠近法カメラの設定
 	SetCameraNearFar(0.5f, 300.0f);//クリップの設定
 
 	//ライトの設定
-	SetLightEnable(false);
-	SetUseLighting(false);
+	SetLightEnable(true);
+	SetUseLighting(true);
+	//ライトの方向と属性の設定
+	SetLightDirection(VGet(1.0f, 1.0f, 1.0f));//平行光線ベクトル
+	SetLightDifColor(GetColorF(0.8f, 0.8f, 0.8f, 1.0f));//ディフューズ
+	SetLightAmbColor(GetColorF(0.4f, 0.4f, 0.4f, 1.0f));//アンビエント
+	SetLightSpcColor(GetColorF(1.0f, 1.0f, 1.0f, 1.0f));//スペキュラー
 
 	printf("Gameplaying Scene\n");
 }

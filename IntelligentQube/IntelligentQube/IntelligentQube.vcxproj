@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{2709E065-C696-422E-A9C6-6C29A36A9274}</ProjectGuid>
     <RootNamespace>IntelligentQube</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -121,9 +121,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="source\Cube.h" />
     <ClInclude Include="source\Game.h" />
     <ClInclude Include="source\GameplayingScene.h" />
+    <ClInclude Include="source\Game\Cube.h" />
     <ClInclude Include="source\KeyInput.h" />
     <ClInclude Include="source\Main.h" />
     <ClInclude Include="source\NowLoading.h" />
@@ -133,9 +133,9 @@
     <ClInclude Include="source\Typedef.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Cube.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameplayingScene.cpp" />
+    <ClCompile Include="source\Game\Cube.cpp" />
     <ClCompile Include="source\KeyInput.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\NowLoading.cpp" />

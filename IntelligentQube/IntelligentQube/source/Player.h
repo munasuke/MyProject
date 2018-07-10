@@ -1,6 +1,5 @@
 #pragma once
 #include "Typedef.h"
-#include "DxLib.h"
 #include <memory>
 #include <map>
 #include <string>

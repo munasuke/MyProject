@@ -16,6 +16,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{3a516440-2737-4335-8cee-ee4637035f20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{91fbe8c5-66bc-4dbd-a6b2-49b1774943e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Typedef.h">
@@ -48,8 +51,8 @@
     <ClInclude Include="source\NowLoading.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="source\Cube.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="source\Game\Cube.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,8 +80,8 @@
     <ClCompile Include="source\NowLoading.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="source\Cube.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="source\Game\Cube.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
