@@ -12,13 +12,25 @@ namespace{
 		{ VGet(-ed_w/2,  ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
 		{ VGet( ed_w/2,  ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
 		{ VGet(-ed_w/2, -ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
-		{ VGet( ed_w/2, -ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f }
+		{ VGet( ed_w/2, -ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f },
+
+		{ VGet(ed_w/2,  ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet(ed_w/2,  ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet(ed_w/2, -ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
+		{ VGet(ed_w/2, -ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f },
+
+		{ VGet(ed_w/2,  ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet(ed_w/2,  ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet(-ed_w/2, -ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
+		{ VGet(-ed_w/2, -ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f }
 	};
 
 	//インデックス情報（時計回りに設定）
 	unsigned short originalIndex[] = {
 		//①
-		0, 1, 2, 1, 3, 2
+		0, 1, 2, 1, 3, 2,
+		4, 5, 6, 5, 7, 6,
+		8, 9, 10, 9, 11, 10
 	};
 
 	std::vector<unsigned short> indices;
@@ -72,5 +84,5 @@ void Cube::Draw() {
 		v.norm = VTransformSR(v.norm, mix);//SR : Scaling + Rotation
 	}
 
-	DrawPolygonIndexed3D(verts.data(), verts.size(), originalIndex, 2, cubeH, false);
+	DrawPolygonIndexed3D(verts.data(), verts.size(), originalIndex, verts.size()/2, cubeH, false);
 }
