@@ -6,41 +6,34 @@ namespace{
 	const float cube_ed = 5.0f;
 	const float ed_w = 10.0f;
 
+	//面の総数
+	const int surface_max = 6;
+
 	//頂点情報
 	VERTEX3D originalVertex[] = {
-		//①
-		{ VGet(-ed_w/2,  ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet( ed_w/2,  ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet(-ed_w/2, -ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
-		{ VGet( ed_w/2, -ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f },
-
-		{ VGet(ed_w/2,  ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet(ed_w/2,  ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet(ed_w/2, -ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
-		{ VGet(ed_w/2, -ed_w, -ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f },
-
-		{ VGet(ed_w/2,  ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet(ed_w/2,  ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet(-ed_w/2, -ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
-		{ VGet(-ed_w/2, -ed_w, ed_w/2),	VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f }
+		{ VGet(-ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet( ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet(-ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
+		{ VGet( ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f },
 	};
 
 	//インデックス情報（時計回りに設定）
 	unsigned short originalIndex[] = {
-		//①
-		0, 1, 2, 1, 3, 2,
-		4, 5, 6, 5, 7, 6,
-		8, 9, 10, 9, 11, 10
+		0, 1, 2, 
+		1, 3, 2
 	};
-
+	std::vector<VERTEX3D> vertex;
 	std::vector<unsigned short> indices;
 }
 
 Cube::Cube() :
 	cubeH(LoadGraph("img/cube_tex.png")),
 	angle(0.1f),
-	pos(VGet(0.0f, 0.0f, 0.0f))
+	pos(VGet(0.0f, 5.0f, 0.0f))
 {
+	vertex.resize(6 * _countof(originalVertex));//頂点数
+	indices.resize(6 * _countof(originalIndex));//インデックス数
+
 }
 
 
@@ -58,9 +51,17 @@ void Cube::Draw() {
 			}
 		}
 	}
+	//マテリアルの設定
+	MATERIALPARAM mt = MATERIALPARAM();
+	mt.Ambient = GetColorF(0.2f, 0.2f, 0.2f, 1.0f);
+	mt.Diffuse = GetColorF(0.75f, 0.75f, 0.75f, 1.0f);
+	mt.Specular = GetColorF(1.0f, 1.0f, 1.0f, 1.0f);
+	mt.Emissive = GetColorF(0.2f, 0.2f, 0.2f, 0.2f);
+	mt.Power = 10.0f;
+	SetMaterialParam(mt);
 
 	//回転行列の作成
-	MATRIX rot = MGetRotY(angle);
+	MATRIX rot = MGetRotX(angle);
 
 	//平行移動行列の作成
 	MATRIX translate = MGetTranslate(pos);
@@ -75,7 +76,10 @@ void Cube::Draw() {
 	//行列の乗算
 	MATRIX mix = MMult(rot, translate);
 	angle += 0.01;
-	std::vector<VERTEX3D> verts(originalVertex, originalVertex + _countof(originalVertex));
+
+	SetUpPolygon();
+
+	std::vector<VERTEX3D> verts(vertex.begin(), vertex.end());
 
 	for (auto& v : verts){
 		//座標を回転
@@ -84,5 +88,46 @@ void Cube::Draw() {
 		v.norm = VTransformSR(v.norm, mix);//SR : Scaling + Rotation
 	}
 
-	DrawPolygonIndexed3D(verts.data(), verts.size(), originalIndex, verts.size()/2, cubeH, false);
+	DrawPolygonIndexed3D(verts.data(), verts.size(), indices.data(), indices.size()/3, cubeH, false);
+}
+
+void Cube::SetUpPolygon() {
+	static MATRIX rot2 = MGetIdent();
+	//側面
+	for (int i = 0; i < surface_max - 2; ++i){
+		rot2 = MGetRotY(static_cast<float>(i) * DX_PI_F / 2.0f);
+		for (int j = 0; j < _countof(originalVertex); ++j){
+			vertex[i * _countof(originalVertex) + j] = originalVertex[j];
+			vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
+			vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
+		}
+		for (int j = 0; j < _countof(originalIndex); ++j){
+			indices[i * _countof(originalIndex) + j] = originalIndex[j] + (i * _countof(originalVertex));
+		}
+	}
+	//蓋と底
+	for (int i = 4; i < surface_max; ++i){
+		rot2 = MGetRotX(static_cast<float>((1 + i * 2)) * (DX_PI_F / 2.0f));
+		for (int j = 0; j < _countof(originalVertex); ++j){
+			vertex[i * _countof(originalVertex) + j] = originalVertex[j];
+			vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
+			vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
+		}
+		for (int j = 0; j < _countof(originalIndex); ++j){
+			indices[i * _countof(originalIndex) + j] = originalIndex[j] + (i * _countof(originalVertex));
+		}
+	}
+}
+
+void Cube::RollOver(float x, float z) {
+
+}
+
+void Cube::WaitUpdata() {
+}
+
+void Cube::RollingUpdata() {
+}
+
+void Cube::RolledUpdata() {
 }
