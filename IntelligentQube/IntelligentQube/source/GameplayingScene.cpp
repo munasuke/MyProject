@@ -45,6 +45,7 @@ void GameplayingScene::Updata()
 		alphaFlg = true;
 	}
 	pl->Updata();
+	cube->Updata();
 
 	FadeOut();
 }

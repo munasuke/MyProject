@@ -27,13 +27,25 @@ namespace{
 }
 
 Cube::Cube() :
+	updata(&Cube::WaitUpdata),
 	cubeH(LoadGraph("img/cube_tex.png")),
 	angle(0.1f),
-	pos(VGet(0.0f, 5.0f, 0.0f))
+	pos(VGet(0.0f, 10.0f, 0.0f))
 {
 	vertex.resize(6 * _countof(originalVertex));//頂点数
 	indices.resize(6 * _countof(originalIndex));//インデックス数
 
+	//マテリアルの設定
+	MATERIALPARAM mt = MATERIALPARAM();
+	mt.Ambient = GetColorF(0.2f, 0.2f, 0.2f, 1.0f);
+	mt.Diffuse = GetColorF(0.75f, 0.75f, 0.75f, 1.0f);
+	mt.Specular = GetColorF(1.0f, 1.0f, 1.0f, 1.0f);
+	mt.Emissive = GetColorF(0.2f, 0.2f, 0.2f, 0.2f);
+	mt.Power = 10.0f;
+	SetMaterialParam(mt);
+
+	//Cubeの頂点情報とインデックス情報の設定
+	SetUpPolygon();
 }
 
 
@@ -41,6 +53,7 @@ Cube::~Cube() {
 }
 
 void Cube::Updata() {
+	(this->*updata)();
 }
 
 void Cube::Draw() {
@@ -51,14 +64,6 @@ void Cube::Draw() {
 			}
 		}
 	}
-	//マテリアルの設定
-	MATERIALPARAM mt = MATERIALPARAM();
-	mt.Ambient = GetColorF(0.2f, 0.2f, 0.2f, 1.0f);
-	mt.Diffuse = GetColorF(0.75f, 0.75f, 0.75f, 1.0f);
-	mt.Specular = GetColorF(1.0f, 1.0f, 1.0f, 1.0f);
-	mt.Emissive = GetColorF(0.2f, 0.2f, 0.2f, 0.2f);
-	mt.Power = 10.0f;
-	SetMaterialParam(mt);
 
 	//回転行列の作成
 	MATRIX rot = MGetRotX(angle);
@@ -66,18 +71,18 @@ void Cube::Draw() {
 	//平行移動行列の作成
 	MATRIX translate = MGetTranslate(pos);
 
-	if (CheckHitKey(KEY_INPUT_Z)){
+	//行列の乗算
+	MATRIX mix = MMult(rot, translate);
+
+	if (CheckHitKey(KEY_INPUT_Z)) {
 		pos.x -= 0.1f;
 	}
-	if (CheckHitKey(KEY_INPUT_X)){
+	if (CheckHitKey(KEY_INPUT_X)) {
 		pos.x += 0.1f;
 	}
 
-	//行列の乗算
-	MATRIX mix = MMult(rot, translate);
 	angle += 0.01;
 
-	SetUpPolygon();
 
 	std::vector<VERTEX3D> verts(vertex.begin(), vertex.end());
 
@@ -124,6 +129,9 @@ void Cube::RollOver(float x, float z) {
 }
 
 void Cube::WaitUpdata() {
+	if (CheckHitKey(KEY_INPUT_SPACE)) {
+		updata = &Cube::RolledUpdata;
+	}
 }
 
 void Cube::RollingUpdata() {

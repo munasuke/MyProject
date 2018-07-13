@@ -16,6 +16,7 @@ private:
 	void WaitUpdata();//待機中
 	void RollingUpdata();//回転中
 	void RolledUpdata();//回転後、重心再計算
+	void(Cube::*updata)();//状態遷移用メンバ関数ポインタ
 
 	int cubeH;
 	float angle;
