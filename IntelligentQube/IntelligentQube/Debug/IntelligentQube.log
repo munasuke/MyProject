@@ -1,3 +1,14 @@
-﻿  Cube.cpp
-c:\users\1601296\documents\github\myproject\intelligentqube\intelligentqube\source\game\cube.cpp(84): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
-  IntelligentQube.vcxproj -> C:\Users\1601296\Documents\GitHub\MyProject\IntelligentQube\Debug\IntelligentQube.exe
+﻿  TitleScene.cpp
+c:\users\haruka\documents\github\myproject\intelligentqube\intelligentqube\source\titlescene.cpp : fatal error C1041: プログラム データベース 'C:\Users\haruka\Documents\GitHub\MyProject\IntelligentQube\IntelligentQube\Debug\vc141.idb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
+  Scene.cpp
+c:\users\haruka\documents\github\myproject\intelligentqube\intelligentqube\source\scene\scene.cpp : fatal error C1041: プログラム データベース 'C:\Users\haruka\Documents\GitHub\MyProject\IntelligentQube\IntelligentQube\Debug\vc141.pdb' を開けません。複数の CL.EXE が同じ .PDB ファイルに書き込む場合、/FS を使用してください。
+  Player.cpp
+  Main.cpp
+  KeyInput.cpp
+  Cube.cpp
+c:\users\haruka\documents\github\myproject\intelligentqube\intelligentqube\source\game\cube.cpp(84): warning C4305: '+=': 'double' から 'float' へ切り詰めます。
+  GameplayingScene.cpp
+  Game.cpp
+  コードを生成中...
+  スキップ中... (関連する変更は検出されませんでした)
+  NowLoading.cpp

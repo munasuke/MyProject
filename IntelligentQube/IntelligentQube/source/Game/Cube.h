@@ -21,5 +21,10 @@ private:
 	int cubeH;
 	float angle;
 	VECTOR pos;
+	VECTOR centorPos;//’†SÀ•W
+
+	//Debug—p
+	bool flg;
+	bool flg2;
 };
 

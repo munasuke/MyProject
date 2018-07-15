@@ -29,9 +29,13 @@ namespace{
 Cube::Cube() :
 	updata(&Cube::WaitUpdata),
 	cubeH(LoadGraph("img/cube_tex.png")),
-	angle(0.1f),
-	pos(VGet(0.0f, 10.0f, 0.0f))
+	angle(0.0f),
+	pos(VGet(0.0f, ed_w/2, 0.0f)),
+	centorPos(pos)
 {
+	//裏面の描画を行わない
+	SetUseBackCulling(false);
+
 	vertex.resize(6 * _countof(originalVertex));//頂点数
 	indices.resize(6 * _countof(originalIndex));//インデックス数
 
@@ -46,6 +50,10 @@ Cube::Cube() :
 
 	//Cubeの頂点情報とインデックス情報の設定
 	SetUpPolygon();
+
+	//Debug用
+	flg = true;
+	flg2 = true;
 }
 
 
@@ -69,20 +77,17 @@ void Cube::Draw() {
 	MATRIX rot = MGetRotX(angle);
 
 	//平行移動行列の作成
-	MATRIX translate = MGetTranslate(pos);
+	MATRIX translate = MGetTranslate(centorPos);
 
 	//行列の乗算
 	MATRIX mix = MMult(rot, translate);
 
-	if (CheckHitKey(KEY_INPUT_Z)) {
-		pos.x -= 0.1f;
-	}
-	if (CheckHitKey(KEY_INPUT_X)) {
-		pos.x += 0.1f;
-	}
-
-	angle += 0.01;
-
+	//if (CheckHitKey(KEY_INPUT_Z)) {
+	//	pos.x -= 0.1f;
+	//}
+	//if (CheckHitKey(KEY_INPUT_X)) {
+	//	pos.x += 0.1f;
+	//}
 
 	std::vector<VERTEX3D> verts(vertex.begin(), vertex.end());
 
@@ -94,6 +99,12 @@ void Cube::Draw() {
 	}
 
 	DrawPolygonIndexed3D(verts.data(), verts.size(), indices.data(), indices.size()/3, cubeH, false);
+
+	SetUseZBuffer3D(false);
+	SetWriteZBuffer3D(false);
+	DrawSphere3D(centorPos, 1.0f, 10, 0xff0000, 0xff0000, true);//キューブの中心点
+	SetUseZBuffer3D(true);
+	SetWriteZBuffer3D(true);
 }
 
 void Cube::SetUpPolygon() {
@@ -113,6 +124,7 @@ void Cube::SetUpPolygon() {
 	//蓋と底
 	for (int i = 4; i < surface_max; ++i){
 		rot2 = MGetRotX(static_cast<float>((1 + i * 2)) * (DX_PI_F / 2.0f));
+		rot2 = MGetRotX(i == 4 ? 90.0f * DX_PI_F / 180.0f : 270.0f * DX_PI_F / 180.0f);
 		for (int j = 0; j < _countof(originalVertex); ++j){
 			vertex[i * _countof(originalVertex) + j] = originalVertex[j];
 			vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
@@ -130,12 +142,33 @@ void Cube::RollOver(float x, float z) {
 
 void Cube::WaitUpdata() {
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
-		updata = &Cube::RolledUpdata;
+		flg = false;
+		centorPos.z -= ed_w / 2;
+		centorPos.y -= ed_w / 2;
+		updata = &Cube::RollingUpdata;
 	}
 }
 
 void Cube::RollingUpdata() {
+	if (!flg) {
+		angle -= 0.01f;
+		if (angle < -1.55f) {
+			flg = true;
+			angle = -1.55f;
+			updata = &Cube::RolledUpdata;
+		}
+	}
 }
 
 void Cube::RolledUpdata() {
+	if (flg2) {
+		flg2 = false;
+		centorPos.z += ed_w / 2;
+		centorPos.y += ed_w / 2;
+	}
+	else {
+		flg2 = true;
+		updata = &Cube::WaitUpdata;
+	}
+	angle = 0.0f;
 }
