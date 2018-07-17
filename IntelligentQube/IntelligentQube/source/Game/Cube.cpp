@@ -72,7 +72,7 @@ void Cube::Draw() {
 			}
 		}
 	}
-
+	
 	//âÒì]çsóÒÇÃçÏê¨
 	MATRIX rot = MGetRotX(angle);
 
@@ -82,12 +82,7 @@ void Cube::Draw() {
 	//çsóÒÇÃèÊéZ
 	MATRIX mix = MMult(rot, translate);
 
-	//if (CheckHitKey(KEY_INPUT_Z)) {
-	//	pos.x -= 0.1f;
-	//}
-	//if (CheckHitKey(KEY_INPUT_X)) {
-	//	pos.x += 0.1f;
-	//}
+	mix = MMult(MGetTranslate(pos), rot);
 
 	std::vector<VERTEX3D> verts(vertex.begin(), vertex.end());
 
@@ -163,8 +158,9 @@ void Cube::RollingUpdata() {
 void Cube::RolledUpdata() {
 	if (flg2) {
 		flg2 = false;
-		centorPos.z += ed_w / 2;
+		centorPos.z -= ed_w / 2;
 		centorPos.y += ed_w / 2;
+		pos = centorPos;
 	}
 	else {
 		flg2 = true;

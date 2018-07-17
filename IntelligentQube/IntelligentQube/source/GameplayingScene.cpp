@@ -55,22 +55,21 @@ void GameplayingScene::Draw()
 {
 	if (CheckHitKey(KEY_INPUT_LSHIFT)) {
 		if (key.lock()->IsTrigger(PAD_INPUT_1)) {
-			//CameraRotation(camPos, targetPos, +Angle);
 			CameraRotation(&camPos.x, &camPos.z, +90.0f * DX_PI_F / 180.0f, targetPos.x, targetPos.z);
 		}
 		else if (key.lock()->IsTrigger(PAD_INPUT_2)) {
-			//CameraRotation(camPos, targetPos, -Angle);
 			CameraRotation(&camPos.x, &camPos.z, -90.0f * DX_PI_F / 180.0f, targetPos.x, targetPos.z);
 		}
 	}
 	else {
 		if (key.lock()->IsPressing(PAD_INPUT_1)) {
-			//CameraRotation(camPos, targetPos, +Angle);
 			CameraRotation(&camPos.x, &camPos.z, +Angle, targetPos.x, targetPos.z);
 		}
 		if (key.lock()->IsPressing(PAD_INPUT_2)) {
-			//CameraRotation(camPos, targetPos, -Angle);
 			CameraRotation(&camPos.x, &camPos.z, -Angle, targetPos.x, targetPos.z);
+		}
+		if (key.lock()->IsPressing(PAD_INPUT_5)) {
+			camPos = VGet(0.0f, 15.0f, -25.0f);
 		}
 	}
 	SetCameraPositionAndTarget_UpVecY(camPos, targetPos);//‹“_A’‹“_‚ğİ’è
