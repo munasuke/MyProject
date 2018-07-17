@@ -24,6 +24,7 @@ namespace{
 	};
 	std::vector<VERTEX3D> vertex;
 	std::vector<unsigned short> indices;
+	std::vector<VERTEX3D> verts;
 }
 
 Cube::Cube() :
@@ -36,8 +37,8 @@ Cube::Cube() :
 	//裏面の描画を行わない
 	SetUseBackCulling(false);
 
-	vertex.resize(6 * _countof(originalVertex));//頂点数
-	indices.resize(6 * _countof(originalIndex));//インデックス数
+	vertex.resize(6 * _countof(originalVertex));
+	indices.resize(6 * _countof(originalIndex));
 
 	//マテリアルの設定
 	MATERIALPARAM mt = MATERIALPARAM();
@@ -50,6 +51,12 @@ Cube::Cube() :
 
 	//Cubeの頂点情報とインデックス情報の設定
 	SetUpPolygon();
+
+	verts = { vertex.begin(), vertex.end() };
+	auto m = MGetTranslate(VGet(0.0f, ed_w / 2, 0.0f));
+	for (auto& v : verts){
+		v.pos = VTransform(v.pos, m);
+	}
 
 	//Debug用
 	flg = true;
@@ -80,18 +87,17 @@ void Cube::Draw() {
 	MATRIX translate = MGetTranslate(centorPos);
 
 	//行列の乗算
-	MATRIX mix = MMult(rot, translate);
+	//原点に移動させて回転、そして座標を戻す
+	MATRIX mix = MMult(rot, MGetTranslate(VGet(-centorPos.x, -centorPos.y, -centorPos.z)));
 
-	mix = MMult(MGetTranslate(pos), rot);
+	mix = MMult(rot, translate);
 
-	std::vector<VERTEX3D> verts(vertex.begin(), vertex.end());
-
-	for (auto& v : verts){
-		//座標を回転
-		v.pos = VTransform(v.pos, mix);
-		//法線を回転
-		v.norm = VTransformSR(v.norm, mix);//SR : Scaling + Rotation
-	}
+	//for (auto& v : verts){
+	//	//座標を回転
+	//	v.pos = VTransform(v.pos, mix);
+	//	//法線を回転
+	//	v.norm = VTransformSR(v.norm, mix);//SR : Scaling + Rotation
+	//}
 
 	DrawPolygonIndexed3D(verts.data(), verts.size(), indices.data(), indices.size()/3, cubeH, false);
 
@@ -132,16 +138,23 @@ void Cube::SetUpPolygon() {
 }
 
 void Cube::RollOver(float x, float z) {
-
+	centorPos.x += x * ed_w / 2.0f;
+	centorPos.z += z * ed_w / 2.0f;
+	centorPos.y -= ed_w / 2.0f;
+	updata = &Cube::RollingUpdata;
 }
 
 void Cube::WaitUpdata() {
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
 		flg = false;
-		centorPos.z -= ed_w / 2;
-		centorPos.y -= ed_w / 2;
-		updata = &Cube::RollingUpdata;
+		updata = &Cube::RollStartUpdata;
 	}
+}
+
+void Cube::RollStartUpdata() {
+	centorPos.z -= ed_w / 2;
+	centorPos.y -= ed_w / 2;
+	updata = &Cube::RollingUpdata;
 }
 
 void Cube::RollingUpdata() {
@@ -150,7 +163,7 @@ void Cube::RollingUpdata() {
 		if (angle < -1.55f) {
 			flg = true;
 			angle = -1.55f;
-			updata = &Cube::RolledUpdata;
+			//updata = &Cube::RolledUpdata;
 		}
 	}
 }
