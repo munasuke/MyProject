@@ -1,5 +1,5 @@
 #include "Cube.h"
-#include <vector>
+#include <cassert>
 
 namespace{
 	//辺の長さ
@@ -22,9 +22,6 @@ namespace{
 		0, 1, 2, 
 		1, 3, 2
 	};
-	std::vector<VERTEX3D> vertex;
-	std::vector<unsigned short> indices;
-	std::vector<VERTEX3D> verts;
 }
 
 Cube::Cube() :
@@ -53,9 +50,9 @@ Cube::Cube() :
 	SetUpPolygon();
 
 	verts = { vertex.begin(), vertex.end() };
-	auto m = MGetTranslate(VGet(0.0f, ed_w / 2, 0.0f));
+	translate = MGetTranslate(VGet(0.0f, ed_w / 2, 0.0f));
 	for (auto& v : verts){
-		v.pos = VTransform(v.pos, m);
+		v.pos = VTransform(v.pos, translate);
 	}
 
 	//Debug用
@@ -79,33 +76,41 @@ void Cube::Draw() {
 			}
 		}
 	}
-	
-	//回転行列の作成
-	MATRIX rot = MGetRotX(angle);
 
-	//平行移動行列の作成
-	MATRIX translate = MGetTranslate(centorPos);
-
-	//行列の乗算
-	//原点に移動させて回転、そして座標を戻す
-	MATRIX mix = MMult(rot, MGetTranslate(VGet(-centorPos.x, -centorPos.y, -centorPos.z)));
-
-	mix = MMult(rot, translate);
-
-	//for (auto& v : verts){
-	//	//座標を回転
-	//	v.pos = VTransform(v.pos, mix);
-	//	//法線を回転
-	//	v.norm = VTransformSR(v.norm, mix);//SR : Scaling + Rotation
-	//}
-
-	DrawPolygonIndexed3D(verts.data(), verts.size(), indices.data(), indices.size()/3, cubeH, false);
+	int n = DrawPolygonIndexed3D(verts.data(), verts.size(), indices.data(), indices.size()/3, cubeH, false);
 
 	SetUseZBuffer3D(false);
 	SetWriteZBuffer3D(false);
 	DrawSphere3D(centorPos, 1.0f, 10, 0xff0000, 0xff0000, true);//キューブの中心点
 	SetUseZBuffer3D(true);
 	SetWriteZBuffer3D(true);
+}
+
+void Cube::RollOver(float x, float z) {
+	if (updata != &Cube::WaitUpdata){
+		return;
+	}
+
+	//(x, z) = (1, 0), (-1, 0), (0, 1), (0, -1)
+	assert(((x == 1 || x == -1) && z == 0) ||
+		(x == 0 && (z == 1 || z == -1)));
+
+	//中心点をずらす
+	centorPos.x += x * ed_w / 2.0f;
+	centorPos.z += z * ed_w / 2.0f;
+	centorPos.y -= ed_w / 2.0f;
+
+	//角速度の設定
+	float omegaX = z * (DX_PI_F / 2.0f) / 60.0f;
+	float omegaZ = -x * (DX_PI_F / 2.0f) / 60.0f;
+
+	//原点へ平行移動→回転→平行移動の行列
+	rollingMat = MGetTranslate(VScale(centorPos, 1.0f));
+	rollingMat = MMult(rollingMat, MGetRotX(omegaX));
+	rollingMat = MMult(rollingMat, MGetRotZ(omegaZ));
+	rollingMat = MMult(rollingMat, translate);
+
+	updata = &Cube::RollingUpdata;
 }
 
 void Cube::SetUpPolygon() {
@@ -125,7 +130,7 @@ void Cube::SetUpPolygon() {
 	//蓋と底
 	for (int i = 4; i < surface_max; ++i){
 		rot2 = MGetRotX(static_cast<float>((1 + i * 2)) * (DX_PI_F / 2.0f));
-		rot2 = MGetRotX(i == 4 ? 90.0f * DX_PI_F / 180.0f : 270.0f * DX_PI_F / 180.0f);
+		//rot2 = MGetRotX(i == 4 ? 90.0f * DX_PI_F / 180.0f : 270.0f * DX_PI_F / 180.0f);
 		for (int j = 0; j < _countof(originalVertex); ++j){
 			vertex[i * _countof(originalVertex) + j] = originalVertex[j];
 			vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
@@ -137,18 +142,8 @@ void Cube::SetUpPolygon() {
 	}
 }
 
-void Cube::RollOver(float x, float z) {
-	centorPos.x += x * ed_w / 2.0f;
-	centorPos.z += z * ed_w / 2.0f;
-	centorPos.y -= ed_w / 2.0f;
-	updata = &Cube::RollingUpdata;
-}
-
+//待機中
 void Cube::WaitUpdata() {
-	if (CheckHitKey(KEY_INPUT_SPACE)) {
-		flg = false;
-		updata = &Cube::RollStartUpdata;
-	}
 }
 
 void Cube::RollStartUpdata() {
@@ -157,27 +152,28 @@ void Cube::RollStartUpdata() {
 	updata = &Cube::RollingUpdata;
 }
 
+//回転中
 void Cube::RollingUpdata() {
-	if (!flg) {
-		angle -= 0.01f;
-		if (angle < -1.55f) {
-			flg = true;
-			angle = -1.55f;
-			//updata = &Cube::RolledUpdata;
-		}
+	for (auto& v : verts){
+		//座標を回転
+		v.pos = VTransform(v.pos, rollingMat);
+		//法線を回転
+		v.norm = VTransformSR(v.norm, rollingMat);//SR : Scaling + Rotation
 	}
+	updata = &Cube::RolledUpdata;
 }
 
+//回転後
 void Cube::RolledUpdata() {
-	if (flg2) {
-		flg2 = false;
-		centorPos.z -= ed_w / 2;
-		centorPos.y += ed_w / 2;
-		pos = centorPos;
+	updata = &Cube::WaitUpdata;
+}
+
+
+VECTOR Cube::SetCentorPos(std::vector<VERTEX3D> ver) {
+	VECTOR ret = { 0, 0, 0 };
+	for (auto& v : ver){
+		ret = VAdd(ret, v.pos);
 	}
-	else {
-		flg2 = true;
-		updata = &Cube::WaitUpdata;
-	}
-	angle = 0.0f;
+	float div = 1.0f / static_cast<float>(ver.size());
+	return VScale(ret, div);
 }

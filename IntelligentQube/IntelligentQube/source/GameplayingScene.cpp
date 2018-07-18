@@ -45,6 +45,9 @@ void GameplayingScene::Updata()
 	if (key.lock()->IsTrigger(PAD_INPUT_8)){
 		alphaFlg = true;
 	}
+	if (key.lock()->IsTrigger(PAD_INPUT_4)){
+		cube->RollOver(1, 0);
+	}
 	pl->Updata();
 	cube->Updata();
 
