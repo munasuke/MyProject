@@ -42,11 +42,21 @@ GameplayingScene::~GameplayingScene()
 void GameplayingScene::Updata()
 {
 
-	if (key.lock()->IsTrigger(PAD_INPUT_8)){
+	if (key.lock()->IsTrigger(PAD_INPUT_10)){
 		alphaFlg = true;
 	}
-	if (key.lock()->IsTrigger(PAD_INPUT_4)){
+	//ƒLƒ…[ƒu‘€ì
+	if (key.lock()->IsTrigger(PAD_INPUT_8)){
+		cube->RollOver(0, 1);
+	}
+	if (key.lock()->IsTrigger(PAD_INPUT_5)){
+		cube->RollOver(0, -1);
+	}
+	if (key.lock()->IsTrigger(PAD_INPUT_6)){
 		cube->RollOver(1, 0);
+	}
+	if (key.lock()->IsTrigger(PAD_INPUT_4)){
+		cube->RollOver(-1, 0);
 	}
 	pl->Updata();
 	cube->Updata();
@@ -71,7 +81,7 @@ void GameplayingScene::Draw()
 		if (key.lock()->IsPressing(PAD_INPUT_2)) {
 			CameraRotation(&camPos.x, &camPos.z, -Angle, targetPos.x, targetPos.z);
 		}
-		if (key.lock()->IsPressing(PAD_INPUT_5)) {
+		if (key.lock()->IsPressing(PAD_INPUT_3)) {
 			camPos = VGet(0.0f, 15.0f, -25.0f);
 		}
 	}

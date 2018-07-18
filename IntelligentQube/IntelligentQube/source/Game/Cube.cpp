@@ -29,7 +29,8 @@ Cube::Cube() :
 	cubeH(LoadGraph("img/cube_tex.png")),
 	angle(0.0f),
 	pos(VGet(0.0f, ed_w/2, 0.0f)),
-	centorPos(pos)
+	centorPos(pos),
+	moveCnt(0)
 {
 	//— –Ê‚Ì•`‰æ‚ðs‚í‚È‚¢
 	SetUseBackCulling(false);
@@ -50,9 +51,9 @@ Cube::Cube() :
 	SetUpPolygon();
 
 	verts = { vertex.begin(), vertex.end() };
-	translate = MGetTranslate(VGet(0.0f, ed_w / 2, 0.0f));
+	rollingMat = MGetTranslate(VGet(0.0f, ed_w / 2, 0.0f));
 	for (auto& v : verts){
-		v.pos = VTransform(v.pos, translate);
+		v.pos = VTransform(v.pos, rollingMat);
 	}
 
 	//Debug—p
@@ -105,10 +106,10 @@ void Cube::RollOver(float x, float z) {
 	float omegaZ = -x * (DX_PI_F / 2.0f) / 60.0f;
 
 	//Œ´“_‚Ö•½sˆÚ“®¨‰ñ“]¨•½sˆÚ“®‚Ìs—ñ
-	rollingMat = MGetTranslate(VScale(centorPos, 1.0f));
+	rollingMat = MGetTranslate(VScale(centorPos, -1.0f));
 	rollingMat = MMult(rollingMat, MGetRotX(omegaX));
 	rollingMat = MMult(rollingMat, MGetRotZ(omegaZ));
-	rollingMat = MMult(rollingMat, translate);
+	rollingMat = MMult(rollingMat, MGetTranslate(centorPos));
 
 	updata = &Cube::RollingUpdata;
 }
@@ -146,12 +147,6 @@ void Cube::SetUpPolygon() {
 void Cube::WaitUpdata() {
 }
 
-void Cube::RollStartUpdata() {
-	centorPos.z -= ed_w / 2;
-	centorPos.y -= ed_w / 2;
-	updata = &Cube::RollingUpdata;
-}
-
 //‰ñ“]’†
 void Cube::RollingUpdata() {
 	for (auto& v : verts){
@@ -160,11 +155,16 @@ void Cube::RollingUpdata() {
 		//–@ü‚ð‰ñ“]
 		v.norm = VTransformSR(v.norm, rollingMat);//SR : Scaling + Rotation
 	}
-	updata = &Cube::RolledUpdata;
+	moveCnt++;
+	if (moveCnt >= 60){
+		moveCnt = 0;
+		updata = &Cube::RolledUpdata;
+	}
 }
 
 //‰ñ“]Œã
 void Cube::RolledUpdata() {
+	centorPos = SetCentorPos(verts);
 	updata = &Cube::WaitUpdata;
 }
 

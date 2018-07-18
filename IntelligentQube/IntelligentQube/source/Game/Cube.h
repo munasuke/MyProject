@@ -23,7 +23,6 @@ private:
 
 	//状態
 	void WaitUpdata();//待機中
-	void RollStartUpdata();//回転する軸を決める
 	void RollingUpdata();//回転中
 	void RolledUpdata();//回転後、重心再計算
 	void(Cube::*updata)();//状態遷移用メンバ関数ポインタ
@@ -38,10 +37,10 @@ private:
 	std::vector<VERTEX3D> vertex;
 	std::vector<unsigned short> indices;
 	std::vector<VERTEX3D> verts;
-	MATRIX translate;
 	MATRIX rollingMat;
 	MATRIX mixMat;
 
+	int moveCnt;
 	//float omegaX;//X軸回転の角速度
 	//float omegaZ;//Z軸回転の角速度
 
