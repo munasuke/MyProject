@@ -2,14 +2,14 @@
 #include <cassert>
 
 namespace{
-	//辺の長さ
+	//1辺の長さ
 	const float cube_ed = 5.0f;
 	const float ed_w = 10.0f;
 
 	//面の総数
 	const int surface_max = 6;
 
-	//頂点情報
+	//1面に必要な頂点情報
 	VERTEX3D originalVertex[] = {
 		{ VGet(-ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
 		{ VGet( ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
@@ -17,7 +17,7 @@ namespace{
 		{ VGet( ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f },
 	};
 
-	//インデックス情報（時計回りに設定）
+	//1面に必要なインデックス情報（時計回りに設定）
 	unsigned short originalIndex[] = {
 		0, 1, 2, 
 		1, 3, 2
@@ -78,7 +78,7 @@ void Cube::Draw() {
 		}
 	}
 
-	int n = DrawPolygonIndexed3D(verts.data(), verts.size(), indices.data(), indices.size()/3, cubeH, false);
+	DrawPolygonIndexed3D(verts.data(), static_cast<int>(verts.size()), indices.data(), static_cast<int>(indices.size())/3, cubeH, false);
 
 	SetUseZBuffer3D(false);
 	SetWriteZBuffer3D(false);
@@ -102,8 +102,8 @@ void Cube::RollOver(float x, float z) {
 	centorPos.y -= ed_w / 2.0f;
 
 	//角速度の設定
-	float omegaX = z * (DX_PI_F / 2.0f) / 60.0f;
-	float omegaZ = -x * (DX_PI_F / 2.0f) / 60.0f;
+	float omegaX = z * (DX_PI_F / 2.0f) / CNT_MAX;
+	float omegaZ = -x * (DX_PI_F / 2.0f) / CNT_MAX;
 
 	//原点へ平行移動→回転→平行移動の行列
 	rollingMat = MGetTranslate(VScale(centorPos, -1.0f));
@@ -125,20 +125,19 @@ void Cube::SetUpPolygon() {
 			vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
 		}
 		for (int j = 0; j < _countof(originalIndex); ++j){
-			indices[i * _countof(originalIndex) + j] = originalIndex[j] + (i * _countof(originalVertex));
+			indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex)));
 		}
 	}
 	//蓋と底
 	for (int i = 4; i < surface_max; ++i){
 		rot2 = MGetRotX(static_cast<float>((1 + i * 2)) * (DX_PI_F / 2.0f));
-		//rot2 = MGetRotX(i == 4 ? 90.0f * DX_PI_F / 180.0f : 270.0f * DX_PI_F / 180.0f);
 		for (int j = 0; j < _countof(originalVertex); ++j){
 			vertex[i * _countof(originalVertex) + j] = originalVertex[j];
 			vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
 			vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
 		}
 		for (int j = 0; j < _countof(originalIndex); ++j){
-			indices[i * _countof(originalIndex) + j] = originalIndex[j] + (i * _countof(originalVertex));
+			indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex)));
 		}
 	}
 }
@@ -156,7 +155,7 @@ void Cube::RollingUpdata() {
 		v.norm = VTransformSR(v.norm, rollingMat);//SR : Scaling + Rotation
 	}
 	moveCnt++;
-	if (moveCnt >= 60){
+	if (moveCnt >= CNT_MAX){
 		moveCnt = 0;
 		updata = &Cube::RolledUpdata;
 	}
@@ -170,6 +169,7 @@ void Cube::RolledUpdata() {
 
 
 VECTOR Cube::SetCentorPos(std::vector<VERTEX3D> ver) {
+	//24頂点を足して平均を出す
 	VECTOR ret = { 0, 0, 0 };
 	for (auto& v : ver){
 		ret = VAdd(ret, v.pos);

@@ -3,7 +3,7 @@
 #include "DxLib.h"
 #include <memory>
 
-const float Angle = DX_PI / 90.0f;
+const float Angle = DX_PI_F / 90.0f;
 
 class NowLoading;
 class Player;

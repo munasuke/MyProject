@@ -2,6 +2,8 @@
 #include "Dxlib.h"
 #include <vector>
 
+#define CNT_MAX 60
+
 enum Direction{
 	UP,
 	DOWN,

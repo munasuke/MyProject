@@ -54,7 +54,7 @@ void TitleScene::Draw()
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 	DrawExtendGraph(0, 0, 1280, 720, titleImage, true);
-	DrawSphere3D(VGet(pos.x, pos.y, 0.0f), 100.0f, 32, GetColor(255, 255, 128), GetColor(255, 255, 255), true);
+	DrawSphere3D(VGet(static_cast<float>(pos.x), static_cast<float>(pos.y), 0.0f), 100.0f, 32, GetColor(255, 255, 128), GetColor(255, 255, 255), true);
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, pressalpha);
 	DrawGraph(SCREEN_SIZE_X/2 - 356/2, SCREEN_SIZE_Y - 100, pressImage, true);
 	if (aflg == true && alphaFlg == false){
