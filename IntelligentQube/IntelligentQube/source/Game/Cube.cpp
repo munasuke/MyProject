@@ -12,9 +12,9 @@ namespace{
 	//1面に必要な頂点情報
 	VERTEX3D originalVertex[] = {
 		{ VGet(-ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet( ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 0.0f, 0.0f, 0.0f },
-		{ VGet(-ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 1.0f, 0.0f, 0.0f },
-		{ VGet( ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 1.0f, 1.0f, 0.0f, 0.0f },
+		{ VGet( ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 2.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet(-ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 2.0f, 0.0f, 0.0f },
+		{ VGet( ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 2.0f, 2.0f, 0.0f, 0.0f },
 	};
 
 	//1面に必要なインデックス情報（時計回りに設定）
@@ -93,8 +93,7 @@ void Cube::RollOver(float x, float z) {
 	}
 
 	//(x, z) = (1, 0), (-1, 0), (0, 1), (0, -1)
-	assert(((x == 1 || x == -1) && z == 0) ||
-		(x == 0 && (z == 1 || z == -1)));
+	assert(((x == 1 || x == -1) && z == 0) || (x == 0 && (z == 1 || z == -1)));
 
 	//中心点をずらす
 	centorPos.x += x * ed_w / 2.0f;
@@ -167,7 +166,7 @@ void Cube::RolledUpdata() {
 	updata = &Cube::WaitUpdata;
 }
 
-
+//中心点を再計算
 VECTOR Cube::SetCentorPos(std::vector<VERTEX3D> ver) {
 	//24頂点を足して平均を出す
 	VECTOR ret = { 0, 0, 0 };

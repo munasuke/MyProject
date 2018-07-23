@@ -134,6 +134,8 @@
     <ClInclude Include="source\NowLoading.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\Scene\Scene.h" />
+    <ClInclude Include="source\System\Model.h" />
+    <ClInclude Include="source\System\ModelLoader.h" />
     <ClInclude Include="source\TitleScene.h" />
     <ClInclude Include="source\Typedef.h" />
   </ItemGroup>
@@ -146,6 +148,8 @@
     <ClCompile Include="source\NowLoading.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Scene\Scene.cpp" />
+    <ClCompile Include="source\System\Model.cpp" />
+    <ClCompile Include="source\System\ModelLoader.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>

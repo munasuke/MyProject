@@ -6,7 +6,6 @@
 Player::Player(std::weak_ptr<KeyInput> _key) :
 	updata(&Player::NeutralUpdata),
 	key(_key),
-	onceflag(true),
 	pos({ 0.0f, 0.0f, 0.0f }),
 	rot({ 0.0f, 0.0f, 0.0f }),
 	speed(0.5f)
@@ -24,6 +23,7 @@ void Player::Updata() {
 	if (CheckHandleASyncLoad(playerH)){
 		return;
 	}
+	static bool onceflag = true;
 	if (onceflag){
 		onceflag = false;
 		anim = {
@@ -65,10 +65,10 @@ void Player::Animation() {
 	MV1SetAttachAnimTime(playerH, animIndex, animTime);
 }
 
-void Player::SetAnimation(int _index)
+void Player::SetAnimation(std::string state)
 {
 	MV1DetachAnim(playerH, animIndex);
-	animIndex = MV1AttachAnim(playerH, _index);
+	animIndex = MV1AttachAnim(playerH, anim[state]);
 	animTime = 0;
 }
 
@@ -78,7 +78,7 @@ void Player::NeutralUpdata()
 		|| key.lock()->IsPressing(PAD_INPUT_DOWN)
 		|| key.lock()->IsPressing(PAD_INPUT_RIGHT)
 		|| key.lock()->IsPressing(PAD_INPUT_LEFT)) {
-		SetAnimation(anim["Walk"]);
+		SetAnimation("Walk");
 		updata = &Player::WalkUpdata;
 	}
 }
@@ -123,7 +123,7 @@ void Player::WalkUpdata()
 			rot.y = RAD(90);
 		}
 		else {
-			SetAnimation(anim["Wait"]);
+			SetAnimation("Wait");
 			updata = &Player::NeutralUpdata;
 		}
 	}

@@ -20,7 +20,7 @@ public:
 private:
 	void Move();
 	void Animation();
-	void SetAnimation(int _index);
+	void SetAnimation(std::string state);
 
 	void NeutralUpdata();
 	void WalkUpdata();
@@ -36,8 +36,6 @@ private:
 	float animTime;//カウント用
 	float animTimeTotal;//総再生時間
 	std::map<std::string, int> anim;//状態に合ったアニメーションを取得
-
-	bool onceflag;
 
 	//ステータス
 	positin3D pos;//座標
