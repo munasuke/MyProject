@@ -128,7 +128,9 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="source\Game.h" />
     <ClInclude Include="source\GameplayingScene.h" />
+    <ClInclude Include="source\Game\AdvancedCube.h" />
     <ClInclude Include="source\Game\Cube.h" />
+    <ClInclude Include="source\Game\ForbiddenCube.h" />
     <ClInclude Include="source\KeyInput.h" />
     <ClInclude Include="source\Main.h" />
     <ClInclude Include="source\NowLoading.h" />
@@ -142,7 +144,9 @@
   <ItemGroup>
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\GameplayingScene.cpp" />
+    <ClCompile Include="source\Game\AdvancedCube.cpp" />
     <ClCompile Include="source\Game\Cube.cpp" />
+    <ClCompile Include="source\Game\ForbiddenCube.cpp" />
     <ClCompile Include="source\KeyInput.cpp" />
     <ClCompile Include="source\Main.cpp" />
     <ClCompile Include="source\NowLoading.cpp" />

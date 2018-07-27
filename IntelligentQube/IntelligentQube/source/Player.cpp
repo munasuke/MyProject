@@ -54,6 +54,10 @@ int Player::GetPlayerHandle() {
 	return playerH;
 }
 
+positin3D Player::GetPosition() {
+	return pos;
+}
+
 void Player::Move() {
 }
 

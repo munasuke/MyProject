@@ -17,6 +17,7 @@ public:
 	void Draw();
 
 	int GetPlayerHandle();
+	positin3D GetPosition();
 private:
 	void Move();
 	void Animation();

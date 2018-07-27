@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene/Scene.h"
+#include "Typedef.h"
 #include "DxLib.h"
 #include <memory>
 
@@ -20,9 +21,11 @@ public:
 	void FadeIn();
 	void FadeOut();
 private:
+	positin3D PlusVECTOR(positin3D pos, VECTOR vec);
 	void CameraRotation(float *x, float *y, const float ang, const float mx, const float my);
-	VECTOR camPos;
-	VECTOR targetPos;
+	positin3D camPos;
+	positin3D targetPos;
+	VECTOR toEyeVector;//ãtéãê¸ÉxÉNÉgÉã
 
 	std::shared_ptr<NowLoading> ld;
 	std::shared_ptr<Player> pl;

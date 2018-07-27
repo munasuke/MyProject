@@ -11,16 +11,17 @@ enum Direction{
 	LEFT
 };
 
+//ƒLƒ…[ƒuŠÇ—
 class Cube {
 public:
 	Cube();
-	~Cube();
+	virtual ~Cube();
 
 	void Updata();
 	void Draw();
 
 	void RollOver(float x, float z);
-private:
+protected:
 	void SetUpPolygon();
 
 	//ó‘Ô
@@ -42,9 +43,12 @@ private:
 	MATRIX rollingMat;
 	MATRIX mixMat;
 
+	//“y‘ä
+	VECTOR pos2;
+	std::vector<VERTEX3D> vertex2;
+	std::vector<VERTEX3D> verts2;
+
 	int moveCnt;
-	//float omegaX;//X²‰ñ“]‚ÌŠp‘¬“x
-	//float omegaZ;//Z²‰ñ“]‚ÌŠp‘¬“x
 
 	//Debug—p
 	bool flg;

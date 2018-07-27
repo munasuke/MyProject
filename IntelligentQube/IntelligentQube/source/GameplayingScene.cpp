@@ -6,8 +6,8 @@
 
 
 GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key) : 
-	camPos(VGet(0.0f, 15.0f, -25.0f)),
-	targetPos(VGet(0.0f, 10.0f, 0.0f))
+	camPos(0.0f, 30.0f, -35.0f),
+	targetPos(0.0f, 10.0f, 0.0f)
 {
 	key = _key;
 	alpha = 0;
@@ -16,6 +16,7 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key) :
 	ld = std::make_shared<NowLoading>();
 	pl = std::make_shared<Player>(key);
 	cube = std::make_shared<Cube>();
+	toEyeVector = VSub(VGet(camPos.x, camPos.y, camPos.z), VGet(targetPos.x, targetPos.y, targetPos.z));
 
 	//カメラの設定
 	SetupCamera_Perspective(RAD(90.0f));//遠近法カメラの設定
@@ -66,33 +67,36 @@ void GameplayingScene::Updata()
 
 void GameplayingScene::Draw()
 {
+	auto plPos = pl->GetPosition();
+	auto eye = PlusVECTOR(plPos, toEyeVector);
+	
 	if (CheckHitKey(KEY_INPUT_LSHIFT)) {
 		if (key.lock()->IsTrigger(PAD_INPUT_1)) {
-			CameraRotation(&camPos.x, &camPos.z, +90.0f * DX_PI_F / 180.0f, targetPos.x, targetPos.z);
+			CameraRotation(&eye.x, &eye.z, +90.0f * DX_PI_F / 180.0f, pl->GetPosition().x, pl->GetPosition().z);
 		}
 		else if (key.lock()->IsTrigger(PAD_INPUT_2)) {
-			CameraRotation(&camPos.x, &camPos.z, -90.0f * DX_PI_F / 180.0f, targetPos.x, targetPos.z);
+			CameraRotation(&eye.x, &eye.z, -90.0f * DX_PI_F / 180.0f, pl->GetPosition().x, pl->GetPosition().z);
 		}
 	}
 	else {
 		if (key.lock()->IsPressing(PAD_INPUT_1)) {
-			CameraRotation(&camPos.x, &camPos.z, +Angle, targetPos.x, targetPos.z);
+			CameraRotation(&eye.x, &eye.z, +Angle, pl->GetPosition().x, pl->GetPosition().z);
 		}
 		if (key.lock()->IsPressing(PAD_INPUT_2)) {
-			CameraRotation(&camPos.x, &camPos.z, -Angle, targetPos.x, targetPos.z);
+			CameraRotation(&eye.x, &eye.z, -Angle, pl->GetPosition().x, pl->GetPosition().z);
 		}
 		if (key.lock()->IsPressing(PAD_INPUT_3)) {
-			camPos = VGet(0.0f, 15.0f, -25.0f);
+			camPos = { 0.0f, 15.0f, -25.0f };
 		}
 	}
-	SetCameraPositionAndTarget_UpVecY(camPos, targetPos);//視点、注視点を設定
+	SetCameraPositionAndTarget_UpVecY(VGet(eye.x, eye.y, eye.z), VGet(plPos.x, plPos.y, plPos.z));//視点、注視点を設定
 	FadeIn();
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 
 	pl->Draw();
 	cube->Draw();
 	if (CheckHandleASyncLoad(pl->GetPlayerHandle())){
-		ld->Draw(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2);
+		ld->Draw(SCREEN_SIZE_X - 70, SCREEN_SIZE_Y - 70);
 	}
 }
 
@@ -120,6 +124,14 @@ void GameplayingScene::FadeOut()
 			//Game::Instance().ChangeScene(new CountinueScene(key));
 		}
 	}
+}
+
+positin3D GameplayingScene::PlusVECTOR(positin3D pos, VECTOR vec) {
+	positin3D tmpPos;
+	tmpPos.x = pos.x + vec.x;
+	tmpPos.y = pos.y + vec.y;
+	tmpPos.z = pos.z + vec.z;
+	return tmpPos;
 }
 
 void GameplayingScene::CameraRotation(float *x, float *y, const float ang, const float mx, const float my)

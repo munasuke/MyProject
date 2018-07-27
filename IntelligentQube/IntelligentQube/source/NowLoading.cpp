@@ -20,5 +20,5 @@ void NowLoading::Draw(int x, int y) {
 		printf("ƒ[ƒh‰æ‘œ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñ\n");
 	}
 	rot++;
-	DrawRotaGraph(x, y, 0.5f, rot * DX_PI_F / 180.0f, loadH, true);
+	DrawRotaGraph(x, y, 0.1f, rot * DX_PI_F / 180.0f, loadH, true);
 }

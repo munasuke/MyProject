@@ -17,6 +17,13 @@ namespace{
 		{ VGet( ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 2.0f, 2.0f, 0.0f, 0.0f },
 	};
 
+	VERTEX3D originalVertex2[] = {
+		{ VGet(-ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet( ed_w/2,  ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 2.0f, 0.0f, 0.0f, 0.0f },
+		{ VGet(-ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 0.0f, 2.0f, 0.0f, 0.0f },
+		{ VGet( ed_w/2, -ed_w/2, -ed_w/2), VGet(0.0f, 0.0f, -1.0f), GetColorU8(255, 255, 255, 255), GetColorU8(255, 255, 255, 255), 2.0f, 2.0f, 0.0f, 0.0f },
+	};
+
 	//1面に必要なインデックス情報（時計回りに設定）
 	unsigned short originalIndex[] = {
 		0, 1, 2, 
@@ -32,6 +39,7 @@ Cube::Cube() :
 	centorPos(pos),
 	moveCnt(0)
 {
+
 	//裏面の描画を行わない
 	SetUseBackCulling(false);
 
@@ -47,8 +55,12 @@ Cube::Cube() :
 	mt.Power = 10.0f;
 	SetMaterialParam(mt);
 
+	vertex2.resize(6 * _countof(originalVertex2));
 	//Cubeの頂点情報とインデックス情報の設定
 	SetUpPolygon();
+	//土台
+	pos2 = { 0.0f, ed_w / 2, 0.0f };
+	verts2 = { vertex2.begin(), vertex2.end() };
 
 	verts = { vertex.begin(), vertex.end() };
 	rollingMat = MGetTranslate(VGet(0.0f, ed_w / 2, 0.0f));
@@ -70,21 +82,28 @@ void Cube::Updata() {
 }
 
 void Cube::Draw() {
-	for (int z = -1; z < 10; z++){
-		for (int x = -5; x < 5; x++){
-			if (!CheckCameraViewClip_Box(VGet(-cube_ed * x, 0, -cube_ed * z), VGet(cube_ed * x, -2 * cube_ed, cube_ed * z))){
-				DrawCube3D(VGet(-cube_ed * x, 0, -cube_ed * z), VGet(cube_ed * x, -2 * cube_ed, cube_ed * z), GetColor(0, 255 - x, 0), 0xffffff, true);
-			}
+	//for (int z = -1; z < 10; z++){
+	//	for (int x = -5; x < 5; x++){
+	//		if (!CheckCameraViewClip_Box(VGet(-cube_ed * x, 0, -cube_ed * z), VGet(cube_ed * x, -2 * cube_ed, cube_ed * z))){
+	//			DrawCube3D(VGet(-cube_ed * x, 0, -cube_ed * z), VGet(cube_ed * x, -2 * cube_ed, cube_ed * z), GetColor(0, 255 - x, 0), 0xffffff, true);
+	//		}
+	//	}
+	//}
+
+	//4x5
+	for (int i = 0; i < 5; i++){
+		for (int j = 0; j < 4; j++){
+			
 		}
 	}
+	//DrawPolygonIndexed3D(verts.data(), static_cast<int>(verts.size()), indices.data(), static_cast<int>(indices.size())/3, cubeH, false);
 
-	DrawPolygonIndexed3D(verts.data(), static_cast<int>(verts.size()), indices.data(), static_cast<int>(indices.size())/3, cubeH, false);
-
-	SetUseZBuffer3D(false);
-	SetWriteZBuffer3D(false);
-	DrawSphere3D(centorPos, 1.0f, 10, 0xff0000, 0xff0000, true);//キューブの中心点
-	SetUseZBuffer3D(true);
-	SetWriteZBuffer3D(true);
+	MATRIX matrix = MGetTranslate(pos2);
+	for (auto& m : verts2){
+		m.pos = VTransform(m.pos, matrix);
+		m.norm = VTransformSR(m.norm, matrix);
+	}
+	DrawPolygonIndexed3D(verts2.data(), static_cast<int>(verts2.size()), indices.data(), static_cast<int>(indices.size())/3, cubeH, false);
 }
 
 void Cube::RollOver(float x, float z) {
@@ -116,33 +135,56 @@ void Cube::RollOver(float x, float z) {
 void Cube::SetUpPolygon() {
 	static MATRIX rot2 = MGetIdent();
 	//側面
+	//for (int i = 0; i < surface_max - 2; ++i){
+	//	rot2 = MGetRotY(static_cast<float>(i) * DX_PI_F / 2.0f);
+	//	for (int j = 0; j < _countof(originalVertex); ++j){
+	//		vertex[i * _countof(originalVertex) + j] = originalVertex[j];
+	//		vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
+	//		vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
+	//	}
+	//	for (int j = 0; j < _countof(originalIndex); ++j){
+	//		indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex)));
+	//	}
+	//}
 	for (int i = 0; i < surface_max - 2; ++i){
 		rot2 = MGetRotY(static_cast<float>(i) * DX_PI_F / 2.0f);
-		for (int j = 0; j < _countof(originalVertex); ++j){
-			vertex[i * _countof(originalVertex) + j] = originalVertex[j];
-			vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
-			vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
+		for (int j = 0; j < _countof(originalVertex2); ++j){
+			vertex2[i * _countof(originalVertex2) + j] = originalVertex2[j];
+			vertex2[i * _countof(originalVertex2) + j].pos = VTransform(originalVertex2[j].pos, rot2);
+			vertex2[i * _countof(originalVertex2) + j].norm = VTransformSR(originalVertex2[j].norm, rot2);
 		}
 		for (int j = 0; j < _countof(originalIndex); ++j){
-			indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex)));
+			indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex2)));
 		}
 	}
 	//蓋と底
+	//for (int i = 4; i < surface_max; ++i){
+	//	rot2 = MGetRotX(static_cast<float>((1 + i * 2)) * (DX_PI_F / 2.0f));
+	//	for (int j = 0; j < _countof(originalVertex); ++j){
+	//		vertex[i * _countof(originalVertex) + j] = originalVertex[j];
+	//		vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
+	//		vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
+	//	}
+	//	for (int j = 0; j < _countof(originalIndex); ++j){
+	//		indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex)));
+	//	}
+	//}
 	for (int i = 4; i < surface_max; ++i){
 		rot2 = MGetRotX(static_cast<float>((1 + i * 2)) * (DX_PI_F / 2.0f));
-		for (int j = 0; j < _countof(originalVertex); ++j){
-			vertex[i * _countof(originalVertex) + j] = originalVertex[j];
-			vertex[i * _countof(originalVertex) + j].pos = VTransform(originalVertex[j].pos, rot2);
-			vertex[i * _countof(originalVertex) + j].norm = VTransformSR(originalVertex[j].norm, rot2);
+		for (int j = 0; j < _countof(originalVertex2); ++j){
+			vertex2[i * _countof(originalVertex2) + j] = originalVertex2[j];
+			vertex2[i * _countof(originalVertex2) + j].pos = VTransform(originalVertex2[j].pos, rot2);
+			vertex2[i * _countof(originalVertex2) + j].norm = VTransformSR(originalVertex2[j].norm, rot2);
 		}
 		for (int j = 0; j < _countof(originalIndex); ++j){
-			indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex)));
+			indices[i * _countof(originalIndex) + j] = originalIndex[j] + static_cast<unsigned short>((i * _countof(originalVertex2)));
 		}
 	}
 }
 
 //待機中
 void Cube::WaitUpdata() {
+	//なにもしないよ
 }
 
 //回転中
