@@ -91,11 +91,11 @@ void Cube::Draw() {
 	//}
 
 	//4x5
-	for (int i = 0; i < 5; i++){
-		for (int j = 0; j < 4; j++){
-			
-		}
-	}
+	//for (int i = 0; i < 5; i++){
+	//	for (int j = 0; j < 4; j++){
+	//		
+	//	}
+	//}
 	//DrawPolygonIndexed3D(verts.data(), static_cast<int>(verts.size()), indices.data(), static_cast<int>(indices.size())/3, cubeH, false);
 
 	MATRIX matrix = MGetTranslate(pos2);
