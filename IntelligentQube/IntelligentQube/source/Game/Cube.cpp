@@ -40,22 +40,22 @@ Cube::Cube(VECTOR _pos, VECTOR _scale) :
 	indices.resize(6 * _countof(originalIndex));
 
 	//マテリアルの設定
-	MATERIALPARAM mt = MATERIALPARAM();
-	mt.Ambient = GetColorF(0.2f, 0.2f, 0.2f, 1.0f);
-	mt.Diffuse = GetColorF(0.75f, 0.75f, 0.75f, 1.0f);
-	mt.Specular = GetColorF(1.0f, 1.0f, 1.0f, 1.0f);
-	mt.Emissive = GetColorF(0.2f, 0.2f, 0.2f, 0.2f);
-	mt.Power = 10.0f;
+	MATERIALPARAM mt= MATERIALPARAM();
+	mt.Ambient		= GetColorF(0.2f, 0.2f, 0.2f, 1.0f);
+	mt.Diffuse		= GetColorF(0.75f, 0.75f, 0.75f, 1.0f);
+	mt.Specular		= GetColorF(1.0f, 1.0f, 1.0f, 1.0f);
+	mt.Emissive		= GetColorF(0.2f, 0.2f, 0.2f, 0.2f);
+	mt.Power		= 10.0f;
 	SetMaterialParam(mt);
 
 	//Cubeの頂点情報とインデックス情報の設定
 	SetUpPolygon();
 
 	verts = { vertex.begin(), vertex.end() };
-	rollingMat = MGetTranslate(VGet(0.0f, ed_w / 2, 0.0f));
+	rollingMat = MGetTranslate(pos);
 	for (auto& v : verts){
 		v.pos = VTransform({ v.pos.x * _scale.x, v.pos.y * _scale.y, v.pos.z * _scale.z }, rollingMat);
-		v.norm = VTransformSR({ v.pos.x * _scale.x, v.pos.y * _scale.y, v.pos.z * _scale.z }, rollingMat);
+		//v.norm = VTransformSR({ v.pos.x * _scale.x, v.pos.y * _scale.y, v.pos.z * _scale.z }, rollingMat);
 	}
 
 	//Debug用
@@ -72,14 +72,6 @@ void Cube::Updata() {
 }
 
 void Cube::Draw() {
-	//for (int z = -1; z < 10; z++){
-	//	for (int x = -5; x < 5; x++){
-	//		if (!CheckCameraViewClip_Box(VGet(-cube_ed * x, 0, -cube_ed * z), VGet(cube_ed * x, -2 * cube_ed, cube_ed * z))){
-	//			DrawCube3D(VGet(-cube_ed * x, 0, -cube_ed * z), VGet(cube_ed * x, -2 * cube_ed, cube_ed * z), GetColor(0, 255 - x, 0), 0xffffff, true);
-	//		}
-	//	}
-	//}
-
 	DrawPolygonIndexed3D(verts.data(), static_cast<int>(verts.size()), indices.data(), static_cast<int>(indices.size())/3, cubeH, false);
 }
 

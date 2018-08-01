@@ -26,6 +26,7 @@ void Player::Updata() {
 	static bool onceflag = true;
 	if (onceflag){
 		onceflag = false;
+		MV1SetScale(playerH, { 0.5f, 0.5f, 0.5f });
 		anim = {
 			{"Wait", 0 },
 			{"Walk", 1 }

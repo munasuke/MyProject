@@ -19,24 +19,26 @@ public:
 	int GetPlayerHandle();
 	positin3D GetPosition();
 private:
-	void Move();
-	void Animation();
-	void SetAnimation(std::string state);
-
-	void NeutralUpdata();
-	void WalkUpdata();
-	void(Player::*updata)();//ステータスのメンバ関数ポインタ
-
+	//キー情報
 	std::weak_ptr<KeyInput> key;
 
 	//ハンドル
 	int playerH;
 
+	void Move();
+
 	//アニメーション
+	void Animation();
+	void SetAnimation(std::string state);
 	int animIndex;//番号
 	float animTime;//カウント用
 	float animTimeTotal;//総再生時間
 	std::map<std::string, int> anim;//状態に合ったアニメーションを取得
+
+	//状態遷移
+	void NeutralUpdata();
+	void WalkUpdata();
+	void(Player::*updata)();//ステータスのメンバ関数ポインタ
 
 	//ステータス
 	positin3D pos;//座標

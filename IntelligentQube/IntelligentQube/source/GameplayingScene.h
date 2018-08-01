@@ -27,8 +27,9 @@ private:
 	positin3D targetPos;
 	VECTOR toEyeVector;//逆視線ベクトル
 
-	std::shared_ptr<NowLoading> ld;
-	std::shared_ptr<Player> pl;
-	std::shared_ptr<Cube> cube;
+	std::shared_ptr<NowLoading> ld;//ローディング
+	std::shared_ptr<Player> pl;//プレイヤー
+	std::shared_ptr<Cube> cube;//キューブ
+	std::shared_ptr<Cube> groundCube;//床
 };
 

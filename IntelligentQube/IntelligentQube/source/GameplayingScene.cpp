@@ -13,9 +13,13 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key) :
 	alpha = 0;
 	alphaFlg = false;
 
+	SetTextureAddressModeUV(DX_TEXADDRESS_WRAP, DX_TEXADDRESS_WRAP);
+
 	ld = std::make_shared<NowLoading>();
 	pl = std::make_shared<Player>(key);
-	cube = std::make_shared<Cube>(VGet(0.0f,10.0f, 2.0f));
+	cube = std::make_shared<Cube>(VGet(0.0f,5.0f, 0.0f));
+	VECTOR scale = { 4.0f, 5.0f, 12.0f };//土台のスケール
+	groundCube = std::make_shared<Cube>(VGet(5.0f,-25.0f, 5.0f), scale);
 	toEyeVector = VSub(VGet(camPos.x, camPos.y, camPos.z), VGet(targetPos.x, targetPos.y, targetPos.z));
 
 	//カメラの設定
@@ -85,9 +89,6 @@ void GameplayingScene::Draw()
 		if (key.lock()->IsPressing(PAD_INPUT_2)) {
 			CameraRotation(&eye.x, &eye.z, -Angle, pl->GetPosition().x, pl->GetPosition().z);
 		}
-		if (key.lock()->IsPressing(PAD_INPUT_3)) {
-			camPos = { 0.0f, 15.0f, -25.0f };
-		}
 	}
 	SetCameraPositionAndTarget_UpVecY(VGet(eye.x, eye.y, eye.z), VGet(plPos.x, plPos.y, plPos.z));//視点、注視点を設定
 	FadeIn();
@@ -95,6 +96,7 @@ void GameplayingScene::Draw()
 
 	pl->Draw();
 	cube->Draw();
+	groundCube->Draw();
 	if (CheckHandleASyncLoad(pl->GetPlayerHandle())){
 		ld->Draw(SCREEN_SIZE_X - 70, SCREEN_SIZE_Y - 70);
 	}
