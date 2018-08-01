@@ -15,7 +15,7 @@ GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key) :
 
 	ld = std::make_shared<NowLoading>();
 	pl = std::make_shared<Player>(key);
-	cube = std::make_shared<Cube>();
+	cube = std::make_shared<Cube>(VGet(0.0f,10.0f, 2.0f));
 	toEyeVector = VSub(VGet(camPos.x, camPos.y, camPos.z), VGet(targetPos.x, targetPos.y, targetPos.z));
 
 	//ƒJƒƒ‰‚Ìİ’è

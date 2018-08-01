@@ -14,7 +14,7 @@ enum Direction{
 //ÉLÉÖÅ[Éuä«óù
 class Cube {
 public:
-	Cube();
+	Cube(VECTOR _pos, VECTOR _scale = {1.0f, 1.0f, 1.0f});
 	virtual ~Cube();
 
 	void Updata();
@@ -42,11 +42,6 @@ protected:
 	std::vector<VERTEX3D> verts;
 	MATRIX rollingMat;
 	MATRIX mixMat;
-
-	//ìyë‰
-	VECTOR pos2;
-	std::vector<VERTEX3D> vertex2;
-	std::vector<VERTEX3D> verts2;
 
 	int moveCnt;
 

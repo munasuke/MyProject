@@ -63,12 +63,6 @@
     <ClInclude Include="source\System\ModelLoader.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="source\Game\ForbiddenCube.h">
-      <Filter>Game</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Game\AdvancedCube.h">
-      <Filter>Game</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -103,12 +97,6 @@
     </ClCompile>
     <ClCompile Include="source\System\ModelLoader.cpp">
       <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Game\AdvancedCube.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Game\ForbiddenCube.cpp">
-      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
