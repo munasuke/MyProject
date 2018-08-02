@@ -63,6 +63,9 @@
     <ClInclude Include="source\System\ModelLoader.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="source\Game\FloorCube.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Main.cpp">
@@ -97,6 +100,9 @@
     </ClCompile>
     <ClCompile Include="source\System\ModelLoader.cpp">
       <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Game\FloorCube.cpp">
+      <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

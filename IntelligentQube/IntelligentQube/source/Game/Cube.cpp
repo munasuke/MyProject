@@ -24,6 +24,10 @@ namespace{
 	};
 }
 
+Cube::Cube()
+{
+}
+
 Cube::Cube(VECTOR _pos, VECTOR _scale) :
 	updata(&Cube::WaitUpdata),
 	cubeH(LoadGraph("img/cube_tex.png")),
@@ -56,6 +60,7 @@ Cube::Cube(VECTOR _pos, VECTOR _scale) :
 	for (auto& v : verts){
 		v.pos = VTransform({ v.pos.x * _scale.x, v.pos.y * _scale.y, v.pos.z * _scale.z }, rollingMat);
 		//v.norm = VTransformSR({ v.pos.x * _scale.x, v.pos.y * _scale.y, v.pos.z * _scale.z }, rollingMat);
+		
 	}
 
 	//Debug—p

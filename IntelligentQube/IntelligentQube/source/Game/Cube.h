@@ -14,6 +14,7 @@ enum Direction{
 //ƒLƒ…[ƒuŠÇ—
 class Cube {
 public:
+	Cube();
 	Cube(VECTOR _pos, VECTOR _scale = {1.0f, 1.0f, 1.0f});
 	virtual ~Cube();
 
