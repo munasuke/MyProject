@@ -44,6 +44,7 @@ Cube::Cube(VECTOR _pos, VECTOR _scale) :
 	indices.resize(6 * _countof(originalIndex));
 
 	//マテリアルの設定
+	SetMaterialUseVertDifColor(false);
 	MATERIALPARAM mt= MATERIALPARAM();
 	mt.Ambient		= GetColorF(0.2f, 0.2f, 0.2f, 1.0f);
 	mt.Diffuse		= GetColorF(0.75f, 0.75f, 0.75f, 1.0f);
@@ -55,12 +56,21 @@ Cube::Cube(VECTOR _pos, VECTOR _scale) :
 	//Cubeの頂点情報とインデックス情報の設定
 	SetUpPolygon();
 
+	//キューブの初期配置
 	verts = { vertex.begin(), vertex.end() };
 	rollingMat = MGetTranslate(pos);
 	for (auto& v : verts){
 		v.pos = VTransform({ v.pos.x * _scale.x, v.pos.y * _scale.y, v.pos.z * _scale.z }, rollingMat);
-		//v.norm = VTransformSR({ v.pos.x * _scale.x, v.pos.y * _scale.y, v.pos.z * _scale.z }, rollingMat);
-		
+	}
+
+	//UVの設定
+	for (int i = 0; i < 6; i++) {
+		float u = VSize(VSub(verts[i * 4 + 1].pos, verts[i * 4 + 0].pos)) / (ed_w * 2);
+		float v = VSize(VSub(verts[i * 4 + 2].pos, verts[i * 4 + 0].pos)) / (ed_w * 2);
+		for (int j = 0; j < 4; j++) {
+			verts[i * 4 + j].u *= u;
+			verts[i * 4 + j].v *= v;
+		}
 	}
 
 	//Debug用

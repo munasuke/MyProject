@@ -6,7 +6,7 @@
 Player::Player(std::weak_ptr<KeyInput> _key) :
 	updata(&Player::NeutralUpdata),
 	key(_key),
-	pos({ 0.0f, 0.0f, 0.0f }),
+	pos({ 0.0f, 0.0f, -10.0f }),
 	rot({ 0.0f, 0.0f, 0.0f }),
 	speed(0.5f)
 {

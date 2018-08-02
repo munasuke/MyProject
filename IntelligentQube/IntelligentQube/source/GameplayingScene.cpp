@@ -6,7 +6,7 @@
 
 
 GameplayingScene::GameplayingScene(std::weak_ptr<KeyInput> _key) : 
-	camPos(-30.0f, 30.0f, -35.0f),
+	camPos(0.0f, 30.0f, -35.0f),
 	targetPos(0.0f, 10.0f, 0.0f)
 {
 	key = _key;
@@ -77,10 +77,6 @@ GameplayingScene::~GameplayingScene()
 
 void GameplayingScene::Updata()
 {
-
-	if (key.lock()->IsTrigger(PAD_INPUT_10)){
-		alphaFlg = true;
-	}
 	//キューブ操作
 	pl->Updata();
 	for (int i = 0; i < cb.size(); i++) {
@@ -107,17 +103,15 @@ void GameplayingScene::Draw()
 	auto plPos = pl->GetPosition();
 	auto eye = PlusVECTOR(plPos, toEyeVector);
 	
-	static float angle = 0.0f;
 	if (key.lock()->IsPressing(PAD_INPUT_1)) {
-		angle -= 0.01f;
-		toEyeVector = VGet(sin(angle) * cos(angle), sin(angle), cos(angle) * sin(angle));
+		CameraRotation(VGet(0.0f, 1.0f, 0.0f), toEyeVector);
 	}
 	else if (key.lock()->IsPressing(PAD_INPUT_2)) {
-		angle += 0.01f;
-		toEyeVector = VGet(sin(angle) * cos(angle), sin(angle), cos(angle) * sin(angle));
+		CameraRotation(toEyeVector, VGet(0.0f, 1.0f, 0.0f));
 	}
 
 	SetCameraPositionAndTarget_UpVecY(VGet(eye.x, eye.y, eye.z), VGet(plPos.x, plPos.y, plPos.z));//視点、注視点を設定
+
 	FadeIn();
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 
@@ -165,11 +159,9 @@ positin3D GameplayingScene::PlusVECTOR(positin3D pos, VECTOR vec) {
 	return tmpPos;
 }
 
-void GameplayingScene::CameraRotation(float x, float y, const float ang, const float mx, const float my)
+void GameplayingScene::CameraRotation(VECTOR vec1, VECTOR vec2)
 {
-	const float ox = x - mx, oy = y - my;
-	x = ox * cos(ang) + oy * sin(ang);
-	y = -ox * sin(ang) + oy * cos(ang);
-	x += mx;
-	y += my;
+	VECTOR crossVec = VCross(vec1, vec2);
+	VECTOR addVec = VAdd(toEyeVector, VNorm(crossVec));
+	toEyeVector = VScale(VNorm(addVec), VSize(toEyeVector));
 }

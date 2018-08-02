@@ -23,7 +23,7 @@ public:
 	void FadeOut();
 private:
 	positin3D PlusVECTOR(positin3D pos, VECTOR vec);
-	void CameraRotation(float x, float y, const float ang, const float mx, const float my);
+	void CameraRotation(VECTOR vec1, VECTOR vec2);
 	positin3D camPos;
 	positin3D targetPos;
 	VECTOR toEyeVector;//‹t‹üƒxƒNƒgƒ‹
