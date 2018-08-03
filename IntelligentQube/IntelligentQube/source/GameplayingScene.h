@@ -4,6 +4,7 @@
 #include "DxLib.h"
 #include <memory>
 #include <vector>
+#include <map>
 
 const float Angle = DX_PI_F / 90.0f;
 
@@ -33,5 +34,6 @@ private:
 	std::shared_ptr<Cube> cube;//ƒLƒ…[ƒu
 	std::vector<std::shared_ptr<Cube>> cb;
 	std::shared_ptr<Cube> groundCube;//°
+	int bgmH;
 };
 

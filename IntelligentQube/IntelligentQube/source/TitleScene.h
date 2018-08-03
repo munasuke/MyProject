@@ -1,6 +1,9 @@
 #pragma once
 #include "Scene/Scene.h"
+#include <memory>
 
+class ModelLoader;
+class Player;
 
 class TitleScene :
 	public Scene
@@ -18,5 +21,8 @@ private:
 	bool aflg;
 	int pressalpha;
 	positin pos;
+
+	std::shared_ptr<ModelLoader> loader;
+	std::shared_ptr<Player> pl;
 };
 

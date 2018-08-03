@@ -28,13 +28,17 @@ Cube::Cube()
 {
 }
 
-Cube::Cube(VECTOR _pos, VECTOR _scale) :
+Cube::Cube(VECTOR _pos, VECTOR _scale, COLOR_F _color) :
 	updata(&Cube::WaitUpdata),
 	cubeH(LoadGraph("img/cube_tex.png")),
-	angle(0.0f),
+	angle({ 0.0f, 0.0f, 0.0f }),
 	pos(_pos),
 	centorPos(pos),
-	moveCnt(0)
+	velocity({0.0f, 0.0f, 0.0f}),
+	moveCnt(0),
+	waitTime(maxWaitTime),
+	waitFlag(true),
+	impactH(LoadSoundMem("se/zushin.mp3"))
 {
 
 	//裏面の描画を行わない
@@ -45,13 +49,12 @@ Cube::Cube(VECTOR _pos, VECTOR _scale) :
 
 	//マテリアルの設定
 	SetMaterialUseVertDifColor(false);
-	MATERIALPARAM mt= MATERIALPARAM();
-	mt.Ambient		= GetColorF(0.2f, 0.2f, 0.2f, 1.0f);
-	mt.Diffuse		= GetColorF(0.75f, 0.75f, 0.75f, 1.0f);
+	mt= MATERIALPARAM();
+	mt.Ambient		= _color;
+	mt.Diffuse		= _color.r != 0.0f ? GetColorF(0.75f, 0.75f, 0.75f, 1.0f) : GetColorF(0.4f, 0.4f, 0.4f, 1.0f);
 	mt.Specular		= GetColorF(1.0f, 1.0f, 1.0f, 1.0f);
-	mt.Emissive		= GetColorF(0.2f, 0.2f, 0.2f, 0.2f);
+	mt.Emissive		= _color.r != 0.0f ? GetColorF(0.2f, 0.2f, 0.2f, 0.2f) : GetColorF(0.0f, 0.0f, 0.0f, 0.2f);
 	mt.Power		= 10.0f;
-	SetMaterialParam(mt);
 
 	//Cubeの頂点情報とインデックス情報の設定
 	SetUpPolygon();
@@ -73,6 +76,15 @@ Cube::Cube(VECTOR _pos, VECTOR _scale) :
 		}
 	}
 
+	velocity.x = static_cast<float>(GetRand(200) - 100) / 1000.0f;
+	velocity.z = static_cast<float>(GetRand(100)) / 1000.0f;
+
+	angle = {
+		static_cast<float>(DxLib::GetRand(2000) - 1000) / 100000.0f,
+		static_cast<float>(DxLib::GetRand(2000) - 1000) / 100000.0f,
+		static_cast<float>(DxLib::GetRand(2000) - 1000) / 100000.0f
+	};
+
 	//Debug用
 	flg = true;
 	flg2 = true;
@@ -83,10 +95,28 @@ Cube::~Cube() {
 }
 
 void Cube::Updata() {
+	if (waitFlag) {
+		if (waitTime <= 0) {
+			waitFlag = false;
+			waitTime = maxWaitTime;
+		}
+		waitTime--;
+	}
+	else {
+		RollOver(0.0f, -1.0f);
+	}
+
+	if (centorPos.z <= -60.0f) {
+		if (updata != &Cube::FallingUpdata) {
+			updata = &Cube::FallingUpdata;
+		}
+	}
+
 	(this->*updata)();
 }
 
 void Cube::Draw() {
+	SetMaterialParam(mt);
 	DrawPolygonIndexed3D(verts.data(), static_cast<int>(verts.size()), indices.data(), static_cast<int>(indices.size())/3, cubeH, false);
 }
 
@@ -114,6 +144,11 @@ void Cube::RollOver(float x, float z) {
 	rollingMat = MMult(rollingMat, MGetTranslate(centorPos));
 
 	updata = &Cube::RollingUpdata;
+}
+
+float Cube::GetPosition()
+{
+	return centorPos.z;
 }
 
 void Cube::SetUpPolygon() {
@@ -166,8 +201,31 @@ void Cube::RollingUpdata() {
 
 //回転後
 void Cube::RolledUpdata() {
+	PlaySoundMem(impactH, DX_PLAYTYPE_BACK);
 	centorPos = SetCentorPos(verts);
+	waitFlag = true;
 	updata = &Cube::WaitUpdata;
+}
+
+//落下中
+void Cube::FallingUpdata()
+{
+	velocity.y -= 0.01f;
+
+	MATRIX mt = MGetTranslate(VSub(VGet(0.0f, 0.0f, 0.0f), centorPos));
+
+	mt = MMult(mt, MGetRotX(angle.x));
+	mt = MMult(mt, MGetRotY(angle.y));
+	mt = MMult(mt, MGetRotZ(angle.z));
+
+	mt = MMult(mt, MGetTranslate(centorPos));
+	mt = MMult(mt, MGetTranslate(velocity));
+
+	for (auto& v : verts) {
+		v.pos = VTransform(v.pos, mt);
+		v.norm = VTransformSR(v.norm, mt);
+	}
+	centorPos = SetCentorPos(verts);
 }
 
 //中心点を再計算

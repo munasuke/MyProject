@@ -10,8 +10,21 @@ ModelLoader::ModelLoader() {
 ModelLoader::~ModelLoader() {
 }
 
-int ModelLoader::Load(std::string filepath) {
-	//filepathがmap内にあるか見る
-	//あればデュプリケート、なければロード
-	return 0;
+int ModelLoader::PreLoad(TCHAR * filepath)
+{
+	modelInfo[filepath].handle = MV1LoadModel(filepath);
+	return modelInfo[filepath].handle;
+}
+
+int ModelLoader::Load(TCHAR* filepath) {
+	//コンテナにあるかチェック
+	if (modelInfo.find(filepath) == modelInfo.end()) {
+		//ないのでロード
+		modelInfo[filepath].handle = MV1LoadModel(filepath);
+		return modelInfo[filepath].handle;
+	}
+	else {
+		//あるので
+		return MV1DuplicateModel(modelInfo[filepath].handle);
+	}
 }

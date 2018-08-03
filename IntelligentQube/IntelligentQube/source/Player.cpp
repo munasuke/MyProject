@@ -10,8 +10,6 @@ Player::Player(std::weak_ptr<KeyInput> _key) :
 	rot({ 0.0f, 0.0f, 0.0f }),
 	speed(0.5f)
 {
-	//非同期読み込み
-	SetUseASyncLoadFlag(true);
 	playerH = MV1LoadModel("models/KK/キタキツネ.pmx");
 }
 
@@ -28,8 +26,8 @@ void Player::Updata() {
 		onceflag = false;
 		MV1SetScale(playerH, { 0.5f, 0.5f, 0.5f });
 		anim = {
-			{"Wait", 0 },
-			{"Walk", 1 }
+			{ "Wait", 0 },
+			{ "Walk", 1 }
 		};
 		animIndex = MV1AttachAnim(playerH, anim["Wait"], -1);
 		animTime = 0.0f;
@@ -53,6 +51,11 @@ void Player::Draw() {
 
 int Player::GetPlayerHandle() {
 	return playerH;
+}
+
+void Player::SetPlayerHandle(int handle)
+{
+	playerH = handle;
 }
 
 positin3D Player::GetPosition() {
@@ -90,46 +93,62 @@ void Player::NeutralUpdata()
 
 void Player::WalkUpdata()
 {
-	if (key.lock()->IsPressing(PAD_INPUT_UP) && key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
-		rot.y = RAD(225);
-		pos.x += cos(RAD(315)) * speed;
-		pos.z -= sin(RAD(315)) * speed;
-	}
-	else if (key.lock()->IsPressing(PAD_INPUT_UP) && key.lock()->IsPressing(PAD_INPUT_LEFT)) {
-		rot.y = RAD(135);
-		pos.x += cos(RAD(225)) * speed;
-		pos.z -= sin(RAD(225)) * speed;
-	}
-	else if (key.lock()->IsPressing(PAD_INPUT_DOWN) && key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
-		rot.y = RAD(315);
-		pos.x += cos(RAD(45)) * speed;
-		pos.z -= sin(RAD(45)) * speed;
-	}
-	else if (key.lock()->IsPressing(PAD_INPUT_DOWN) && key.lock()->IsPressing(PAD_INPUT_LEFT)) {
-		rot.y = RAD(45);
-		pos.x += cos(RAD(135)) * speed;
-		pos.z -= sin(RAD(135)) * speed;
-	}
-	else {
-		if (key.lock()->IsPressing(PAD_INPUT_UP)) {
-			pos.z += speed;
-			rot.y = RAD(180);
+	if (pos.x > -15.0f && pos.x < 25.0f && pos.z > -55.0f && pos.z < 65.0f) {
+		if (key.lock()->IsPressing(PAD_INPUT_UP) && key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
+			rot.y = RAD(225);
+			pos.x += cos(RAD(315)) * speed;
+			pos.z -= sin(RAD(315)) * speed;
 		}
-		else if (key.lock()->IsPressing(PAD_INPUT_DOWN)) {
-			pos.z -= speed;
-			rot.y = RAD(0);
+		else if (key.lock()->IsPressing(PAD_INPUT_UP) && key.lock()->IsPressing(PAD_INPUT_LEFT)) {
+			rot.y = RAD(135);
+			pos.x += cos(RAD(225)) * speed;
+			pos.z -= sin(RAD(225)) * speed;
 		}
-		else if (key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
-			pos.x += speed;
-			rot.y = RAD(270);
+		else if (key.lock()->IsPressing(PAD_INPUT_DOWN) && key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
+			rot.y = RAD(315);
+			pos.x += cos(RAD(45)) * speed;
+			pos.z -= sin(RAD(45)) * speed;
 		}
-		else if (key.lock()->IsPressing(PAD_INPUT_LEFT)) {
-			pos.x -= speed;
-			rot.y = RAD(90);
+		else if (key.lock()->IsPressing(PAD_INPUT_DOWN) && key.lock()->IsPressing(PAD_INPUT_LEFT)) {
+			rot.y = RAD(45);
+			pos.x += cos(RAD(135)) * speed;
+			pos.z -= sin(RAD(135)) * speed;
 		}
 		else {
-			SetAnimation("Wait");
-			updata = &Player::NeutralUpdata;
+			if (key.lock()->IsPressing(PAD_INPUT_UP)) {
+				pos.z += speed;
+				rot.y = RAD(180);
+			}
+			else if (key.lock()->IsPressing(PAD_INPUT_DOWN)) {
+				pos.z -= speed;
+				rot.y = RAD(0);
+			}
+			else if (key.lock()->IsPressing(PAD_INPUT_RIGHT)) {
+				pos.x += speed;
+				rot.y = RAD(270);
+			}
+			else if (key.lock()->IsPressing(PAD_INPUT_LEFT)) {
+				pos.x -= speed;
+				rot.y = RAD(90);
+			}
+			else {
+				SetAnimation("Wait");
+				updata = &Player::NeutralUpdata;
+			}
+		}
+	}
+	else {
+		if (pos.x < -15.0f) {
+			pos.x++;
+		}
+		if (pos.x > 25.0f) {
+			pos.x--;
+		}
+		if (pos.z < -10.0f) {
+			pos.z++;
+		}
+		if (pos.z > 65.0f) {
+			pos.z--;
 		}
 	}
 }

@@ -2,6 +2,8 @@
 #include "TitleScene.h"
 #include "Game.h"
 #include "GameplayingScene.h"
+#include "System\/ModelLoader.h"
+#include "Player.h"
 #include "DxLib.h"
 
 
@@ -13,6 +15,9 @@ TitleScene::TitleScene(std::weak_ptr<KeyInput> _key) :
 	//startSE(LoadSoundMem("se/start.mp3"))
 {
 	key = _key;
+	//loader = std::make_shared<ModelLoader>();
+	//pl = std::make_shared<Player>(key);
+	//pl->SetPlayerHandle(loader->PreLoad((TCHAR*)"models/KK/キタキツネ.pmx"));
 	alpha = 0;
 	alphaFlg = false;
 	printf("Title Scene\n");

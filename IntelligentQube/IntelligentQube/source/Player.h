@@ -17,6 +17,7 @@ public:
 	void Draw();
 
 	int GetPlayerHandle();
+	void SetPlayerHandle(int handle);
 	positin3D GetPosition();
 private:
 	//ƒL[î•ñ
